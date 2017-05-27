@@ -1,0 +1,8 @@
+<resources>
+  <string name="app_name">Motoqueiro</string>
+  <string name="start">start</string>
+  <string name="all_ready">all ready!\n\nclick in <b>start</b> to begin your trip</string>
+  <string name="an_error_occurred">an error occurred</string>
+  <string name="stop">stop</string>
+  <string name="capturing_data">Capturing data.\nTap <b>stop</b> to finish your trip.</string>
+</resources>

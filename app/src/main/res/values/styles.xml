@@ -1,0 +1,29 @@
+<resources>
+
+  <!-- Base application theme. -->
+  <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <!-- Customize your theme here. -->
+    <item name="colorPrimary">@color/colorPrimary</item>
+    <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+    <item name="colorAccent">@color/colorAccent</item>
+  </style>
+
+  <style name="DefaultTextView" parent="TextAppearance.AppCompat">
+    <item name="android:textAllCaps">true</item>
+    <item name="android:textSize">@dimen/font_size</item>
+    <item name="android:paddingLeft">@dimen/basic_padding</item>
+    <item name="android:paddingRight">@dimen/basic_padding</item>
+    <item name="android:gravity">center_vertical</item>
+  </style>
+
+  <style name="DefaultButton" parent="Widget.AppCompat.Button.Colored">
+    <item name="android:gravity">start|center_vertical</item>
+    <item name="android:paddingLeft">@dimen/basic_padding</item>
+    <item name="android:paddingRight">@dimen/basic_padding</item>
+    <item name="android:textAllCaps">true</item>
+    <item name="android:textSize">@dimen/font_size</item>
+    <item name="android:textColor">@color/colorPrimaryDark</item>
+    <item name="android:height">@dimen/button_height</item>
+  </style>
+
+</resources>

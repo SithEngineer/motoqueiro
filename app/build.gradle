@@ -1,0 +1,154 @@
+apply plugin: 'com.android.application'
+apply plugin: 'me.tatarka.retrolambda'
+
+retrolambda {
+  jvmArgs '-noverify'
+  //defaultMethods true
+}
+
+android {
+  compileSdkVersion rootProject.ext.compileSdkVersion
+  buildToolsVersion rootProject.ext.buildToolsVersion
+
+  defaultConfig {
+    applicationId "io.github.sithengineer.motoqueiro"
+    minSdkVersion rootProject.ext.minSdkVersion
+    targetSdkVersion rootProject.ext.compileSdkVersion
+    versionCode 1
+    versionName "1.0"
+    testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+    //multiDexEnabled true
+
+    buildConfigField "int", "LIMIT", "100"
+    buildConfigField "String", "BASEURL", "\"http://192.168.1.68:3000/api/\"" // home
+    //buildConfigField "String", "BASEURL", "\"http://192.168.1.27:3000/api/\"" // office
+    buildConfigField "String", "DEFAULT_MI_BAND", "\"F0:E3:C8:01:11:0D\""
+    buildConfigField "int", "CACHETIME", "432000" // 5days
+  }
+
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_1_8
+    targetCompatibility JavaVersion.VERSION_1_8
+  }
+
+  buildTypes {
+    debug {
+      minifyEnabled true
+      //      useProguard false
+      shrinkResources false
+      proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+      testProguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguardTest-rules.pro'
+      applicationIdSuffix '.debug'
+      versionNameSuffix '-debug'
+    }
+
+    release {
+      minifyEnabled true
+      //      useProguard true
+      shrinkResources true
+      proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+      testProguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguardTest-rules.pro'
+    }
+  }
+
+  /*
+  productFlavors {
+    mock {
+      applicationIdSuffix = ".mock"
+    }
+    prod {}
+  }
+
+  // Remove mockRelease as it's not needed.
+  android.variantFilter { variant ->
+    if (variant.buildType.name.equals('release') && variant.getFlavors().
+        get(0).name.
+        equals('mock')) {
+      variant.setIgnore(true);
+    }
+  }
+  */
+
+  packagingOptions {
+    exclude 'META-INF/rxjava.properties'
+  }
+}
+
+dependencies {
+  compile fileTree(dir: 'libs', include: ['*.jar'])
+  androidTestCompile("com.android.support.test.espresso:espresso-core:$rootProject.espressoVersion",
+      {
+        exclude group: 'com.android.support', module: 'support-annotations'
+        exclude group: 'com.google.code.findbugs'
+      })
+  testCompile "junit:junit:$rootProject.junitVersion"
+
+  compile "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
+  compile "com.android.support:cardview-v7:$rootProject.supportLibraryVersion"
+  compile "com.android.support:design:$rootProject.supportLibraryVersion"
+  compile "com.android.support:recyclerview-v7:$rootProject.supportLibraryVersion"
+
+  //  compile("com.android.support:multidex:$rootProject.multiDexVersion") {
+  //    exclude group: "com.android.support", module: "support-annotations"
+  //  }
+
+  compile "com.google.android.gms:play-services-location:$rootProject.playServicesVersion"
+
+  //
+  // reactive extensions
+  //
+  compile "io.reactivex:rxandroid:$rootProject.rxAndroidVersion"
+  // Because RxAndroid releases are few and far between, it is recommended you also
+  // explicitly depend on RxJava's latest version for bug fixes and new features.
+  compile "io.reactivex:rxjava:$rootProject.rxJavaVersion"
+  compile "nl.littlerobots.rxlint:rxlint:$rootProject.rxLintVersion"
+  // Rx lifecycle from trello
+  compile "com.trello:rxlifecycle:$rootProject.rxLifecycleVersion"
+  compile "com.trello:rxlifecycle-android:$rootProject.rxLifecycleVersion"
+  compile "com.trello:rxlifecycle-components:$rootProject.rxLifecycleVersion"
+  compile "com.jakewharton.rxbinding:rxbinding:$rootProject.rxBindingVersion"
+  // SQLBrite for database reactive extensions
+  compile "com.squareup.sqlbrite:sqlbrite:$rootProject.sqlBriteVersion"
+
+
+  //
+  // dependency injection
+  //
+  compile "com.google.dagger:dagger:$rootProject.daggerVersion"
+  annotationProcessor "com.google.dagger:dagger-compiler:$rootProject.daggerVersion"
+
+  //
+  // view injection
+  //
+  compile "com.jakewharton:butterknife:$rootProject.butterknifeVersion"
+  annotationProcessor "com.jakewharton:butterknife-compiler:$rootProject.butterknifeVersion"
+
+  //
+  // JSON (de)serialization
+  //
+  compile "com.google.code.gson:gson:$rootProject.gsonVersion"
+
+  //
+  // retrofit for REST API calls
+  //
+  compile "com.squareup.retrofit2:retrofit:$rootProject.retrofitVersion"
+  compile "com.squareup.retrofit2:adapter-rxjava:$rootProject.retrofitVersion"
+  compile "com.squareup.retrofit2:converter-gson:$rootProject.retrofitVersion"
+  compile "com.squareup.retrofit2:converter-scalars:$rootProject.retrofitVersion"
+
+  //
+  // for image loading
+  //
+  //compile "com.github.bumptech.glide:glide:$rootProject.glideVersion"
+
+  //
+  // java annotations (provided)
+  //
+  provided "javax.annotation:jsr250-api:$rootProject.jsr250Version"
+
+  //
+  // logging
+  //
+  compile "com.jakewharton.timber:timber:$rootProject.timberVersion"
+}

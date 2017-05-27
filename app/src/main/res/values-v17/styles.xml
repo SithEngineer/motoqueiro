@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+  <style name="DefaultTextView" parent="TextAppearance.AppCompat">
+    <item name="android:textAllCaps">true</item>
+    <item name="android:textSize">@dimen/font_size</item>
+    <item name="android:paddingEnd">@dimen/basic_padding</item>
+    <item name="android:paddingLeft">@dimen/basic_padding</item>
+    <item name="android:paddingRight">@dimen/basic_padding</item>
+    <item name="android:paddingStart">@dimen/basic_padding</item>
+    <item name="android:gravity">center_vertical</item>
+  </style>
+
+  <style name="DefaultButton" parent="Base.TextAppearance.AppCompat.Widget.Button">
+    <item name="android:gravity">start|center_vertical</item>
+    <item name="android:paddingEnd">@dimen/basic_padding</item>
+    <item name="android:paddingLeft">@dimen/basic_padding</item>
+    <item name="android:paddingRight">@dimen/basic_padding</item>
+    <item name="android:paddingStart">@dimen/basic_padding</item>
+    <item name="android:textAllCaps">true</item>
+    <item name="android:textSize">@dimen/font_size</item>
+    <item name="android:textColor">@color/colorPrimaryDark</item>
+    <item name="android:height">@dimen/button_height</item>
+  </style>
+</resources>
