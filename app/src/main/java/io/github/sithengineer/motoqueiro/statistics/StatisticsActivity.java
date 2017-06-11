@@ -3,6 +3,7 @@ package io.github.sithengineer.motoqueiro.statistics;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import io.github.sithengineer.motoqueiro.BaseActivity;
+import io.github.sithengineer.motoqueiro.MotoqueiroApp;
 import io.github.sithengineer.motoqueiro.R;
 
 public class StatisticsActivity extends BaseActivity {
@@ -11,7 +12,8 @@ public class StatisticsActivity extends BaseActivity {
     setContentView(R.layout.activity_content_frame);
 
     StatisticsFragment fragment =
-        (StatisticsFragment) getSupportFragmentManager().findFragmentById(R.id.content_frame);
+        (StatisticsFragment) getSupportFragmentManager().findFragmentById(
+            R.id.content_frame);
 
     if (fragment == null) {
       fragment = StatisticsFragment.newInstance();
@@ -22,9 +24,9 @@ public class StatisticsActivity extends BaseActivity {
           .commit();
     }
 
-    DaggerStatisticsComponent.builder()
-        .statisticsModule(new StatisticsModule(fragment))
-        .build()
+    MotoqueiroApp.get(this)
+        .getRideComponent()
+        .with(new StatisticsModule(fragment))
         .inject(fragment);
   }
 }

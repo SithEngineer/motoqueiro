@@ -10,15 +10,16 @@ public class GattEvent {
   private final BluetoothGattCharacteristic characteristic;
   private final int status;
 
-  public GattEvent(Type type, BluetoothGatt gatt, BluetoothGattCharacteristic characteristic,
-      int status) {
+  public GattEvent(Type type, BluetoothGatt gatt,
+      BluetoothGattCharacteristic characteristic, int status) {
     this.type = type;
     this.gatt = gatt;
     this.characteristic = characteristic;
     this.status = status;
   }
 
-  public GattEvent(Type type, BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
+  public GattEvent(Type type, BluetoothGatt gatt,
+      BluetoothGattCharacteristic characteristic) {
     this(type, gatt, characteristic, 0);
   }
 

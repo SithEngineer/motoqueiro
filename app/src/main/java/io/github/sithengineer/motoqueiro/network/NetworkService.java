@@ -5,7 +5,7 @@ import retrofit2.http.Body;
 import retrofit2.http.POST;
 import rx.Observable;
 
-interface NetworkService {
+public interface NetworkService {
 
   //
   // ride

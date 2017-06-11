@@ -3,13 +3,11 @@ package io.github.sithengineer.motoqueiro.home;
 import android.location.LocationManager;
 import dagger.Module;
 import dagger.Provides;
-import io.github.sithengineer.motoqueiro.data.DataModule;
 import io.github.sithengineer.motoqueiro.data.RideRepository;
 import io.github.sithengineer.motoqueiro.hardware.Gps;
-import io.github.sithengineer.motoqueiro.hardware.SensorModule;
 import io.github.sithengineer.motoqueiro.util.CompositeSubscriptionManager;
 
-@Module(includes = { SensorModule.class, DataModule.class }) public class HomeModule {
+@Module public class HomeModule {
 
   private final HomeContract.View view;
 
@@ -25,8 +23,13 @@ import io.github.sithengineer.motoqueiro.util.CompositeSubscriptionManager;
     return new CompositeSubscriptionManager();
   }
 
-  @Provides HomeContract.Presenter providePresenter(HomeContract.View view, CompositeSubscriptionManager subscriptionManager,
-      LocationManager locationManager, Gps.GpsStateListener locationListener, RideRepository rideRepo) {
-    return new HomePresenter(view, subscriptionManager, locationManager, locationListener, rideRepo);
+  @Provides RideManager providesRideManager(LocationManager locationManager,
+      Gps.GpsStateListener locationListener, RideRepository rideRepo) {
+    return new RideManager(locationListener, locationManager, rideRepo);
+  }
+
+  @Provides HomeContract.Presenter providePresenter(HomeContract.View view,
+      CompositeSubscriptionManager subscriptionManager, RideManager rideManager) {
+    return new HomePresenter(view, subscriptionManager, rideManager);
   }
 }

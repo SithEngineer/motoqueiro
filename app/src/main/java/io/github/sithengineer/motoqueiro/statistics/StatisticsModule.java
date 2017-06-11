@@ -10,11 +10,11 @@ import io.github.sithengineer.motoqueiro.util.CompositeSubscriptionManager;
   private final CompositeSubscriptionManager subscriptionManager;
 
   public StatisticsModule(StatisticsContract.View view) {
-    this.view = view;
-    this.subscriptionManager = new CompositeSubscriptionManager();
+    this(view, new CompositeSubscriptionManager());
   }
 
-  public StatisticsModule(StatisticsContract.View view, CompositeSubscriptionManager subscriptionManager) {
+  public StatisticsModule(StatisticsContract.View view,
+      CompositeSubscriptionManager subscriptionManager) {
     this.view = view;
     this.subscriptionManager = subscriptionManager;
   }

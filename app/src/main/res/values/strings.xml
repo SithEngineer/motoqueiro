@@ -1,8 +1,12 @@
 <resources>
   <string name="app_name">Motoqueiro</string>
-  <string name="start">start</string>
-  <string name="all_ready">all ready!\n\nclick in <b>start</b> to begin your trip</string>
+  <string name="home_start_button">start</string>
+  <string name="home_all_ready_textView">all ready!\n\nclick in <b>start</b> to begin your trip</string>
   <string name="an_error_occurred">an error occurred</string>
   <string name="stop">stop</string>
   <string name="capturing_data">Capturing data.\nTap <b>stop</b> to finish your trip.</string>
+  <string name="home_mibandAdress_editTextHint">(optional) Do you have a MiBand? Insert its address here!</string>
+  <string name="home_activateGps_snackbar">Activate GPS</string>
+  <string name="home_genericError_snackBar">An error occurred. Try again later.</string>
+  <string name="home_rideName_editTextHint">(optional) Give this ride a name!</string>
 </resources>

@@ -1,7 +1,9 @@
 package io.github.sithengineer.motoqueiro.home;
 
-import dagger.Component;
+import dagger.Subcomponent;
+import io.github.sithengineer.motoqueiro.scope.ActivityScope;
 
-@Component(modules = { HomeModule.class }) public interface HomeComponent {
+@ActivityScope @Subcomponent(modules = { HomeModule.class })
+public interface HomeComponent {
   void inject(HomeFragment fragment);
 }

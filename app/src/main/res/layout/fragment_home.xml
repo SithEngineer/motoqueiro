@@ -1,26 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     >
-
-  <Button
-      android:id="@+id/start_button"
+  <LinearLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_alignParentBottom="true"
-      android:text="@string/start"
-      style="@style/DefaultButton"
-      />
+      android:orientation="vertical"
+      >
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/miband_address_input_wrapper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+      <EditText
+          android:id="@+id/miband_address_input"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:hint="@string/home_mibandAdress_editTextHint"
+          />
 
-  <TextView
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_above="@id/start_button"
-      android:layout_alignParentTop="true"
-      android:text="@string/all_ready"
-      style="@style/DefaultTextView"
-      />
+    </android.support.design.widget.TextInputLayout>
 
-</RelativeLayout>
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/ride_name_input_wrapper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+      <EditText
+          android:id="@+id/ride_name_input"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:hint="@string/home_rideName_editTextHint"
+          />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <TextView
+        android:id="@+id/ride_text_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/basic_padding"
+        android:text="@string/home_all_ready_textView"
+        style="@style/DefaultTextView"
+        />
+
+    <Button
+        android:id="@+id/start_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/basic_padding"
+        android:text="@string/home_start_button"
+        style="@style/DefaultButton"
+        />
+
+  </LinearLayout>
+</ScrollView>

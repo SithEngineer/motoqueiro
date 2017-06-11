@@ -11,7 +11,8 @@ import io.github.sithengineer.motoqueiro.home.HomeActivity;
 import javax.inject.Inject;
 import rx.Observable;
 
-public class StatisticsFragment extends BaseFragment<StatisticsContract.Presenter> implements StatisticsContract.View {
+public class StatisticsFragment extends BaseFragment<StatisticsContract.Presenter>
+    implements StatisticsContract.View {
 
   @BindView(R.id.go_home_button) Button goHomeButton;
   @Inject StatisticsContract.Presenter presenter;
@@ -20,12 +21,12 @@ public class StatisticsFragment extends BaseFragment<StatisticsContract.Presente
     return new StatisticsFragment();
   }
 
-  @Nullable @Override public StatisticsContract.Presenter getPresenter() {
-    return presenter;
-  }
-
   @Override protected int getViewId() {
     return R.layout.fragment_statistics;
+  }
+
+  @Nullable @Override public StatisticsContract.Presenter getPresenter() {
+    return presenter;
   }
 
   @Override public Observable<Void> goHomeClick() {

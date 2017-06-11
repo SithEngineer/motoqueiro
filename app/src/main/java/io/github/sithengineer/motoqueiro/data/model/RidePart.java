@@ -15,7 +15,8 @@ public class RidePart {
   private List<GpsPoint> gpsCoordinates;
   private List<HeartRatePoint> heartRateCaptures;
 
-  public RidePart(String id, String name, long initialTimestamp, long finalTimestamp, boolean completed) {
+  public RidePart(String id, String name, long initialTimestamp, long finalTimestamp,
+      boolean completed) {
     this.id = id;
     this.name = name;
     this.initialTimestamp = initialTimestamp;

@@ -11,7 +11,8 @@ import io.github.sithengineer.motoqueiro.statistics.StatisticsActivity;
 import javax.inject.Inject;
 import rx.Observable;
 
-public class CruisingFragment extends BaseFragment<CruisingContract.Presenter> implements CruisingContract.View {
+public class CruisingFragment extends BaseFragment<CruisingContract.Presenter>
+    implements CruisingContract.View {
 
   @BindView(R.id.stop_button) Button stopButton;
   @Inject CruisingContract.Presenter presenter;

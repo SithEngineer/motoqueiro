@@ -1,7 +1,9 @@
 package io.github.sithengineer.motoqueiro.cruising;
 
-import dagger.Component;
+import dagger.Subcomponent;
+import io.github.sithengineer.motoqueiro.scope.ActivityScope;
 
-@Component(modules = { CruisingModule.class }) public interface CruisingComponent {
+@ActivityScope @Subcomponent(modules = { CruisingModule.class })
+public interface CruisingComponent {
   void inject(CruisingFragment fragment);
 }

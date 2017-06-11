@@ -11,10 +11,9 @@ public class CompositeSubscriptionManager {
     subscriptions.add(subscription);
   }
 
-  public void clearAll(){
-    if(subscriptions.hasSubscriptions() && !subscriptions.isUnsubscribed()){
+  public void clearAll() {
+    if (subscriptions.hasSubscriptions() && !subscriptions.isUnsubscribed()) {
       subscriptions.unsubscribe();
     }
   }
-
 }

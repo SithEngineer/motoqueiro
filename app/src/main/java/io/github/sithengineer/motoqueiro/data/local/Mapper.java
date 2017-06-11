@@ -20,26 +20,26 @@ final class Mapper {
 
   static {
     CURSOR_TO_GPS_POINT = (cursor) -> {
-      long timestamp =
-          cursor.getLong(cursor.getColumnIndex(RidePersistenceContract.GpsEntry.COLUMN_TIMESTAMP));
-      double lat =
-          cursor.getDouble(cursor.getColumnIndex(RidePersistenceContract.GpsEntry.COLUMN_LAT));
-      double lon =
-          cursor.getDouble(cursor.getColumnIndex(RidePersistenceContract.GpsEntry.COLUMN_LON));
+      long timestamp = cursor.getLong(
+          cursor.getColumnIndex(RidePersistenceContract.GpsEntry.COLUMN_TIMESTAMP));
+      double lat = cursor.getDouble(
+          cursor.getColumnIndex(RidePersistenceContract.GpsEntry.COLUMN_LAT));
+      double lon = cursor.getDouble(
+          cursor.getColumnIndex(RidePersistenceContract.GpsEntry.COLUMN_LON));
       return new GpsPoint(lat, lon, timestamp);
     };
 
     CURSOR_TO_HEART_RATE_POINT = (cursor) -> {
       long timestamp = cursor.getLong(
           cursor.getColumnIndex(RidePersistenceContract.HeartRateEntry.COLUMN_TIMESTAMP));
-      int bpm =
-          cursor.getInt(cursor.getColumnIndex(RidePersistenceContract.HeartRateEntry.COLUMN_BPM));
+      int bpm = cursor.getInt(
+          cursor.getColumnIndex(RidePersistenceContract.HeartRateEntry.COLUMN_BPM));
       return new HeartRatePoint(bpm, timestamp);
     };
 
     CURSOR_TO_ACCEL_POINT = (cursor) -> {
-      long timestamp = cursor.getLong(
-          cursor.getColumnIndex(RidePersistenceContract.AccelerometerEntry.COLUMN_TIMESTAMP));
+      long timestamp = cursor.getLong(cursor.getColumnIndex(
+          RidePersistenceContract.AccelerometerEntry.COLUMN_TIMESTAMP));
       float xx = cursor.getFloat(
           cursor.getColumnIndex(RidePersistenceContract.AccelerometerEntry.COLUMN_XX));
       float yy = cursor.getFloat(
@@ -50,8 +50,8 @@ final class Mapper {
     };
 
     CURSOR_TO_GRAVITY_POINT = (cursor) -> {
-      long timestamp = cursor.getLong(
-          cursor.getColumnIndex(RidePersistenceContract.AccelerometerEntry.COLUMN_TIMESTAMP));
+      long timestamp = cursor.getLong(cursor.getColumnIndex(
+          RidePersistenceContract.AccelerometerEntry.COLUMN_TIMESTAMP));
       float xx = cursor.getFloat(
           cursor.getColumnIndex(RidePersistenceContract.AccelerometerEntry.COLUMN_XX));
       float yy = cursor.getFloat(
@@ -62,16 +62,18 @@ final class Mapper {
     };
 
     CURSOR_TO_RIDE = (cursor, gpsPoints, heartRatePoints, accelPoints, gravityPoints) -> {
-      long initialTimestamp = cursor.getLong(
-          cursor.getColumnIndex(RidePersistenceContract.RideEntry.COLUMN_START_TIMESTAMP));
+      long initialTimestamp = cursor.getLong(cursor.getColumnIndex(
+          RidePersistenceContract.RideEntry.COLUMN_START_TIMESTAMP));
       long finalTimestamp = cursor.getLong(
           cursor.getColumnIndex(RidePersistenceContract.RideEntry.COLUMN_END_TIMESTAMP));
       String id =
           cursor.getString(cursor.getColumnIndex(RidePersistenceContract.RideEntry._ID));
 
-      String name = cursor.getString(cursor.getColumnIndex(RidePersistenceContract.RideEntry._ID));
+      String name =
+          cursor.getString(cursor.getColumnIndex(RidePersistenceContract.RideEntry._ID));
 
-      boolean completed = cursor.getInt(cursor.getColumnIndex(RidePersistenceContract.RideEntry.COLUMN_COMPLETED)) == 1;
+      boolean completed = cursor.getInt(
+          cursor.getColumnIndex(RidePersistenceContract.RideEntry.COLUMN_COMPLETED)) == 1;
 
       RidePart part = new RidePart(id, name, initialTimestamp, finalTimestamp, completed);
       part.setGpsCoordinates(gpsPoints);

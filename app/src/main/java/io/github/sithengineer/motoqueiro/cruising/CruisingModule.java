@@ -1,19 +1,17 @@
 package io.github.sithengineer.motoqueiro.cruising;
 
+import android.location.LocationManager;
 import dagger.Module;
 import dagger.Provides;
-import io.github.sithengineer.motoqueiro.data.DataModule;
 import io.github.sithengineer.motoqueiro.data.RideRepository;
 import io.github.sithengineer.motoqueiro.hardware.Accelerometer;
 import io.github.sithengineer.motoqueiro.hardware.Gps;
 import io.github.sithengineer.motoqueiro.hardware.MiBand;
-import io.github.sithengineer.motoqueiro.hardware.SensorModule;
-import io.github.sithengineer.motoqueiro.network.NetworkModule;
+import io.github.sithengineer.motoqueiro.home.RideManager;
 import io.github.sithengineer.motoqueiro.util.CompositeSubscriptionManager;
 import javax.inject.Named;
 
-@Module(includes = { SensorModule.class, NetworkModule.class, DataModule.class })
-public class CruisingModule {
+@Module public class CruisingModule {
 
   private final CruisingContract.View view;
   private final String rideId;
@@ -27,7 +25,7 @@ public class CruisingModule {
     return view;
   }
 
-  @Provides @Named(CruisingActivity.RIDE_ID) String provideRideId() {
+  @Provides @Named(CruisingActivity.EXTRA_RIDE_ID) String provideRideId() {
     return rideId;
   }
 
@@ -35,9 +33,21 @@ public class CruisingModule {
     return new CompositeSubscriptionManager();
   }
 
-  @Provides CruisingContract.Presenter provideCruisingPresenter(CruisingContract.View view, CompositeSubscriptionManager subscriptionManager,
-      Accelerometer accelerometer, Gps gps, MiBand miBand, RideRepository rideRepo,
-      @Named(CruisingActivity.RIDE_ID) String rideId) {
-    return new CruisingPresenter(view, subscriptionManager, accelerometer, gps, miBand, rideRepo, rideId);
+  @Provides RideManager providesRideManager(LocationManager locationManager,
+      Gps.GpsStateListener locationListener, RideRepository rideRepo) {
+    return new RideManager(locationListener, locationManager, rideRepo);
+  }
+
+  @Provides DataManager providesDataManager(Accelerometer accelerometer, Gps gps,
+      MiBand miBand, RideRepository rideRepo) {
+    return new DataManager(accelerometer, gps, miBand, rideRepo, rideId);
+  }
+
+  @Provides CruisingContract.Presenter provideCruisingPresenter(
+      CruisingContract.View view, CompositeSubscriptionManager subscriptionManager,
+      DataManager dataManager, RideManager rideManager,
+      @Named(CruisingActivity.EXTRA_RIDE_ID) String rideId) {
+    return new CruisingPresenter(view, subscriptionManager, dataManager, rideManager,
+        rideId);
   }
 }

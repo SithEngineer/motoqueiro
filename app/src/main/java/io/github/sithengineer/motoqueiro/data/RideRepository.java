@@ -1,5 +1,6 @@
 package io.github.sithengineer.motoqueiro.data;
 
+import android.support.annotation.Nullable;
 import io.github.sithengineer.motoqueiro.data.model.GpsPoint;
 import io.github.sithengineer.motoqueiro.data.model.HeartRatePoint;
 import io.github.sithengineer.motoqueiro.data.model.RidePart;
@@ -19,16 +20,21 @@ public class RideRepository {
     this.remoteDataSource = remoteDataSource;
   }
 
-  public Single<String> startRide() {
+  public Single<String> startRide(@Nullable final String name) {
+
     return generateRideId().flatMap(rideId -> {
-      RidePart ridePart = new RidePart(rideId, name, System.currentTimeMillis(), 0, completed);
+      RidePart ridePart =
+          new RidePart(rideId, name, System.currentTimeMillis(), 0, false);
       return localDataSource.saveRide(ridePart).toSingleDefault(rideId);
     });
   }
 
   public Completable finishRide(String rideId) {
     return localDataSource.markCompleted(rideId)
-        .andThen(localDataSource.getRide(rideId).first().toSingle().flatMapCompletable(ride -> remoteDataSource.saveRide(ride)))
+        .andThen(localDataSource.getRide(rideId)
+            .first()
+            .toSingle()
+            .flatMapCompletable(ride -> remoteDataSource.saveRide(ride)))
         .onErrorResumeNext(err -> {
           Timber.e(err);
           return Completable.complete();
@@ -42,21 +48,28 @@ public class RideRepository {
 
   public Completable saveHeartRate(String rideId, int heartRate) {
     return Single.just(new HeartRatePoint(heartRate, System.currentTimeMillis()))
-        .flatMapCompletable(heartRatePoint -> localDataSource.saveHeartRateData(rideId, heartRatePoint).toCompletable());
+        .flatMapCompletable(
+            heartRatePoint -> localDataSource.saveHeartRateData(rideId, heartRatePoint)
+                .toCompletable());
   }
 
   public Completable saveGpsCoordinate(String rideId, double lat, double lng) {
     return Single.just(new GpsPoint(lat, lng, System.currentTimeMillis()))
-        .flatMapCompletable(gpsPoint -> localDataSource.saveGpsData(rideId, gpsPoint).toCompletable());
+        .flatMapCompletable(
+            gpsPoint -> localDataSource.saveGpsData(rideId, gpsPoint).toCompletable());
   }
 
-  public Completable saveAccelerometerCapture(String rideId, float xx, float yy, float zz) {
+  public Completable saveAccelerometerCapture(String rideId, float xx, float yy,
+      float zz) {
     return Single.just(new TriDimenPoint(xx, yy, zz, System.currentTimeMillis()))
-        .flatMapCompletable(triDimenPoint -> localDataSource.saveAccelerometerData(rideId, triDimenPoint).toCompletable());
+        .flatMapCompletable(
+            triDimenPoint -> localDataSource.saveAccelerometerData(rideId, triDimenPoint)
+                .toCompletable());
   }
 
   /**
-   * Get all the non-sync'ed and finished rides and sends them to the server, for data storage.
+   * Get all the non-sync'ed and finished rides and sends them to the server, for data
+   * storage.
    * After sync, mark all the sent ride data as sync'ed
    */
   public Completable sync() {

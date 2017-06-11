@@ -1,41 +1,49 @@
 package io.github.sithengineer.motoqueiro.data;
 
+import android.accounts.Account;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import dagger.Module;
 import dagger.Provides;
 import io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource;
+import io.github.sithengineer.motoqueiro.data.local.User;
 import io.github.sithengineer.motoqueiro.data.remote.RideRemoteDataSource;
-import io.github.sithengineer.motoqueiro.network.NetworkModule;
 import io.github.sithengineer.motoqueiro.network.RideWebService;
+import io.github.sithengineer.motoqueiro.scope.RideScope;
 import javax.inject.Named;
 import rx.Scheduler;
 import rx.schedulers.Schedulers;
 
-@Module(includes = { NetworkModule.class }) public class DataModule {
+@Module public class DataModule {
 
   private final Context context;
+  private final Account account;
 
-  public DataModule(Context context) {
+  public DataModule(Context context, Account account) {
     this.context = context;
+    this.account = account;
   }
 
-  @Provides public Scheduler provideDefaultScheduler() {
+  @Provides @RideScope User provideUser() {
+    return new User(account.name);
+  }
+
+  @Provides Scheduler provideDefaultScheduler() {
     return Schedulers.io();
   }
 
-  @Provides @Named("localData")
-  public RideDataSource provideLocalDataSource(@NonNull Scheduler scheduler) {
+  @Provides @RideScope @Named("localData") RideDataSource provideLocalDataSource(
+      @NonNull Scheduler scheduler) {
     return new RideLocalDataSource(context, scheduler);
   }
 
-  @Provides @Named("remoteData")
-  public RideDataSource provideRemoteDataSource(@NonNull RideWebService rideWebService) {
+  @Provides @RideScope @Named("remoteData") RideDataSource provideRemoteDataSource(
+      RideWebService rideWebService) {
     return new RideRemoteDataSource(rideWebService);
   }
 
-  @Provides
-  public RideRepository provideRideRepository(@Named("localData") RideDataSource localDataSource,
+  @Provides @RideScope RideRepository provideRideRepository(
+      @Named("localData") RideDataSource localDataSource,
       @Named("remoteData") RideDataSource remoteDataSource) {
     return new RideRepository(localDataSource, remoteDataSource);
   }

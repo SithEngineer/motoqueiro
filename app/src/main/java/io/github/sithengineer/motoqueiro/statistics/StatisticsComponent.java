@@ -1,7 +1,9 @@
 package io.github.sithengineer.motoqueiro.statistics;
 
-import dagger.Component;
+import dagger.Subcomponent;
+import io.github.sithengineer.motoqueiro.scope.ActivityScope;
 
-@Component(modules = { StatisticsModule.class }) public interface StatisticsComponent {
+@ActivityScope @Subcomponent(modules = { StatisticsModule.class })
+public interface StatisticsComponent {
   void inject(StatisticsFragment fragment);
 }

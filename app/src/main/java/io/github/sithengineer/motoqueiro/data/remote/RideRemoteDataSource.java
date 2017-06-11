@@ -31,11 +31,13 @@ public class RideRemoteDataSource implements RideDataSource {
     return Observable.empty();
   }
 
-  @Override public Completable saveAccelerometerData(String rideId, List<TriDimenPoint> points) {
+  @Override
+  public Completable saveAccelerometerData(String rideId, List<TriDimenPoint> points) {
     return Completable.complete();
   }
 
-  @Override public Single<Long> saveAccelerometerData(String rideId, TriDimenPoint point) {
+  @Override
+  public Single<Long> saveAccelerometerData(String rideId, TriDimenPoint point) {
     return Single.just(0L);
   }
 
@@ -43,7 +45,8 @@ public class RideRemoteDataSource implements RideDataSource {
     return Observable.empty();
   }
 
-  @Override public Completable saveGravityData(String rideId, List<TriDimenPoint> points) {
+  @Override
+  public Completable saveGravityData(String rideId, List<TriDimenPoint> points) {
     return Completable.complete();
   }
 
@@ -55,7 +58,8 @@ public class RideRemoteDataSource implements RideDataSource {
     return Observable.empty();
   }
 
-  @Override public Completable saveHeartRateData(String rideId, List<HeartRatePoint> points) {
+  @Override
+  public Completable saveHeartRateData(String rideId, List<HeartRatePoint> points) {
     return Completable.complete();
   }
 

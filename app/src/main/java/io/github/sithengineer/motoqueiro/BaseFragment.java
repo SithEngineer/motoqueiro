@@ -16,12 +16,13 @@ public abstract class BaseFragment<P extends BasePresenter> extends RxFragment {
 
   @LayoutRes protected abstract int getViewId();
 
-  @Nullable public P getPresenter(){
+  @Nullable public P getPresenter() {
     return null;
   }
 
   @Nullable @Override
-  public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+  public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+      @Nullable Bundle savedInstanceState) {
     View view = inflater.inflate(getViewId(), container, false);
     unBinder = ButterKnife.bind(this, view);
     P presenter = getPresenter();

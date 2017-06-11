@@ -31,14 +31,15 @@ public class Gps implements HardwareObservable<LatLng> {
           super.onLocationChanged(location);
           if (!subscriber.isUnsubscribed()) {
             final LatLng latLng = new LatLng(location);
-            Timber.v("gps: %s",latLng.toString());
+            Timber.v("gps: %s", latLng.toString());
             subscriber.onNext(latLng);
           }
         }
       };
       // needs to check permissions on the fly (android 6+)
       subscriber.add(Subscriptions.create(() -> locationManager.removeUpdates(listener)));
-      locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 300L, 0.3f, listener);
+      locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 300L, 0.3f,
+          listener);
     });
   }
 

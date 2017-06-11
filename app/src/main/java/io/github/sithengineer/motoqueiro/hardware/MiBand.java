@@ -29,8 +29,9 @@ public class MiBand implements HardwareObservable<MiBandData> {
 
   @Override public Observable<MiBandData> listen() {
 
-    final Observable<MiBandData> getMiBandFromCallback =
-        callBack.listen().filter(event -> event.getCharacteristic() != null).map(gattEvent -> {
+    final Observable<MiBandData> getMiBandFromCallback = callBack.listen()
+        .filter(event -> event.getCharacteristic() != null)
+        .map(gattEvent -> {
           BluetoothGattCharacteristic characteristic = gattEvent.getCharacteristic();
           UUID alertUUID = characteristic.getUuid();
           if (alertUUID.equals(Consts.UUID_NOTIFICATION_HEARTRATE)) {
@@ -56,17 +57,19 @@ public class MiBand implements HardwareObservable<MiBandData> {
           return null;
         });
 
-    Observable<Void> setupHeartRateObservable = Observable.timer(5, TimeUnit.SECONDS).map(__ -> {
-      getNotificationsWithDescriptor(Consts.UUID_SERVICE_HEARTBEAT,
-          Consts.UUID_NOTIFICATION_HEARTRATE, Consts.UUID_DESCRIPTOR_UPDATE_NOTIFICATION);
-      Timber.d("setup to get heart rate data");
-      return null;
-    });
+    Observable<Void> setupHeartRateObservable =
+        Observable.timer(5, TimeUnit.SECONDS).map(__ -> {
+          getNotificationsWithDescriptor(Consts.UUID_SERVICE_HEARTBEAT,
+              Consts.UUID_NOTIFICATION_HEARTRATE,
+              Consts.UUID_DESCRIPTOR_UPDATE_NOTIFICATION);
+          Timber.d("setup to get heart rate data");
+          return null;
+        });
 
     Observable<Void> sendHearRateReadRequests =
         Observable.interval(15, TimeUnit.SECONDS).map(__ -> {
-          writeData(Consts.UUID_SERVICE_HEARTBEAT, Consts.UUID_START_HEARTRATE_CONTROL_POINT,
-              Consts.BYTE_NEW_HEART_RATE_SCAN);
+          writeData(Consts.UUID_SERVICE_HEARTBEAT,
+              Consts.UUID_START_HEARTRATE_CONTROL_POINT, Consts.BYTE_NEW_HEART_RATE_SCAN);
           return null;
         });
 
@@ -99,10 +102,12 @@ public class MiBand implements HardwareObservable<MiBandData> {
   }
 
   /**
-   * Get notification but also set descriptor to Enable notification. You need to wait couple of
+   * Get notification but also set descriptor to Enable notification. You need to wait
+   * couple of
    * seconds before you could use it (at least in the mi band 2)
    */
-  private void getNotificationsWithDescriptor(UUID service, UUID Characteristics, UUID Descriptor) {
+  private void getNotificationsWithDescriptor(UUID service, UUID Characteristics,
+      UUID Descriptor) {
     if (myGatBand == null) {
       Timber.w("can't get notifications"); // not initialized?
       return;
@@ -111,7 +116,8 @@ public class MiBand implements HardwareObservable<MiBandData> {
     BluetoothGattService myGatService = myGatBand.getService(service);
     if (myGatService != null) {
 
-      BluetoothGattCharacteristic myGatChar = myGatService.getCharacteristic(Characteristics);
+      BluetoothGattCharacteristic myGatChar =
+          myGatService.getCharacteristic(Characteristics);
       if (myGatChar != null) {
 
         myGatBand.setCharacteristicNotification(myGatChar, true);
@@ -140,7 +146,8 @@ public class MiBand implements HardwareObservable<MiBandData> {
 
     BluetoothGattService myGatService = myGatBand.getService(service);
     if (myGatService != null) {
-      BluetoothGattCharacteristic myGatChar = myGatService.getCharacteristic(characteristic);
+      BluetoothGattCharacteristic myGatChar =
+          myGatService.getCharacteristic(characteristic);
       if (myGatChar != null) {
         myGatChar.setValue(data);
         myGatBand.writeCharacteristic(myGatChar);

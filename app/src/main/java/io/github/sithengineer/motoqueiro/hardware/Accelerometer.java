@@ -31,15 +31,16 @@ public class Accelerometer implements HardwareObservable<RelativeCoordinates> {
       if (!subscriber.isUnsubscribed()) {
         Sensor accelSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         if (accelSensor == null) {
-          subscriber.onError(new SensorNotAvailableException("Accelerometer not available"));
+          subscriber.onError(
+              new SensorNotAvailableException("Accelerometer not available"));
           return;
         }
         SensorEventListener listener = new SensorEventListener() {
           @Override public void onSensorChanged(SensorEvent sensorEvent) {
             if (!subscriber.isUnsubscribed()) {
               final RelativeCoordinates coordinates =
-                  new RelativeCoordinates(sensorEvent.values[0], sensorEvent.values[1], sensorEvent.values[2],
-                      sensorEvent.timestamp);
+                  new RelativeCoordinates(sensorEvent.values[0], sensorEvent.values[1],
+                      sensorEvent.values[2], sensorEvent.timestamp);
               Timber.v("accelerometer: %s", coordinates.toString());
               subscriber.onNext(coordinates);
             }
@@ -52,7 +53,8 @@ public class Accelerometer implements HardwareObservable<RelativeCoordinates> {
         subscriber.add(Subscriptions.create(() -> {
           sensorManager.unregisterListener(listener, accelSensor);
         }));
-        sensorManager.registerListener(listener, accelSensor, SensorManager.SENSOR_DELAY_UI);
+        sensorManager.registerListener(listener, accelSensor,
+            SensorManager.SENSOR_DELAY_UI);
       }
     });
   }

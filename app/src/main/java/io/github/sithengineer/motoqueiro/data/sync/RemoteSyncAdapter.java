@@ -7,9 +7,8 @@ import android.content.ContentProviderClient;
 import android.content.Context;
 import android.content.SyncResult;
 import android.os.Bundle;
-import io.github.sithengineer.motoqueiro.data.DataModule;
+import io.github.sithengineer.motoqueiro.MotoqueiroApp;
 import io.github.sithengineer.motoqueiro.data.RideRepository;
-import io.github.sithengineer.motoqueiro.network.NetworkModule;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -28,22 +27,20 @@ public class RemoteSyncAdapter extends AbstractThreadedSyncAdapter {
     injectDependencies(context);
   }
 
-  public RemoteSyncAdapter(Context context, boolean autoInitialize, boolean allowParallelSyncs) {
+  public RemoteSyncAdapter(Context context, boolean autoInitialize,
+      boolean allowParallelSyncs) {
     super(context, autoInitialize, allowParallelSyncs);
     injectDependencies(context);
   }
 
   private void injectDependencies(Context context) {
-    DaggerDataComponent.builder()
-        .dataModule(new DataModule(context))
-        .networkModule(new NetworkModule(context))
-        .build()
-        .inject(this);
+    MotoqueiroApp.get(context).getRideComponent().with(new SyncModule()).inject(this);
   }
 
   // executed in a background thread
-  @SuppressLint("RxLeakedSubscription") @Override public void onPerformSync(Account account,
-      Bundle extras, String authority, ContentProviderClient provider, SyncResult syncResult) {
+  @SuppressLint("RxLeakedSubscription") @Override public void onPerformSync(
+      Account account, Bundle extras, String authority, ContentProviderClient provider,
+      SyncResult syncResult) {
 
     rideRepo.sync().subscribe(() -> {
       Timber.i("data synced at %s", formatter.format(new Date()));

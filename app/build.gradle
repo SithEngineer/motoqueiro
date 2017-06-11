@@ -21,10 +21,10 @@ android {
     //multiDexEnabled true
 
     buildConfigField "int", "LIMIT", "100"
+    buildConfigField "int", "CACHETIME", "432000" // 5days
+    buildConfigField "String", "DEFAULT_MI_BAND", "\"F0:E3:C8:01:11:0D\""
     buildConfigField "String", "BASEURL", "\"http://192.168.1.68:3000/api/\"" // home
     //buildConfigField "String", "BASEURL", "\"http://192.168.1.27:3000/api/\"" // office
-    buildConfigField "String", "DEFAULT_MI_BAND", "\"F0:E3:C8:01:11:0D\""
-    buildConfigField "int", "CACHETIME", "432000" // 5days
   }
 
   compileOptions {
@@ -38,7 +38,8 @@ android {
       //      useProguard false
       shrinkResources false
       proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-      testProguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguardTest-rules.pro'
+      testProguardFiles getDefaultProguardFile('proguard-android.txt'),
+          'proguardTest-rules.pro'
       applicationIdSuffix '.debug'
       versionNameSuffix '-debug'
     }
@@ -48,7 +49,10 @@ android {
       //      useProguard true
       shrinkResources true
       proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-      testProguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguardTest-rules.pro'
+      testProguardFiles getDefaultProguardFile('proguard-android.txt'),
+          'proguardTest-rules.pro'
+      buildConfigField "String", "BASEURL", "\"https://motoqueiro.herokuapp.com/api/\""
+      // remote
     }
   }
 
@@ -77,7 +81,8 @@ android {
 
 dependencies {
   compile fileTree(dir: 'libs', include: ['*.jar'])
-  androidTestCompile("com.android.support.test.espresso:espresso-core:$rootProject.espressoVersion",
+  androidTestCompile(
+      "com.android.support.test.espresso:espresso-core:$rootProject.espressoVersion",
       {
         exclude group: 'com.android.support', module: 'support-annotations'
         exclude group: 'com.google.code.findbugs'

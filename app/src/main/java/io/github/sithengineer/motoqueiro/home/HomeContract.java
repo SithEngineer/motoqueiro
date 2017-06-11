@@ -4,13 +4,13 @@ import io.github.sithengineer.motoqueiro.BasePresenter;
 import io.github.sithengineer.motoqueiro.BaseView;
 import rx.Completable;
 import rx.Observable;
-import rx.Single;
 
 public interface HomeContract {
 
   interface View extends BaseView {
     /**
-     * @return a {@link Completable} that should navigate after start data tracking is pressed
+     * @return a {@link Completable} that should navigate after start data tracking is
+     * pressed
      */
     Observable<Void> handleStartClick();
 
@@ -18,16 +18,18 @@ public interface HomeContract {
 
     void showActivateGpsViewMessage();
 
-    void goToCruisingActivity(String rideId);
+    void goToCruisingActivity(String rideId, String miBandAddress);
+
+    void showGenericError();
+
+    String getRideName();
+
+    String getMiBandAddress();
   }
 
   interface Presenter extends BasePresenter {
     void showActivateGpsViewMessage();
 
     void showActivateGpsView();
-
-    Single<Boolean> checkGpsConnectivity();
-
-    void goToCruisingActivity(String rideId);
   }
 }

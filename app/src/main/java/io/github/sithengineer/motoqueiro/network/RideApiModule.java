@@ -1,12 +1,15 @@
 package io.github.sithengineer.motoqueiro.network;
 
-import android.content.Context;
+import android.app.Application;
+import com.google.gson.FieldNamingPolicy;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import dagger.Module;
 import dagger.Provides;
 import io.github.sithengineer.motoqueiro.BuildConfig;
-import java.io.File;
 import java.io.IOException;
 import java.util.Locale;
+import javax.inject.Singleton;
 import okhttp3.Cache;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -16,59 +19,50 @@ import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
 
-// todo make a singleton. we only need one http client instance
-@Module public class NetworkModule {
+@Module public class RideApiModule {
 
-  private static final String CACHE_FILE_NAME = "responses";
-
-  private final File cacheFile;
-
-  public NetworkModule(File cacheFile) {
-    this.cacheFile = cacheFile;
+  @Provides @Singleton Cache providesRetrofitCache(Application application) {
+    final int cacheSize = 10 * 1024 * 1024;
+    return new Cache(application.getCacheDir(), cacheSize);
   }
 
-  public NetworkModule(Context context) {
-    this.cacheFile = new File(context.getCacheDir(), CACHE_FILE_NAME);
+  @Provides @Singleton Gson providesGsonConfiguration() {
+    GsonBuilder gsonBuilder = new GsonBuilder();
+    gsonBuilder.setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES);
+    return gsonBuilder.create();
   }
 
-  @Provides Retrofit provideCall() {
-    // create response cache
-    Cache cache = null;
-    try {
-      cache = new Cache(cacheFile, 10 * 1024 * 1024);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+  @Provides @Singleton Interceptor providesInterceptor() {
+    return new RequestMaxAgeInterceptor();
+  }
 
+  @Provides @Singleton OkHttpClient providesHttpClient(Interceptor interceptor,
+      Cache cache) {
     // set response cache
-    OkHttpClient okHttpClient =
-        new OkHttpClient.Builder().addInterceptor(new CustomHeaderInterceptor())
-            .cache(cache)
-            .build();
+    return new OkHttpClient.Builder().addInterceptor(interceptor).cache(cache).build();
+  }
 
-    // build retrofit client with custom serializer/de-serializer
-    // scalar number conversion and Rx methods
+  @Provides @Singleton Retrofit providesRetrofit(Gson gson, OkHttpClient okHttpClient) {
     return new Retrofit.Builder().baseUrl(BuildConfig.BASEURL)
         .client(okHttpClient)
-        .addConverterFactory(GsonConverterFactory.create())
+        .addConverterFactory(GsonConverterFactory.create(gson))
         .addConverterFactory(ScalarsConverterFactory.create())
         .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
         .build();
   }
 
-  @Provides public NetworkService providesNetworkService(Retrofit retrofit) {
+  @Provides @Singleton NetworkService providesNetworkService(Retrofit retrofit) {
     return retrofit.create(NetworkService.class);
   }
 
-  @Provides public RideWebService providesService(NetworkService networkService) {
+  @Provides @Singleton RideWebService providesService(NetworkService networkService) {
     return new RideWebService(networkService);
   }
 
-  private class CustomHeaderInterceptor implements Interceptor {
+  private static class RequestMaxAgeInterceptor implements Interceptor {
     @Override public okhttp3.Response intercept(Chain chain) throws IOException {
       Request original = chain.request();
 
-      // Customize the request
       Request request = original.newBuilder()
           .header("Content-Type", "application/json")
           .removeHeader("Pragma")
@@ -78,7 +72,7 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
 
       okhttp3.Response response = chain.proceed(request);
       response.cacheResponse();
-      // Customize or return the response
+
       return response;
     }
   }
