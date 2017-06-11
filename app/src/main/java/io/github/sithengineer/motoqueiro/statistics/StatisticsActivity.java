@@ -23,10 +23,5 @@ public class StatisticsActivity extends BaseActivity {
           .replace(R.id.content_frame, fragment)
           .commit();
     }
-
-    MotoqueiroApp.get(this)
-        .getRideComponent()
-        .with(new StatisticsModule(fragment))
-        .inject(fragment);
   }
 }

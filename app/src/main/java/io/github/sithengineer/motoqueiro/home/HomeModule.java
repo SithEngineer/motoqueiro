@@ -3,6 +3,7 @@ package io.github.sithengineer.motoqueiro.home;
 import android.location.LocationManager;
 import dagger.Module;
 import dagger.Provides;
+import io.github.sithengineer.motoqueiro.app.Preferences;
 import io.github.sithengineer.motoqueiro.data.RideRepository;
 import io.github.sithengineer.motoqueiro.hardware.Gps;
 import io.github.sithengineer.motoqueiro.util.CompositeSubscriptionManager;
@@ -29,7 +30,8 @@ import io.github.sithengineer.motoqueiro.util.CompositeSubscriptionManager;
   }
 
   @Provides HomeContract.Presenter providePresenter(HomeContract.View view,
-      CompositeSubscriptionManager subscriptionManager, RideManager rideManager) {
-    return new HomePresenter(view, subscriptionManager, rideManager);
+      CompositeSubscriptionManager subscriptionManager, RideManager rideManager,
+      Preferences preferences) {
+    return new HomePresenter(view, subscriptionManager, rideManager, preferences);
   }
 }

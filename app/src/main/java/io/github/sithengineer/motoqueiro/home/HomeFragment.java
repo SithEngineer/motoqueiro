@@ -10,6 +10,7 @@ import android.widget.EditText;
 import butterknife.BindView;
 import com.jakewharton.rxbinding.view.RxView;
 import io.github.sithengineer.motoqueiro.BaseFragment;
+import io.github.sithengineer.motoqueiro.MotoqueiroApp;
 import io.github.sithengineer.motoqueiro.R;
 import io.github.sithengineer.motoqueiro.cruising.CruisingActivity;
 import javax.inject.Inject;
@@ -33,6 +34,13 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter>
     return R.layout.fragment_home;
   }
 
+  @Override public void inject() {
+    MotoqueiroApp.get(getContext())
+        .createDataComponent()
+        .with(new HomeModule(this))
+        .inject(this);
+  }
+
   @Nullable @Override public HomeContract.Presenter getPresenter() {
     return presenter;
   }
@@ -51,10 +59,9 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter>
         .show();
   }
 
-  @Override public void goToCruisingActivity(String rideId, String miBandAddress) {
+  @Override public void goToCruisingActivity(String rideId) {
     Intent i = new Intent(getActivity(), CruisingActivity.class);
     i.putExtra(CruisingActivity.EXTRA_RIDE_ID, rideId);
-    i.putExtra(CruisingActivity.EXTRA_MI_BAND_ADDRESS, miBandAddress);
     startActivity(i);
   }
 

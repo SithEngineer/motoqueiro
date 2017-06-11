@@ -6,6 +6,7 @@ import android.widget.Button;
 import butterknife.BindView;
 import com.jakewharton.rxbinding.view.RxView;
 import io.github.sithengineer.motoqueiro.BaseFragment;
+import io.github.sithengineer.motoqueiro.MotoqueiroApp;
 import io.github.sithengineer.motoqueiro.R;
 import io.github.sithengineer.motoqueiro.home.HomeActivity;
 import javax.inject.Inject;
@@ -19,6 +20,13 @@ public class StatisticsFragment extends BaseFragment<StatisticsContract.Presente
 
   public static StatisticsFragment newInstance() {
     return new StatisticsFragment();
+  }
+
+  @Override public void inject() {
+    MotoqueiroApp.get(getContext())
+        .getRideComponent()
+        .with(new StatisticsModule(this))
+        .inject(this);
   }
 
   @Override protected int getViewId() {

@@ -16,6 +16,10 @@ public abstract class BaseFragment<P extends BasePresenter> extends RxFragment {
 
   @LayoutRes protected abstract int getViewId();
 
+  public void inject() {
+    // optional method
+  }
+
   @Nullable public P getPresenter() {
     return null;
   }
@@ -25,6 +29,7 @@ public abstract class BaseFragment<P extends BasePresenter> extends RxFragment {
       @Nullable Bundle savedInstanceState) {
     View view = inflater.inflate(getViewId(), container, false);
     unBinder = ButterKnife.bind(this, view);
+    inject();
     P presenter = getPresenter();
     if (presenter != null) {
       presenter.start();

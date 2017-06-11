@@ -2,8 +2,6 @@ package io.github.sithengineer.motoqueiro;
 
 import android.content.Context;
 import io.github.sithengineer.motoqueiro.app.AppComponent;
-import io.github.sithengineer.motoqueiro.app.AppModule;
-import io.github.sithengineer.motoqueiro.app.DaggerAppComponent;
 import io.github.sithengineer.motoqueiro.app.RideComponent;
 import io.github.sithengineer.motoqueiro.data.DataModule;
 import io.github.sithengineer.motoqueiro.hardware.SensorModule;
@@ -19,9 +17,10 @@ public class MotoqueiroApp extends AccountApplication {
     return (MotoqueiroApp) context.getApplicationContext();
   }
 
-  public RideComponent createDataComponent(String miBandAddress) {
-    rideComponent = appComponent.with(new DataModule(this, getMainUserAccount()),
-        new SensorModule(this, miBandAddress));
+  public RideComponent createDataComponent() {
+    final Context context = this;
+    rideComponent = appComponent.with(new DataModule(context, getMainUserAccount()),
+        new SensorModule(context));
     return rideComponent;
   }
 
@@ -43,7 +42,7 @@ public class MotoqueiroApp extends AccountApplication {
   }
 
   private void initComponents() {
-    appComponent = DaggerAppComponent.builder().appModule(new AppModule(this)).build();
+    //appComponent = DaggerAppComponent.builder().appModule(new AppModule(this)).build();
   }
 
   @Override protected void attachBaseContext(Context base) {

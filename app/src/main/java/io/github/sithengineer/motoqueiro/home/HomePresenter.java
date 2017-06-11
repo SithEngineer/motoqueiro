@@ -1,6 +1,7 @@
 package io.github.sithengineer.motoqueiro.home;
 
 import com.trello.rxlifecycle.android.FragmentEvent;
+import io.github.sithengineer.motoqueiro.app.Preferences;
 import io.github.sithengineer.motoqueiro.exception.GpsNotActiveException;
 import io.github.sithengineer.motoqueiro.util.CompositeSubscriptionManager;
 import java.util.concurrent.TimeUnit;
@@ -13,19 +14,23 @@ public class HomePresenter implements HomeContract.Presenter {
   private final CompositeSubscriptionManager subscriptionManager;
   private final HomeContract.View view;
   private final RideManager rideManager;
+  private final Preferences preferences;
 
   public HomePresenter(HomeContract.View view,
-      CompositeSubscriptionManager subscriptionManager, RideManager rideManager) {
+      CompositeSubscriptionManager subscriptionManager, RideManager rideManager,
+      Preferences preferences) {
     this.view = view;
     this.subscriptionManager = subscriptionManager;
     this.rideManager = rideManager;
+    this.preferences = preferences;
   }
 
   @Override public void start() {
     Observable<Void> handleStartClick = view.handleStartClick()
-        .flatMap(__ -> rideManager.start(view.getRideName())
-            .doOnSuccess(rideId -> goToCruisingActivity(rideId, view.getMiBandAddress()))
-            .toObservable())
+        .flatMap(__ -> rideManager.start(view.getRideName()).doOnSuccess(rideId -> {
+          saveMiBandAddress();
+          goToCruisingActivity(rideId);
+        }).toObservable())
         .onErrorResumeNext(err -> handleStartRideError(err).map(__ -> null))
         .map(__ -> null);
 
@@ -39,6 +44,10 @@ public class HomePresenter implements HomeContract.Presenter {
 
   @Override public void stop() {
     subscriptionManager.clearAll();
+  }
+
+  private void saveMiBandAddress() {
+    preferences.setMiBandAddress(view.getMiBandAddress());
   }
 
   private Observable<Void> handleStartRideError(Throwable err) {
@@ -66,7 +75,7 @@ public class HomePresenter implements HomeContract.Presenter {
     view.sendToGpsSettings();
   }
 
-  private void goToCruisingActivity(String rideId, String miBandAddress) {
-    view.goToCruisingActivity(rideId, miBandAddress);
+  private void goToCruisingActivity(String rideId) {
+    view.goToCruisingActivity(rideId);
   }
 }

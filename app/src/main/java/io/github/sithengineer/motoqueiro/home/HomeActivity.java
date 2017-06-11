@@ -2,7 +2,6 @@ package io.github.sithengineer.motoqueiro.home;
 
 import android.os.Bundle;
 import io.github.sithengineer.motoqueiro.BaseActivity;
-import io.github.sithengineer.motoqueiro.MotoqueiroApp;
 import io.github.sithengineer.motoqueiro.R;
 
 public class HomeActivity extends BaseActivity {
@@ -19,10 +18,5 @@ public class HomeActivity extends BaseActivity {
           .add(R.id.content_frame, fragment)
           .commit();
     }
-
-    MotoqueiroApp.get(this)
-        .createDataComponent("")
-        .with(new HomeModule(fragment))
-        .inject(fragment);
   }
 }

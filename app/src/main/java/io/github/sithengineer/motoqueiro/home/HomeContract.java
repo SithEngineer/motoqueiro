@@ -18,7 +18,7 @@ public interface HomeContract {
 
     void showActivateGpsViewMessage();
 
-    void goToCruisingActivity(String rideId, String miBandAddress);
+    void goToCruisingActivity(String rideId);
 
     void showGenericError();
 
