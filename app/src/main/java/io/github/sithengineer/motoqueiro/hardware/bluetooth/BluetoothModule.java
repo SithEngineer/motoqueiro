@@ -7,6 +7,7 @@ import android.content.Context;
 import dagger.Module;
 import dagger.Provides;
 import io.github.sithengineer.motoqueiro.hardware.MiBand;
+import io.github.sithengineer.motoqueiro.scope.ActivityScope;
 import javax.inject.Named;
 
 @Module public class BluetoothModule {
@@ -19,17 +20,17 @@ import javax.inject.Named;
     this.context = context;
   }
 
-  @Provides BluetoothAdapter provideBluetoothAdapter() {
+  @Provides @ActivityScope BluetoothAdapter provideBluetoothAdapter() {
     return ((BluetoothManager) context.getSystemService(
         Context.BLUETOOTH_SERVICE)).getAdapter();
   }
 
-  @Provides BluetoothDevice provideMiBandDevice(
+  @Provides @ActivityScope BluetoothDevice provideMiBandDevice(
       BluetoothAdapter bluetoothAdapter, @Named(MI_BAND_ADDRESS) String miBandAddress) {
     return bluetoothAdapter.getRemoteDevice(miBandAddress);
   }
 
-  @Provides MiBand provideMiBand(BluetoothDevice miBandDevice) {
+  @Provides @ActivityScope MiBand provideMiBand(BluetoothDevice miBandDevice) {
     return new MiBand(context, miBandDevice);
   }
 }

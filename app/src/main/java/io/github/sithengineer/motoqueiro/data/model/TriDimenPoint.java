@@ -1,10 +1,11 @@
 package io.github.sithengineer.motoqueiro.data.model;
 
-public class TriDimenPoint extends TimeStamped {
+import com.google.gson.annotations.SerializedName;
 
-  private final float x;
-  private final float y;
-  private final float z;
+public class TriDimenPoint extends TimeStamped {
+  @SerializedName("x") private final float x;
+  @SerializedName("y") private final float y;
+  @SerializedName("z") private final float z;
 
   public TriDimenPoint(float x, float y, float z, long timestamp) {
     super(timestamp);

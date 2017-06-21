@@ -1,7 +1,9 @@
 package io.github.sithengineer.motoqueiro.data.model;
 
+import com.google.gson.annotations.SerializedName;
+
 abstract class TimeStamped {
-  private final long timestamp;
+  @SerializedName("timestamp") private final long timestamp;
 
   TimeStamped(long timestamp) {
     this.timestamp = timestamp;

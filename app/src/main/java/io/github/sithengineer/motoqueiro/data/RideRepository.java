@@ -1,6 +1,6 @@
 package io.github.sithengineer.motoqueiro.data;
 
-import android.support.annotation.Nullable;
+import android.support.annotation.NonNull;
 import io.github.sithengineer.motoqueiro.data.model.GpsPoint;
 import io.github.sithengineer.motoqueiro.data.model.HeartRatePoint;
 import io.github.sithengineer.motoqueiro.data.model.RidePart;
@@ -20,26 +20,22 @@ public class RideRepository {
     this.remoteDataSource = remoteDataSource;
   }
 
-  public Single<String> startRide(@Nullable final String name) {
-
+  public Single<String> startRide(@NonNull final String name) {
     return generateRideId().flatMap(rideId -> {
       RidePart ridePart =
           new RidePart(rideId, name, System.currentTimeMillis(), 0, false);
-      return localDataSource.saveRide(ridePart).toSingleDefault(rideId);
+      return localDataSource.saveRide(ridePart).map(__ -> rideId);
     });
   }
 
   public Completable finishRide(String rideId) {
     return localDataSource.markCompleted(rideId)
-        .andThen(localDataSource.getRide(rideId)
-            .first()
-            .toSingle()
-            .flatMapCompletable(ride -> remoteDataSource.saveRide(ride)))
+        .toCompletable()
+        .andThen(sync())
         .onErrorResumeNext(err -> {
           Timber.e(err);
           return Completable.complete();
         });
-    //.andThen(sync());
   }
 
   private Single<String> generateRideId() {
@@ -76,10 +72,9 @@ public class RideRepository {
     return localDataSource.getCompletedRides()
         .toObservable()
         .flatMapIterable(list -> list)
-        .flatMap(ride -> remoteDataSource.saveRide(ride)
-            .doOnError(err -> Timber.e(err))
-            .doOnCompleted(() -> localDataSource.markSynced(ride.getId()))
-            .toObservable())
+        .flatMapSingle(ride -> remoteDataSource.saveRide(ride)
+            .flatMap(__ -> localDataSource.markSynced(ride.getId()))
+            .doOnError(err -> Timber.e(err)))
         .toList()
         .toCompletable();
   }

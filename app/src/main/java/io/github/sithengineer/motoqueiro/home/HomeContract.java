@@ -24,7 +24,12 @@ public interface HomeContract {
 
     String getRideName();
 
-    String getMiBandAddress();
+    void showMiBandAddress(String miBandAddress);
+
+    Observable<String> getMiBandAddressChanges();
+
+    void showMiBandAddressError();
+    void cleanMiBandAddressError();
   }
 
   interface Presenter extends BasePresenter {

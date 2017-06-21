@@ -17,9 +17,9 @@ public class StatisticsPresenter implements StatisticsContract.Presenter {
 
   @Override public void start() {
     subscriptionManager.add(view.lifecycle()
-        .filter(event -> event == FragmentEvent.RESUME)
+        .filter(event -> event == FragmentEvent.CREATE_VIEW)
         .flatMap(event -> view.goHomeClick().doOnNext(__ -> goHome()))
-        .compose(view.bindUntilEvent(FragmentEvent.PAUSE))
+        .compose(view.bindUntilEvent(FragmentEvent.DESTROY_VIEW))
         .subscribe(__ -> {
         }, err -> Timber.e(err)));
   }

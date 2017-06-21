@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import butterknife.BindView;
 import com.jakewharton.rxbinding.view.RxView;
+import com.jakewharton.rxbinding.widget.RxTextView;
 import io.github.sithengineer.motoqueiro.BaseFragment;
 import io.github.sithengineer.motoqueiro.MotoqueiroApp;
 import io.github.sithengineer.motoqueiro.R;
@@ -74,7 +75,19 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter>
     return rideName.getText().toString();
   }
 
-  @Override public String getMiBandAddress() {
-    return miBandAddress.getText().toString();
+  @Override public void showMiBandAddress(String miBandAddress) {
+    this.miBandAddress.setText(miBandAddress);
+  }
+
+  @Override public Observable<String> getMiBandAddressChanges() {
+    return RxTextView.textChanges(miBandAddress).map(text -> text.toString());
+  }
+
+  @Override public void showMiBandAddressError() {
+    miBandAddressLayout.setError(getString(R.string.mi_band_address_error));
+  }
+
+  @Override public void cleanMiBandAddressError() {
+    miBandAddressLayout.setError(null);
   }
 }

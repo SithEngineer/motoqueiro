@@ -1,10 +1,8 @@
 package io.github.sithengineer.motoqueiro.cruising;
 
 import com.trello.rxlifecycle.android.FragmentEvent;
-import io.github.sithengineer.motoqueiro.app.Preferences;
 import io.github.sithengineer.motoqueiro.home.RideManager;
 import io.github.sithengineer.motoqueiro.util.CompositeSubscriptionManager;
-import javax.inject.Inject;
 import rx.Completable;
 import rx.Observable;
 import timber.log.Timber;
@@ -19,29 +17,29 @@ public class CruisingPresenter implements CruisingContract.Presenter {
   private DataManager dataManager;
   private RideManager rideManager;
   private String rideId;
-  private final Preferences preferences;
 
-  @Inject public CruisingPresenter(CruisingContract.View view,
+  public CruisingPresenter(CruisingContract.View view,
       CompositeSubscriptionManager subscriptionManager, DataManager dataManager,
-      RideManager rideManager, String rideId, Preferences preferences) {
+      RideManager rideManager, String rideId) {
     this.view = view;
     this.subscriptionManager = subscriptionManager;
     this.dataManager = dataManager;
     this.rideManager = rideManager;
     this.rideId = rideId;
-    this.preferences = preferences;
   }
 
   @Override public void start() {
 
-    Observable<Void> completeRide =
-        view.stopClick().flatMap(__ -> stopCruising(rideId).toObservable());
+    Observable<Void> completeRide = view.stopClick()
+        .flatMap(__ -> stopCruising(rideId).toObservable())
+        .retry()
+        .map(__ -> null);
 
     subscriptionManager.add(
         view.lifecycle()
             .filter(event -> event == FragmentEvent.CREATE_VIEW)
 
-            .flatMap(event -> Observable.merge(completeRide, dataManager.gatherData()))
+            .flatMap(__ -> Observable.merge(completeRide, dataManager.gatherData()))
             .doOnUnsubscribe(() -> Timber.i("Unsubscribed from Cruising Presenter"))
             .compose(view.bindUntilEvent(FragmentEvent.DESTROY_VIEW))
             .subscribe(__ -> {

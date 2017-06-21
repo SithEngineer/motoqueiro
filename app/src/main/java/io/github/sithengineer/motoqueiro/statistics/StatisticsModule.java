@@ -2,6 +2,7 @@ package io.github.sithengineer.motoqueiro.statistics;
 
 import dagger.Module;
 import dagger.Provides;
+import io.github.sithengineer.motoqueiro.scope.ActivityScope;
 import io.github.sithengineer.motoqueiro.util.CompositeSubscriptionManager;
 
 @Module public class StatisticsModule {
@@ -19,7 +20,7 @@ import io.github.sithengineer.motoqueiro.util.CompositeSubscriptionManager;
     this.subscriptionManager = subscriptionManager;
   }
 
-  @Provides StatisticsContract.Presenter providePresenter() {
+  @Provides @ActivityScope StatisticsContract.Presenter providePresenter() {
     return new StatisticsPresenter(view, subscriptionManager);
   }
 }

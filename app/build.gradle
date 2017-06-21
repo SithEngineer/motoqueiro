@@ -22,9 +22,8 @@ android {
 
     buildConfigField "int", "LIMIT", "100"
     buildConfigField "int", "CACHETIME", "432000" // 5days
-    buildConfigField "String", "DEFAULT_MI_BAND", "\"F0:E3:C8:01:11:0D\""
-    buildConfigField "String", "BASEURL", "\"http://192.168.1.68:3000/api/\"" // home
-    //buildConfigField "String", "BASEURL", "\"http://192.168.1.27:3000/api/\"" // office
+    buildConfigField "String", "BASEURL", "\"http://192.168.1.68:5000/api/\"" // home
+    //buildConfigField "String", "BASEURL", "\"http://192.168.1.27:5000/api/\"" // office
   }
 
   compileOptions {

@@ -1,19 +1,20 @@
 package io.github.sithengineer.motoqueiro.data.model;
 
+import com.google.gson.annotations.SerializedName;
 import java.util.LinkedList;
 import java.util.List;
 
 public class RidePart {
 
-  private final String id;
-  private final String name;
-  private final long initialTimestamp;
-  private final long finalTimestamp;
-  private final boolean completed;
-  private List<TriDimenPoint> accelerometerCaptures;
-  private List<TriDimenPoint> gravityCaptures;
-  private List<GpsPoint> gpsCoordinates;
-  private List<HeartRatePoint> heartRateCaptures;
+  @SerializedName("id") private final String id;
+  @SerializedName("tripName") private final String name;
+  @SerializedName("initialTimestamp") private final long initialTimestamp;
+  @SerializedName("finalTimestamp") private long finalTimestamp;
+  @SerializedName("completed") private boolean completed;
+  @SerializedName("accelerometerCaptures") private List<TriDimenPoint> accelerometerCaptures;
+  @SerializedName("gravityCaptures") private List<TriDimenPoint> gravityCaptures;
+  @SerializedName("gpsCoordinates") private List<GpsPoint> gpsCoordinates;
+  @SerializedName("heartRateCaptures") private List<HeartRatePoint> heartRateCaptures;
 
   public RidePart(String id, String name, long initialTimestamp, long finalTimestamp,
       boolean completed) {
@@ -94,5 +95,10 @@ public class RidePart {
 
   public void addHeartRatePoint(long timestamp, int bpm) {
     heartRateCaptures.add(new HeartRatePoint(bpm, timestamp));
+  }
+
+  public void setEndTimestamp(long time) {
+    finalTimestamp = time;
+    completed = true;
   }
 }

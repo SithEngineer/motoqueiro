@@ -40,9 +40,11 @@ public class RideManager {
       if (!gpsActive) {
         return Single.error(new GpsNotActiveException());
       }
-      String rideName = name;
-      if (!TextUtils.isEmpty(rideName)) {
+      final String rideName;
+      if (TextUtils.isEmpty(name)) {
         rideName = generateName();
+      } else {
+        rideName = name;
       }
 
       return rideRepo.startRide(rideName);

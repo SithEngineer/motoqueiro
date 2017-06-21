@@ -8,7 +8,6 @@ import io.github.sithengineer.motoqueiro.data.model.TriDimenPoint;
 import io.github.sithengineer.motoqueiro.network.RideWebService;
 import java.util.List;
 import rx.Completable;
-import rx.Observable;
 import rx.Single;
 
 public class RideRemoteDataSource implements RideDataSource {
@@ -20,74 +19,74 @@ public class RideRemoteDataSource implements RideDataSource {
   }
 
   @Override public Completable saveGpsData(String rideId, List<GpsPoint> points) {
-    return Completable.complete();
+    return Completable.error(new NoSuchMethodException());
   }
 
   @Override public Single<Long> saveGpsData(String rideId, GpsPoint coords) {
-    return Single.just(0L);
+    return Single.error(new NoSuchMethodException());
   }
 
-  @Override public Observable<List<GpsPoint>> getGpsData(String rideId) {
-    return Observable.empty();
+  @Override public Single<List<GpsPoint>> getGpsData(String rideId) {
+    return Single.error(new NoSuchMethodException());
   }
 
   @Override
   public Completable saveAccelerometerData(String rideId, List<TriDimenPoint> points) {
-    return Completable.complete();
+    return Completable.error(new NoSuchMethodException());
   }
 
   @Override
   public Single<Long> saveAccelerometerData(String rideId, TriDimenPoint point) {
-    return Single.just(0L);
+    return Single.error(new NoSuchMethodException());
   }
 
-  @Override public Observable<List<TriDimenPoint>> getAccelerometerData(String rideId) {
-    return Observable.empty();
+  @Override public Single<List<TriDimenPoint>> getAccelerometerData(String rideId) {
+    return Single.error(new NoSuchMethodException());
   }
 
   @Override
   public Completable saveGravityData(String rideId, List<TriDimenPoint> points) {
-    return Completable.complete();
+    return Completable.error(new NoSuchMethodException());
   }
 
   @Override public Single<Long> saveGravityData(String rideId, TriDimenPoint point) {
-    return Single.just(0L);
+    return Single.error(new NoSuchMethodException());
   }
 
-  @Override public Observable<List<TriDimenPoint>> getGravityData(String rideId) {
-    return Observable.empty();
+  @Override public Single<List<TriDimenPoint>> getGravityData(String rideId) {
+    return Single.error(new NoSuchMethodException());
   }
 
   @Override
   public Completable saveHeartRateData(String rideId, List<HeartRatePoint> points) {
-    return Completable.complete();
+    return Completable.error(new NoSuchMethodException());
   }
 
   @Override public Single<Long> saveHeartRateData(String rideId, HeartRatePoint point) {
-    return Single.just(0L);
+    return Single.error(new NoSuchMethodException());
   }
 
-  @Override public Observable<List<HeartRatePoint>> getHeartRateData(String rideId) {
-    return Observable.empty();
+  @Override public Single<List<HeartRatePoint>> getHeartRateData(String rideId) {
+    return Single.error(new NoSuchMethodException());
   }
 
-  @Override public Completable saveRide(RidePart ride) {
-    return rideWebService.upload(ride);
+  @Override public Single<Long> saveRide(RidePart ride) {
+    return rideWebService.upload(ride).toSingleDefault(0L);
   }
 
-  @Override public Observable<RidePart> getRide(String rideId) {
-    return Observable.empty();
+  @Override public Single<RidePart> getRide(String rideId) {
+    return Single.error(new NoSuchMethodException());
   }
 
-  @Override public Completable markCompleted(String rideId) {
-    return Completable.complete();
+  @Override public Single<Boolean> markCompleted(String rideId) {
+    return Single.error(new NoSuchMethodException());
   }
 
   @Override public Single<List<RidePart>> getCompletedRides() {
-    return Single.just(null);
+    return Single.error(new NoSuchMethodException());
   }
 
-  @Override public Completable markSynced(String rideId) {
-    return Completable.complete();
+  @Override public Single<Boolean> markSynced(String rideId) {
+    return Single.error(new NoSuchMethodException());
   }
 }

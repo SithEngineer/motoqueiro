@@ -47,8 +47,8 @@ public class RidesDbHelper extends SQLiteOpenHelper {
         + RidePersistenceContract.AccelerometerEntry.COLUMN_TIMESTAMP
         + " INTEGER,"
         + RidePersistenceContract.AccelerometerEntry.COLUMN_RIDE_ID
-        + " TEXT"
-        + ", FOREIGN KEY("
+        + " TEXT,"
+        + " FOREIGN KEY("
         + RidePersistenceContract.AccelerometerEntry.COLUMN_RIDE_ID
         + ") REFERENCES "
         + RidePersistenceContract.RideEntry.TABLE_NAME
@@ -72,8 +72,8 @@ public class RidesDbHelper extends SQLiteOpenHelper {
         + RidePersistenceContract.GravityEntry.COLUMN_TIMESTAMP
         + " INTEGER,"
         + RidePersistenceContract.GravityEntry.COLUMN_RIDE_ID
-        + " TEXT"
-        + ", FOREIGN KEY("
+        + " TEXT,"
+        + " FOREIGN KEY("
         + RidePersistenceContract.GravityEntry.COLUMN_RIDE_ID
         + ") REFERENCES "
         + RidePersistenceContract.RideEntry.TABLE_NAME
@@ -95,8 +95,8 @@ public class RidesDbHelper extends SQLiteOpenHelper {
         + RidePersistenceContract.GpsEntry.COLUMN_TIMESTAMP
         + " INTEGER,"
         + RidePersistenceContract.GpsEntry.COLUMN_RIDE_ID
-        + " TEXT"
-        + ", FOREIGN KEY("
+        + " TEXT,"
+        + " FOREIGN KEY("
         + RidePersistenceContract.GpsEntry.COLUMN_RIDE_ID
         + ") REFERENCES "
         + RidePersistenceContract.RideEntry.TABLE_NAME
@@ -116,8 +116,8 @@ public class RidesDbHelper extends SQLiteOpenHelper {
         + RidePersistenceContract.HeartRateEntry.COLUMN_TIMESTAMP
         + " INTEGER,"
         + RidePersistenceContract.HeartRateEntry.COLUMN_RIDE_ID
-        + " TEXT"
-        + ", FOREIGN KEY("
+        + " TEXT,"
+        + " FOREIGN KEY("
         + RidePersistenceContract.HeartRateEntry.COLUMN_RIDE_ID
         + ") REFERENCES "
         + RidePersistenceContract.RideEntry.TABLE_NAME

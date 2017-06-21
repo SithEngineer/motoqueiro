@@ -17,6 +17,7 @@ final class Mapper {
   static Func1<Cursor, HeartRatePoint> CURSOR_TO_HEART_RATE_POINT;
   static Func1<Cursor, TriDimenPoint> CURSOR_TO_ACCEL_POINT;
   static Func1<Cursor, TriDimenPoint> CURSOR_TO_GRAVITY_POINT;
+  static Func1<Cursor, String> CURSOR_TO_RIDE_ID;
 
   static {
     CURSOR_TO_GPS_POINT = (cursor) -> {
@@ -53,24 +54,26 @@ final class Mapper {
       long timestamp = cursor.getLong(cursor.getColumnIndex(
           RidePersistenceContract.AccelerometerEntry.COLUMN_TIMESTAMP));
       float xx = cursor.getFloat(
-          cursor.getColumnIndex(RidePersistenceContract.AccelerometerEntry.COLUMN_XX));
+          cursor.getColumnIndex(RidePersistenceContract.GravityEntry.COLUMN_XX));
       float yy = cursor.getFloat(
-          cursor.getColumnIndex(RidePersistenceContract.AccelerometerEntry.COLUMN_YY));
+          cursor.getColumnIndex(RidePersistenceContract.GravityEntry.COLUMN_YY));
       float zz = cursor.getFloat(
-          cursor.getColumnIndex(RidePersistenceContract.AccelerometerEntry.COLUMN_ZZ));
+          cursor.getColumnIndex(RidePersistenceContract.GravityEntry.COLUMN_ZZ));
       return new TriDimenPoint(xx, yy, zz, timestamp);
     };
 
     CURSOR_TO_RIDE = (cursor, gpsPoints, heartRatePoints, accelPoints, gravityPoints) -> {
       long initialTimestamp = cursor.getLong(cursor.getColumnIndex(
           RidePersistenceContract.RideEntry.COLUMN_START_TIMESTAMP));
+
       long finalTimestamp = cursor.getLong(
           cursor.getColumnIndex(RidePersistenceContract.RideEntry.COLUMN_END_TIMESTAMP));
+
       String id =
           cursor.getString(cursor.getColumnIndex(RidePersistenceContract.RideEntry._ID));
 
-      String name =
-          cursor.getString(cursor.getColumnIndex(RidePersistenceContract.RideEntry._ID));
+      String name = cursor.getString(
+          cursor.getColumnIndex(RidePersistenceContract.RideEntry.COLUMN_NAME));
 
       boolean completed = cursor.getInt(
           cursor.getColumnIndex(RidePersistenceContract.RideEntry.COLUMN_COMPLETED)) == 1;
@@ -82,5 +85,8 @@ final class Mapper {
       part.setGravityCaptures(gravityPoints);
       return part;
     };
+
+    CURSOR_TO_RIDE_ID = (cursor -> cursor.getString(
+        cursor.getColumnIndex(RidePersistenceContract.RideEntry._ID)));
   }
 }

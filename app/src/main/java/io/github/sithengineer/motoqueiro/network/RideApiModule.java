@@ -1,14 +1,15 @@
 package io.github.sithengineer.motoqueiro.network;
 
 import android.app.Application;
-import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dagger.Module;
 import dagger.Provides;
 import io.github.sithengineer.motoqueiro.BuildConfig;
+import io.github.sithengineer.motoqueiro.authentication.AccountManager;
 import java.io.IOException;
 import java.util.Locale;
+import javax.inject.Named;
 import javax.inject.Singleton;
 import okhttp3.Cache;
 import okhttp3.Interceptor;
@@ -28,18 +29,27 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
 
   @Provides @Singleton Gson providesGsonConfiguration() {
     GsonBuilder gsonBuilder = new GsonBuilder();
-    gsonBuilder.setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES);
     return gsonBuilder.create();
   }
 
-  @Provides @Singleton Interceptor providesInterceptor() {
+  @Provides @Singleton @Named("maxAgeInterceptor")
+  Interceptor providesMaxAgeInterceptor() {
     return new RequestMaxAgeInterceptor();
   }
 
-  @Provides @Singleton OkHttpClient providesHttpClient(Interceptor interceptor,
-      Cache cache) {
+  @Provides @Singleton @Named("accountInterceptor")
+  Interceptor providesAccountInterceptor(AccountManager accountManager) {
+    return new AccountInfoInterceptor(accountManager);
+  }
+
+  @Provides @Singleton OkHttpClient providesHttpClient(
+      @Named("maxAgeInterceptor") Interceptor maxAgeInterceptor,
+      @Named("accountInterceptor") Interceptor accountInterceptor, Cache cache) {
     // set response cache
-    return new OkHttpClient.Builder().addInterceptor(interceptor).cache(cache).build();
+    return new OkHttpClient.Builder().addInterceptor(maxAgeInterceptor)
+        .addInterceptor(accountInterceptor)
+        .cache(cache)
+        .build();
   }
 
   @Provides @Singleton Retrofit providesRetrofit(Gson gson, OkHttpClient okHttpClient) {
@@ -74,6 +84,25 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
       response.cacheResponse();
 
       return response;
+    }
+  }
+
+  private static class AccountInfoInterceptor implements Interceptor {
+
+    private final AccountManager accountManager;
+
+    public AccountInfoInterceptor(AccountManager accountManager) {
+      this.accountManager = accountManager;
+    }
+
+    @Override public okhttp3.Response intercept(Chain chain) throws IOException {
+      Request original = chain.request();
+
+      Request request = original.newBuilder()
+          .header("X-User-Info", accountManager.getUserSync().getId())
+          .build();
+
+      return chain.proceed(request);
     }
   }
 }

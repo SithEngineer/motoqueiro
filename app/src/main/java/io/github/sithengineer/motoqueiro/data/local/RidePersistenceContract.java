@@ -8,7 +8,7 @@ public final class RidePersistenceContract {
 
   public static abstract class RideEntry implements BaseColumns {
     public static final String TABLE_NAME = "ride";
-    public static final String COLUMN_NAME = "name";
+    public static final String COLUMN_NAME = "trip_name";
     public static final String COLUMN_COMPLETED = "completed";
     public static final String COLUMN_SYNCED = "synced";
     public static final String COLUMN_START_TIMESTAMP = "start_timestamp";

@@ -23,7 +23,7 @@ public class CruisingFragment extends BaseFragment<CruisingContract.Presenter>
 
   public static CruisingFragment newInstance(String rideId) {
     Bundle args = new Bundle();
-    args.putString(rideId, CruisingActivity.EXTRA_RIDE_ID);
+    args.putString(CruisingActivity.EXTRA_RIDE_ID, rideId);
 
     CruisingFragment fragment = new CruisingFragment();
     fragment.setArguments(args);

@@ -14,8 +14,6 @@ import io.github.sithengineer.motoqueiro.data.model.GpsPoint;
 import io.github.sithengineer.motoqueiro.data.model.HeartRatePoint;
 import io.github.sithengineer.motoqueiro.data.model.RidePart;
 import io.github.sithengineer.motoqueiro.data.model.TriDimenPoint;
-import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import rx.Completable;
 import rx.Observable;
@@ -26,6 +24,9 @@ import timber.log.Timber;
 import static dagger.internal.Preconditions.checkNotNull;
 
 public class RideLocalDataSource implements RideDataSource {
+
+  private static final int SQL_TRUE = 1;
+  private static final int SQL_FALSE = 0;
 
   @NonNull private final BriteDatabase databaseHelper;
 
@@ -47,8 +48,14 @@ public class RideLocalDataSource implements RideDataSource {
             .flatMapIterable(list -> list)
             .doOnNext(p -> saveGpsData(rideId, p))
             .toList()
-            .doOnCompleted(() -> transaction.markSuccessful())
-            .doAfterTerminate(() -> transaction.end())
+            .doOnCompleted(() -> {
+              transaction.markSuccessful();
+              transaction.end();
+            })
+            .doOnError(err -> {
+              Timber.e(err);
+              transaction.end();
+            })
             .toCompletable());
   }
 
@@ -69,7 +76,7 @@ public class RideLocalDataSource implements RideDataSource {
     });
   }
 
-  @Override public Observable<List<GpsPoint>> getGpsData(String rideId) {
+  @Override public Single<List<GpsPoint>> getGpsData(String rideId) {
     final String[] projection = {
         RidePersistenceContract.GpsEntry.COLUMN_RIDE_ID,
         RidePersistenceContract.GpsEntry.COLUMN_TIMESTAMP,
@@ -80,7 +87,7 @@ public class RideLocalDataSource implements RideDataSource {
         TextUtils.join(",", projection), RidePersistenceContract.GpsEntry.TABLE_NAME,
         RidePersistenceContract.GpsEntry.COLUMN_RIDE_ID);
     return databaseHelper.createQuery(RidePersistenceContract.GpsEntry.TABLE_NAME, sql,
-        rideId).mapToList(Mapper.CURSOR_TO_GPS_POINT);
+        rideId).mapToList(Mapper.CURSOR_TO_GPS_POINT).first().toSingle();
   }
 
   @Override
@@ -94,8 +101,14 @@ public class RideLocalDataSource implements RideDataSource {
             .flatMapIterable(list -> list)
             .doOnNext(p -> saveAccelerometerData(rideId, p))
             .toList()
-            .doOnCompleted(() -> transaction.markSuccessful())
-            .doAfterTerminate(() -> transaction.end())
+            .doOnCompleted(() -> {
+              transaction.markSuccessful();
+              transaction.end();
+            })
+            .doOnError(err -> {
+              Timber.e(err);
+              transaction.end();
+            })
             .toCompletable());
   }
 
@@ -118,7 +131,7 @@ public class RideLocalDataSource implements RideDataSource {
     });
   }
 
-  @Override public Observable<List<TriDimenPoint>> getAccelerometerData(String rideId) {
+  @Override public Single<List<TriDimenPoint>> getAccelerometerData(String rideId) {
     String[] projection = {
         RidePersistenceContract.AccelerometerEntry.COLUMN_RIDE_ID,
         RidePersistenceContract.AccelerometerEntry.COLUMN_TIMESTAMP,
@@ -132,7 +145,9 @@ public class RideLocalDataSource implements RideDataSource {
         RidePersistenceContract.AccelerometerEntry.COLUMN_RIDE_ID);
     return databaseHelper.createQuery(
         RidePersistenceContract.AccelerometerEntry.TABLE_NAME, sql, rideId)
-        .mapToList(Mapper.CURSOR_TO_ACCEL_POINT);
+        .mapToList(Mapper.CURSOR_TO_ACCEL_POINT)
+        .first()
+        .toSingle();
   }
 
   @Override
@@ -146,8 +161,14 @@ public class RideLocalDataSource implements RideDataSource {
             .flatMapIterable(list -> list)
             .doOnNext(p -> saveGravityData(rideId, p))
             .toList()
-            .doOnCompleted(() -> transaction.markSuccessful())
-            .doAfterTerminate(() -> transaction.end())
+            .doOnCompleted(() -> {
+              transaction.markSuccessful();
+              transaction.end();
+            })
+            .doOnError(err -> {
+              Timber.e(err);
+              transaction.end();
+            })
             .toCompletable());
   }
 
@@ -169,7 +190,7 @@ public class RideLocalDataSource implements RideDataSource {
     });
   }
 
-  @Override public Observable<List<TriDimenPoint>> getGravityData(String rideId) {
+  @Override public Single<List<TriDimenPoint>> getGravityData(String rideId) {
     final String[] projection = {
         RidePersistenceContract.GravityEntry.COLUMN_RIDE_ID,
         RidePersistenceContract.GravityEntry.COLUMN_TIMESTAMP,
@@ -181,7 +202,7 @@ public class RideLocalDataSource implements RideDataSource {
         TextUtils.join(",", projection), RidePersistenceContract.GravityEntry.TABLE_NAME,
         RidePersistenceContract.GravityEntry.COLUMN_RIDE_ID);
     return databaseHelper.createQuery(RidePersistenceContract.GravityEntry.TABLE_NAME,
-        sql, rideId).mapToList(Mapper.CURSOR_TO_GRAVITY_POINT);
+        sql, rideId).mapToList(Mapper.CURSOR_TO_GRAVITY_POINT).first().toSingle();
   }
 
   @Override
@@ -195,8 +216,14 @@ public class RideLocalDataSource implements RideDataSource {
             .flatMapIterable(list -> list)
             .doOnNext(p -> saveHeartRateData(rideId, p))
             .toList()
-            .doOnCompleted(() -> transaction.markSuccessful())
-            .doAfterTerminate(() -> transaction.end())
+            .doOnCompleted(() -> {
+              transaction.markSuccessful();
+              transaction.end();
+            })
+            .doOnError(err -> {
+              Timber.e(err);
+              transaction.end();
+            })
             .toCompletable());
   }
 
@@ -207,8 +234,7 @@ public class RideLocalDataSource implements RideDataSource {
 
       ContentValues values = new ContentValues();
       values.put(RidePersistenceContract.HeartRateEntry.COLUMN_RIDE_ID, rideId);
-      values.put(RidePersistenceContract.HeartRateEntry.COLUMN_BPM,
-          point.getBeatsPerMinute());
+      values.put(RidePersistenceContract.HeartRateEntry.COLUMN_BPM, point.getHeartRate());
       values.put(RidePersistenceContract.HeartRateEntry.COLUMN_TIMESTAMP,
           point.getTimestamp());
 
@@ -217,7 +243,7 @@ public class RideLocalDataSource implements RideDataSource {
     });
   }
 
-  @Override public Observable<List<HeartRatePoint>> getHeartRateData(String rideId) {
+  @Override public Single<List<HeartRatePoint>> getHeartRateData(String rideId) {
     final String[] projection = {
         RidePersistenceContract.HeartRateEntry.COLUMN_RIDE_ID,
         RidePersistenceContract.HeartRateEntry.COLUMN_BPM,
@@ -229,44 +255,55 @@ public class RideLocalDataSource implements RideDataSource {
         RidePersistenceContract.HeartRateEntry.COLUMN_RIDE_ID);
 
     return databaseHelper.createQuery(RidePersistenceContract.HeartRateEntry.TABLE_NAME,
-        sql, rideId).mapToList(Mapper.CURSOR_TO_HEART_RATE_POINT);
+        sql, rideId).mapToList(Mapper.CURSOR_TO_HEART_RATE_POINT).first().toSingle();
   }
 
-  @Override public Completable saveRide(RidePart ride) {
-    return Completable.fromCallable(() -> checkNotNull(ride))
-        .andThen(Single.just(databaseHelper.newTransaction()))
-        .flatMapCompletable(transaction -> Completable.fromAction(() -> {
+  @Override public Single<Long> saveRide(RidePart ride) {
+    return Single.just(databaseHelper.newTransaction())
+        .flatMap(transaction -> Single.fromCallable(() -> {
           ContentValues values = new ContentValues();
           values.put(RidePersistenceContract.RideEntry._ID, ride.getId());
-          values.put(RidePersistenceContract.RideEntry.COLUMN_NAME, ride.getId());
+          values.put(RidePersistenceContract.RideEntry.COLUMN_NAME, ride.getName());
+          values.put(RidePersistenceContract.RideEntry.COLUMN_COMPLETED,
+              ride.isCompleted());
           values.put(RidePersistenceContract.RideEntry.COLUMN_START_TIMESTAMP,
               ride.getInitialTimestamp());
+          values.put(RidePersistenceContract.RideEntry.COLUMN_SYNCED, false);
+          values.put(RidePersistenceContract.RideEntry.COLUMN_END_TIMESTAMP,
+              ride.getFinalTimestamp());
           // save ride
-          databaseHelper.insert(RidePersistenceContract.RideEntry.TABLE_NAME, values,
-              SQLiteDatabase.CONFLICT_REPLACE);
-        })
+          return databaseHelper.insert(RidePersistenceContract.RideEntry.TABLE_NAME,
+              values, SQLiteDatabase.CONFLICT_REPLACE);
+        }).flatMap(result ->
             // save all accel captures from ride part
-            .andThen(saveAccelerometerData(ride.getId(), ride.getAccelerometerCaptures()))
-            // save all gravity captures from ride part
-            .andThen(saveGravityData(ride.getId(), ride.getGravityCaptures()))
-            // save all gps captures from ride part
-            .andThen(saveGpsData(ride.getId(), ride.getGpsCoordinates()))
-            // save all heart rate captures from ride part
-            .andThen(saveHeartRateData(ride.getId(), ride.getHeartRateCaptures()))
-            .doOnError(ex -> Timber.e(ex))
-            .doOnCompleted(() -> transaction.markSuccessful())
-            .doAfterTerminate(() -> transaction.end()));
+            saveAccelerometerData(ride.getId(), ride.getAccelerometerCaptures())
+                // save all gravity captures from ride part
+                .andThen(saveGravityData(ride.getId(), ride.getGravityCaptures()))
+                // save all gps captures from ride part
+                .concatWith(saveGpsData(ride.getId(), ride.getGpsCoordinates()))
+                // save all heart rate captures from ride part
+                .concatWith(saveHeartRateData(ride.getId(), ride.getHeartRateCaptures()))
+                .doOnCompleted(() -> {
+                  transaction.markSuccessful();
+                  transaction.end();
+                })
+                .doOnError(err -> {
+                  Timber.e(err);
+                  transaction.end();
+                })
+                .toSingleDefault(result)));
   }
 
-  @Override public Observable<RidePart> getRide(String rideId) {
-    Observable<List<GpsPoint>> gpsPointsObservable = getGpsData(rideId);
-    Observable<List<TriDimenPoint>> accelPointsObservable = getAccelerometerData(rideId);
-    Observable<List<TriDimenPoint>> gravityPointsObservable = getGravityData(rideId);
-    Observable<List<HeartRatePoint>> heartRatePointsObservable = getHeartRateData(rideId);
+  @Override public Single<RidePart> getRide(String rideId) {
+    Single<List<GpsPoint>> gpsPointsObservable = getGpsData(rideId);
+    Single<List<TriDimenPoint>> accelPointsObservable = getAccelerometerData(rideId);
+    Single<List<TriDimenPoint>> gravityPointsObservable = getGravityData(rideId);
+    Single<List<HeartRatePoint>> heartRatePointsObservable = getHeartRateData(rideId);
 
     final String[] projection = {
         RidePersistenceContract.RideEntry._ID,
         RidePersistenceContract.RideEntry.COLUMN_NAME,
+        RidePersistenceContract.RideEntry.COLUMN_COMPLETED,
         RidePersistenceContract.RideEntry.COLUMN_START_TIMESTAMP,
         RidePersistenceContract.RideEntry.COLUMN_END_TIMESTAMP
     };
@@ -275,72 +312,76 @@ public class RideLocalDataSource implements RideDataSource {
         RidePersistenceContract.RideEntry._ID);
 
     QueryObservable ridePartQuery =
-        databaseHelper.createQuery(RidePersistenceContract.HeartRateEntry.TABLE_NAME, sql,
+        databaseHelper.createQuery(RidePersistenceContract.RideEntry.TABLE_NAME, sql,
             rideId);
 
     // query.run() ? maybe there is a more lazy and efficient way to do this
 
-    return ridePartQuery.flatMap(query -> {
+    return ridePartQuery.flatMapSingle(query -> {
       Cursor cursor = query.run();
       if (cursor == null || !cursor.moveToFirst()) {
-        return Observable.error(
-            new IllegalStateException("Unable to run database query."));
+        return Single.error(new IllegalStateException("Unable to run database query."));
       }
-      return Observable.zip(gpsPointsObservable, accelPointsObservable,
+      return Single.zip(gpsPointsObservable, accelPointsObservable,
           gravityPointsObservable, heartRatePointsObservable,
           (gpsPoints, accelPoints, gravityPoints, heartRatePoints) -> Mapper.CURSOR_TO_RIDE
               .call(cursor, gpsPoints, heartRatePoints, accelPoints, gravityPoints));
-    });
+    }).first().toSingle();
   }
 
-  @Override public Completable markCompleted(String rideId) {
-    return Completable.fromCallable(() -> checkNotNull(rideId))
-        .andThen(Single.just(databaseHelper.newTransaction()))
-        .flatMapCompletable(transaction -> Completable.fromAction(() -> {
-          ContentValues values = new ContentValues();
-          values.put(RidePersistenceContract.RideEntry._ID, rideId);
-          values.put(RidePersistenceContract.RideEntry.COLUMN_END_TIMESTAMP,
-              new Date().getTime());
-          values.put(RidePersistenceContract.RideEntry.COLUMN_COMPLETED, 1);
-          // save ride
-          databaseHelper.insert(RidePersistenceContract.RideEntry.TABLE_NAME, values,
-              SQLiteDatabase.CONFLICT_REPLACE);
-        })
-            .doOnError(ex -> Timber.e(ex))
-            .doOnCompleted(() -> transaction.markSuccessful())
-            .doAfterTerminate(() -> transaction.end()));
+  @Override public Single<Boolean> markCompleted(@NonNull final String rideId) {
+    return markRideColumnTrue(RidePersistenceContract.RideEntry.COLUMN_COMPLETED, rideId);
   }
 
   @Override public Single<List<RidePart>> getCompletedRides() {
-
-    final String[] projection = {
-        RidePersistenceContract.RideEntry._ID,
-        RidePersistenceContract.RideEntry.COLUMN_NAME,
-        RidePersistenceContract.RideEntry.COLUMN_START_TIMESTAMP,
-        RidePersistenceContract.RideEntry.COLUMN_END_TIMESTAMP
-    };
-    String sql = String.format("SELECT %s FROM %s WHERE %s LIKE ?",
-        TextUtils.join(",", projection), RidePersistenceContract.RideEntry.TABLE_NAME,
-        RidePersistenceContract.RideEntry._ID);
-
-    // todo
-
-    return Single.just(Collections.EMPTY_LIST);
+    return getCompletedRideIds().toObservable()
+        .flatMapIterable(list -> list)
+        .flatMap(rideId -> getRide(rideId).toObservable())
+        .toList()
+        .first()
+        .toSingle();
   }
 
-  @Override public Completable markSynced(String rideId) {
-    return Completable.fromCallable(() -> checkNotNull(rideId))
-        .andThen(Single.just(databaseHelper.newTransaction()))
-        .flatMapCompletable(transaction -> Completable.fromAction(() -> {
-          ContentValues values = new ContentValues();
-          values.put(RidePersistenceContract.RideEntry._ID, rideId);
-          values.put(RidePersistenceContract.RideEntry.COLUMN_SYNCED, 1);
-          // save ride
-          databaseHelper.insert(RidePersistenceContract.RideEntry.TABLE_NAME, values,
-              SQLiteDatabase.CONFLICT_REPLACE);
-        })
-            .doOnError(ex -> Timber.e(ex))
-            .doOnCompleted(() -> transaction.markSuccessful())
-            .doAfterTerminate(() -> transaction.end()));
+  @Override public Single<Boolean> markSynced(@NonNull final String rideId) {
+    return markRideColumnTrue(RidePersistenceContract.RideEntry.COLUMN_SYNCED, rideId);
+  }
+
+  private Single<Boolean> markRideColumnTrue(@NonNull String column,
+      @NonNull String rideId) {
+    return Single.fromCallable(() -> {
+      BriteDatabase.Transaction transaction = databaseHelper.newTransaction();
+      int affectedLines = 0;
+      try {
+        ContentValues values = new ContentValues();
+        values.put(column, SQL_TRUE);
+        // update ride
+        affectedLines =
+            databaseHelper.update(RidePersistenceContract.RideEntry.TABLE_NAME, values,
+                String.format("%s = ?", RidePersistenceContract.RideEntry._ID), rideId);
+        transaction.markSuccessful();
+      } catch (Exception e) {
+        Timber.e(e);
+      } finally {
+        transaction.end();
+      }
+      return affectedLines > 0;
+    });
+  }
+
+  private Single<List<String>> getCompletedRideIds() {
+    final String[] projection = {
+        RidePersistenceContract.RideEntry._ID,
+        RidePersistenceContract.RideEntry.COLUMN_COMPLETED
+    };
+
+    String sql = String.format("SELECT %s FROM %s WHERE %s LIKE ?",
+        TextUtils.join(",", projection), RidePersistenceContract.RideEntry.TABLE_NAME,
+        RidePersistenceContract.RideEntry.COLUMN_COMPLETED);
+
+    return databaseHelper.createQuery(RidePersistenceContract.RideEntry.TABLE_NAME, sql,
+        Integer.toString(SQL_TRUE))
+        .mapToList(Mapper.CURSOR_TO_RIDE_ID)
+        .first()
+        .toSingle();
   }
 }

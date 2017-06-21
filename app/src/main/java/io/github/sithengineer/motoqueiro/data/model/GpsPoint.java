@@ -1,8 +1,10 @@
 package io.github.sithengineer.motoqueiro.data.model;
 
+import com.google.gson.annotations.SerializedName;
+
 public class GpsPoint extends TimeStamped {
-  private final double latitude;
-  private final double longitude;
+  @SerializedName("latitude") private final double latitude;
+  @SerializedName("longitude") private final double longitude;
 
   public GpsPoint(double latitude, double longitude, long timestamp) {
     super(timestamp);
