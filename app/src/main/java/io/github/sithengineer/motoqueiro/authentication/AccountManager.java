@@ -16,7 +16,7 @@ public class AccountManager {
   protected static final String ACCOUNT = "dummyaccount";
   private final android.accounts.AccountManager androidAccountManager;
 
-  public AccountManager(android.accounts.AccountManager androidAccountManager) {
+  public AccountManager(android.accounts.AccountManager androidAccountManager, SecurityServices securityServices) {
     this.androidAccountManager = androidAccountManager;
   }
 
@@ -43,7 +43,9 @@ public class AccountManager {
 
   public User getUserSync() {
     try {
-      return new User(getMainUserAccount().name, true);
+      String accountName = getMainUserAccount().name;
+
+      return new User(accountName, true);
     } catch (Exception e) {
       Timber.e(e);
     }

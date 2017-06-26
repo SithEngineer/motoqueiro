@@ -1,7 +1,7 @@
 <resources>
   <string name="app_name">Motoqueiro</string>
-  <string name="home_start_button">start</string>
-  <string name="home_all_ready_textView">all ready!\n\nclick in <b>start</b> to begin your trip</string>
+  <string name="home_start_button">Start</string>
+  <string name="home_all_ready_textView">all ready!\n\nclick on <b>start</b> to begin your trip</string>
   <string name="an_error_occurred">an error occurred</string>
   <string name="stop">stop</string>
   <string name="capturing_data">Capturing data.\nTap <b>stop</b> to finish your trip.</string>
@@ -10,4 +10,6 @@
   <string name="home_genericError_snackBar">An error occurred. Try again later.</string>
   <string name="home_rideName_editTextHint">(optional) Give this ride a name!</string>
   <string name="mi_band_address_error">Not a valid address</string>
+  <string name="statistics_upload_completed">Data upload completed.\n\nThank you!</string>
+  <string name="statistics_start_ride">Start a new ride</string>
 </resources>

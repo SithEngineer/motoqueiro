@@ -23,19 +23,13 @@ public class RideRepository {
   public Single<String> startRide(@NonNull final String name) {
     return generateRideId().flatMap(rideId -> {
       RidePart ridePart =
-          new RidePart(rideId, name, System.currentTimeMillis(), 0, false);
+          new RidePart(rideId, name, System.currentTimeMillis(), 0, false, false);
       return localDataSource.saveRide(ridePart).map(__ -> rideId);
     });
   }
 
   public Completable finishRide(String rideId) {
-    return localDataSource.markCompleted(rideId)
-        .toCompletable()
-        .andThen(sync())
-        .onErrorResumeNext(err -> {
-          Timber.e(err);
-          return Completable.complete();
-        });
+    return localDataSource.markCompleted(rideId).toCompletable().andThen(sync());
   }
 
   private Single<String> generateRideId() {
@@ -72,6 +66,7 @@ public class RideRepository {
     return localDataSource.getCompletedRides()
         .toObservable()
         .flatMapIterable(list -> list)
+        .filter(ride -> !ride.isSynced())
         .flatMapSingle(ride -> remoteDataSource.saveRide(ride)
             .flatMap(__ -> localDataSource.markSynced(ride.getId()))
             .doOnError(err -> Timber.e(err)))

@@ -1,5 +1,6 @@
 package io.github.sithengineer.motoqueiro.cruising;
 
+import android.support.annotation.NonNull;
 import com.trello.rxlifecycle.android.FragmentEvent;
 import io.github.sithengineer.motoqueiro.home.RideManager;
 import io.github.sithengineer.motoqueiro.util.CompositeSubscriptionManager;
@@ -29,35 +30,43 @@ public class CruisingPresenter implements CruisingContract.Presenter {
   }
 
   @Override public void start() {
+    subscriptionManager.add(view.lifecycle()
+        .filter(event -> event == FragmentEvent.CREATE_VIEW)
+        .flatMap(__ -> handleStopClick())
+        .compose(view.bindUntilEvent(FragmentEvent.DESTROY_VIEW))
+        .subscribe(__ -> {
+        }, err -> Timber.e(err)));
 
-    Observable<Void> completeRide = view.stopClick()
-        .flatMap(__ -> stopCruising(rideId).toObservable())
-        .retry()
-        .map(__ -> null);
-
-    subscriptionManager.add(
-        view.lifecycle()
-            .filter(event -> event == FragmentEvent.CREATE_VIEW)
-
-            .flatMap(__ -> Observable.merge(completeRide, dataManager.gatherData()))
-            .doOnUnsubscribe(() -> Timber.i("Unsubscribed from Cruising Presenter"))
-            .compose(view.bindUntilEvent(FragmentEvent.DESTROY_VIEW))
-            .subscribe(__ -> {
-            }, err -> Timber.e(err)));
+    subscriptionManager.add(view.lifecycle()
+        .filter(event -> event == FragmentEvent.CREATE_VIEW)
+        .flatMap(__ -> dataManager.gatherData())
+        .compose(view.bindUntilEvent(FragmentEvent.DESTROY_VIEW))
+        .subscribe(__ -> {
+        }, err -> Timber.e(err)));
   }
 
   @Override public void stop() {
     subscriptionManager.clearAll();
   }
 
+  @NonNull private Observable<Void> handleStopClick() {
+    return view.stopClick()
+        .flatMap(__ -> stopCruising(rideId).toObservable())
+        .retry()
+        .map(__ -> null);
+  }
+
   @Override public Completable stopCruising(String rideId) {
     return rideManager.stop(rideId).doOnCompleted(() -> {
+      view.goToStatistics(true);
+    }).doOnError(err -> {
+      Timber.e(err);
+      view.goToStatistics(false);
+    }).doOnTerminate(() -> {
       // the user pressed stop button in this chain of events and at this point we
       // already sync'ed the data with the server. we do not need to keep listening
       // to sensor updates so cleaning all subscriptions (to sensors) will stop them
       stop();
-
-      view.goToStatistics();
     });
   }
 }

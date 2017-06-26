@@ -4,9 +4,12 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
 import android.content.Context;
+import android.text.TextUtils;
 import dagger.Module;
 import dagger.Provides;
-import io.github.sithengineer.motoqueiro.hardware.MiBand;
+import io.github.sithengineer.motoqueiro.hardware.MiBandDevice;
+import io.github.sithengineer.motoqueiro.hardware.MiBandEmpty;
+import io.github.sithengineer.motoqueiro.hardware.MiBandService;
 import io.github.sithengineer.motoqueiro.scope.ActivityScope;
 import javax.inject.Named;
 
@@ -25,12 +28,12 @@ import javax.inject.Named;
         Context.BLUETOOTH_SERVICE)).getAdapter();
   }
 
-  @Provides @ActivityScope BluetoothDevice provideMiBandDevice(
-      BluetoothAdapter bluetoothAdapter, @Named(MI_BAND_ADDRESS) String miBandAddress) {
-    return bluetoothAdapter.getRemoteDevice(miBandAddress);
-  }
-
-  @Provides @ActivityScope MiBand provideMiBand(BluetoothDevice miBandDevice) {
-    return new MiBand(context, miBandDevice);
+  @Provides @ActivityScope MiBandService provideMiBand(BluetoothAdapter bluetoothAdapter,
+      @Named(MI_BAND_ADDRESS) String miBandAddress) {
+    if(!TextUtils.isEmpty(miBandAddress)){
+      BluetoothDevice device = bluetoothAdapter.getRemoteDevice(miBandAddress);
+      return new MiBandDevice(context, device);
+    }
+    return new MiBandEmpty();
   }
 }

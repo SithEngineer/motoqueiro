@@ -58,8 +58,9 @@ public class CruisingFragment extends BaseFragment<CruisingContract.Presenter>
     return RxView.clicks(stopButton);
   }
 
-  @Override public void goToStatistics() {
+  @Override public void goToStatistics(boolean uploadCompleted) {
     Intent i = new Intent(getActivity(), StatisticsActivity.class);
+    i.putExtra(StatisticsActivity.EXTRA_UPLOAD_COMPLETE, uploadCompleted);
     startActivity(i);
   }
 }

@@ -3,7 +3,7 @@ package io.github.sithengineer.motoqueiro.cruising;
 import io.github.sithengineer.motoqueiro.data.RideRepository;
 import io.github.sithengineer.motoqueiro.hardware.Accelerometer;
 import io.github.sithengineer.motoqueiro.hardware.Gps;
-import io.github.sithengineer.motoqueiro.hardware.MiBand;
+import io.github.sithengineer.motoqueiro.hardware.MiBandService;
 import io.github.sithengineer.motoqueiro.hardware.capture.LatLng;
 import io.github.sithengineer.motoqueiro.hardware.capture.MiBandData;
 import io.github.sithengineer.motoqueiro.hardware.capture.RelativeCoordinates;
@@ -14,11 +14,11 @@ public class DataManager {
 
   private final Accelerometer accelerometer;
   private final Gps gps;
-  private final MiBand miBand;
+  private final MiBandService miBand;
   private final RideRepository rideRepo;
   private final String rideId;
 
-  public DataManager(Accelerometer accelerometer, Gps gps, MiBand miBand,
+  public DataManager(Accelerometer accelerometer, Gps gps, MiBandService miBand,
       RideRepository rideRepo, String rideId) {
     this.accelerometer = accelerometer;
     this.gps = gps;

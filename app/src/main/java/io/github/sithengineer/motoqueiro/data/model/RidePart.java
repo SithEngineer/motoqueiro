@@ -1,28 +1,31 @@
 package io.github.sithengineer.motoqueiro.data.model;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import java.util.LinkedList;
 import java.util.List;
 
 public class RidePart {
 
-  @SerializedName("id") private final String id;
-  @SerializedName("tripName") private final String name;
-  @SerializedName("initialTimestamp") private final long initialTimestamp;
-  @SerializedName("finalTimestamp") private long finalTimestamp;
-  @SerializedName("completed") private boolean completed;
-  @SerializedName("accelerometerCaptures") private List<TriDimenPoint> accelerometerCaptures;
-  @SerializedName("gravityCaptures") private List<TriDimenPoint> gravityCaptures;
-  @SerializedName("gpsCoordinates") private List<GpsPoint> gpsCoordinates;
-  @SerializedName("heartRateCaptures") private List<HeartRatePoint> heartRateCaptures;
+  @Expose @SerializedName("id") private final String id;
+  @Expose @SerializedName("tripName") private final String name;
+  @Expose @SerializedName("initialTimestamp") private final long initialTimestamp;
+  @Expose @SerializedName("finalTimestamp") private long finalTimestamp;
+  @Expose @SerializedName("completed") private boolean completed;
+  @Expose @SerializedName("accelerometerCaptures") private List<TriDimenPoint> accelerometerCaptures;
+  @Expose @SerializedName("gravityCaptures") private List<TriDimenPoint> gravityCaptures;
+  @Expose @SerializedName("gpsCoordinates") private List<GpsPoint> gpsCoordinates;
+  @Expose @SerializedName("heartRateCaptures") private List<HeartRatePoint> heartRateCaptures;
+  private boolean synced;
 
   public RidePart(String id, String name, long initialTimestamp, long finalTimestamp,
-      boolean completed) {
+      boolean completed, boolean synced) {
     this.id = id;
     this.name = name;
     this.initialTimestamp = initialTimestamp;
     this.finalTimestamp = finalTimestamp;
     this.completed = completed;
+    this.synced = synced;
     this.accelerometerCaptures = new LinkedList<>();
     this.gravityCaptures = new LinkedList<>();
     this.gpsCoordinates = new LinkedList<>();
@@ -100,5 +103,21 @@ public class RidePart {
   public void setEndTimestamp(long time) {
     finalTimestamp = time;
     completed = true;
+  }
+
+  public void setFinalTimestamp(long finalTimestamp) {
+    this.finalTimestamp = finalTimestamp;
+  }
+
+  public void setCompleted(boolean completed) {
+    this.completed = completed;
+  }
+
+  public boolean isSynced() {
+    return synced;
+  }
+
+  public void setSynced(boolean synced) {
+    this.synced = synced;
   }
 }

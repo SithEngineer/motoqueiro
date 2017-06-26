@@ -78,7 +78,11 @@ final class Mapper {
       boolean completed = cursor.getInt(
           cursor.getColumnIndex(RidePersistenceContract.RideEntry.COLUMN_COMPLETED)) == 1;
 
-      RidePart part = new RidePart(id, name, initialTimestamp, finalTimestamp, completed);
+      boolean synced = cursor.getInt(
+          cursor.getColumnIndex(RidePersistenceContract.RideEntry.COLUMN_SYNCED)) == 1;
+
+      RidePart part = new RidePart(id, name, initialTimestamp, finalTimestamp, completed,
+          synced);
       part.setGpsCoordinates(gpsPoints);
       part.setHeartRateCaptures(heartRatePoints);
       part.setAccelerometerCaptures(accelPoints);

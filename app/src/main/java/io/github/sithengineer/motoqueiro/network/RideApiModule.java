@@ -9,6 +9,7 @@ import io.github.sithengineer.motoqueiro.BuildConfig;
 import io.github.sithengineer.motoqueiro.authentication.AccountManager;
 import java.io.IOException;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 import javax.inject.Named;
 import javax.inject.Singleton;
 import okhttp3.Cache;
@@ -48,6 +49,9 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
     // set response cache
     return new OkHttpClient.Builder().addInterceptor(maxAgeInterceptor)
         .addInterceptor(accountInterceptor)
+        .connectTimeout(2, TimeUnit.MINUTES)
+        .writeTimeout(4, TimeUnit.MINUTES)
+        .readTimeout(2, TimeUnit.MINUTES)
         .cache(cache)
         .build();
   }

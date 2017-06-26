@@ -7,7 +7,7 @@ import io.github.sithengineer.motoqueiro.app.Preferences;
 import io.github.sithengineer.motoqueiro.data.RideRepository;
 import io.github.sithengineer.motoqueiro.hardware.Accelerometer;
 import io.github.sithengineer.motoqueiro.hardware.Gps;
-import io.github.sithengineer.motoqueiro.hardware.MiBand;
+import io.github.sithengineer.motoqueiro.hardware.MiBandService;
 import io.github.sithengineer.motoqueiro.hardware.bluetooth.BluetoothModule;
 import io.github.sithengineer.motoqueiro.home.RideManager;
 import io.github.sithengineer.motoqueiro.scope.ActivityScope;
@@ -49,7 +49,7 @@ import javax.inject.Named;
   }
 
   @Provides @ActivityScope DataManager providesDataManager(Accelerometer accelerometer,
-      Gps gps, MiBand miBand, RideRepository rideRepo) {
+      Gps gps, MiBandService miBand, RideRepository rideRepo) {
     return new DataManager(accelerometer, gps, miBand, rideRepo, rideId);
   }
 

@@ -14,14 +14,14 @@ import java.util.concurrent.TimeUnit;
 import rx.Observable;
 import timber.log.Timber;
 
-public class MiBand implements HardwareObservable<MiBandData> {
+public class MiBandDevice implements HardwareObservable<MiBandData>, MiBandService {
 
   private final Context context;
   private final BluetoothDevice miBandDevice;
   private final RxBluetoothGattCallback callBack;
   private BluetoothGatt myGatBand;
 
-  public MiBand(Context context, BluetoothDevice miBandDevice) {
+  public MiBandDevice(Context context, BluetoothDevice miBandDevice) {
     this.context = context;
     this.miBandDevice = miBandDevice;
     this.callBack = new RxBluetoothGattCallback();

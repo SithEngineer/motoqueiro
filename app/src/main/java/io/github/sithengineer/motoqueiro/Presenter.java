@@ -1,7 +1,6 @@
 package io.github.sithengineer.motoqueiro;
 
-public interface BasePresenter {
+public interface Presenter {
   void start();
-
   void stop();
 }

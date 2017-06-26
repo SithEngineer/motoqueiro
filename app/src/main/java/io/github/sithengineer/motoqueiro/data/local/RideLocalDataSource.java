@@ -304,6 +304,7 @@ public class RideLocalDataSource implements RideDataSource {
         RidePersistenceContract.RideEntry._ID,
         RidePersistenceContract.RideEntry.COLUMN_NAME,
         RidePersistenceContract.RideEntry.COLUMN_COMPLETED,
+        RidePersistenceContract.RideEntry.COLUMN_SYNCED,
         RidePersistenceContract.RideEntry.COLUMN_START_TIMESTAMP,
         RidePersistenceContract.RideEntry.COLUMN_END_TIMESTAMP
     };
@@ -379,7 +380,7 @@ public class RideLocalDataSource implements RideDataSource {
         RidePersistenceContract.RideEntry.COLUMN_COMPLETED);
 
     return databaseHelper.createQuery(RidePersistenceContract.RideEntry.TABLE_NAME, sql,
-        Integer.toString(SQL_TRUE))
+        Integer.toString(SQL_FALSE))
         .mapToList(Mapper.CURSOR_TO_RIDE_ID)
         .first()
         .toSingle();

@@ -10,7 +10,7 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import com.trello.rxlifecycle.components.support.RxFragment;
 
-public abstract class BaseFragment<P extends BasePresenter> extends RxFragment {
+public abstract class BaseFragment<P extends Presenter> extends RxFragment {
 
   private Unbinder unBinder;
 
@@ -29,12 +29,17 @@ public abstract class BaseFragment<P extends BasePresenter> extends RxFragment {
       @Nullable Bundle savedInstanceState) {
     View view = inflater.inflate(getViewId(), container, false);
     unBinder = ButterKnife.bind(this, view);
+    loadArguments(getArguments());
     inject();
     P presenter = getPresenter();
     if (presenter != null) {
       presenter.start();
     }
     return view;
+  }
+
+  protected void loadArguments(@Nullable Bundle args){
+    // optional method
   }
 
   @Override public void onDestroyView() {

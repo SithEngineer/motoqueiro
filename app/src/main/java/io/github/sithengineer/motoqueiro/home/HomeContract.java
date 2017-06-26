@@ -1,6 +1,5 @@
 package io.github.sithengineer.motoqueiro.home;
 
-import io.github.sithengineer.motoqueiro.BasePresenter;
 import io.github.sithengineer.motoqueiro.BaseView;
 import rx.Completable;
 import rx.Observable;
@@ -32,7 +31,7 @@ public interface HomeContract {
     void cleanMiBandAddressError();
   }
 
-  interface Presenter extends BasePresenter {
+  interface Presenter extends io.github.sithengineer.motoqueiro.Presenter {
     void showActivateGpsViewMessage();
 
     void showActivateGpsView();

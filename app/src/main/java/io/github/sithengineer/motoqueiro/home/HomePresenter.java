@@ -30,6 +30,35 @@ public class HomePresenter implements HomeContract.Presenter {
   }
 
   @Override public void start() {
+    handleStartClick();
+    watchMiBandAddressChange();
+    showMiBandAddress();
+  }
+
+  @Override public void stop() {
+    subscriptionManager.clearAll();
+  }
+
+  private void watchMiBandAddressChange() {
+    Observable<Void> watchMiBandAddressChange =
+        view.getMiBandAddressChanges().doOnNext(address -> {
+          if (isValidBluetoothAddress(address)) {
+            view.cleanMiBandAddressError();
+            saveMiBandAddress(address);
+          } else {
+            view.showMiBandAddressError();
+          }
+        }).retry().map(__ -> null);
+
+    subscriptionManager.add(view.lifecycle()
+        .filter(event -> event == FragmentEvent.CREATE_VIEW)
+        .flatMap(__ -> watchMiBandAddressChange)
+        .compose(view.bindUntilEvent(FragmentEvent.DESTROY_VIEW))
+        .subscribe(__ -> {
+        }, err -> Timber.e(err)));
+  }
+
+  private void handleStartClick() {
     Observable<Void> handleStartClick = view.handleStartClick()
         .flatMap(
             __ -> view.getMiBandAddressChanges().first().toSingle().flatMap(address -> {
@@ -44,27 +73,12 @@ public class HomePresenter implements HomeContract.Presenter {
         .onErrorResumeNext(err -> handleStartRideError(err).map(__ -> null))
         .map(__ -> null);
 
-    Observable<Void> watchMiBandAddressChange =
-        view.getMiBandAddressChanges().doOnNext(address -> {
-          if (isValidBluetoothAddress(address)) {
-            view.cleanMiBandAddressError();
-            saveMiBandAddress(address);
-          } else {
-            view.showMiBandAddressError();
-          }
-        }).retry().map(__ -> null);
-
     subscriptionManager.add(view.lifecycle()
         .filter(event -> event == FragmentEvent.CREATE_VIEW)
-        .flatMap(__ -> Observable.merge(handleStartClick, watchMiBandAddressChange,
-            showMiBandAddress().toObservable()))
+        .flatMap(__ -> handleStartClick)
         .compose(view.bindUntilEvent(FragmentEvent.DESTROY_VIEW))
         .subscribe(__ -> {
         }, err -> Timber.e(err)));
-  }
-
-  @Override public void stop() {
-    subscriptionManager.clearAll();
   }
 
   private boolean isValidBluetoothAddress(String address) {
@@ -75,9 +89,16 @@ public class HomePresenter implements HomeContract.Presenter {
     preferences.setMiBandAddress(address);
   }
 
-  private Completable showMiBandAddress() {
-    return Completable.fromAction(
+  private void showMiBandAddress() {
+    Completable showMiBandAddress = Completable.fromAction(
         () -> view.showMiBandAddress(preferences.getMiBandAddressOrDefault()));
+
+    subscriptionManager.add(view.lifecycle()
+        .filter(event -> event == FragmentEvent.CREATE_VIEW)
+        .flatMap(__ -> showMiBandAddress.toObservable())
+        .compose(view.bindUntilEvent(FragmentEvent.DESTROY_VIEW))
+        .subscribe(__ -> {
+        }, err -> Timber.e(err)));
   }
 
   private Observable<Void> handleStartRideError(Throwable err) {
