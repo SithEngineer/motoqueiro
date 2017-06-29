@@ -5,7 +5,7 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import io.github.sithengineer.motoqueiro.data.RideRepository;
 import io.github.sithengineer.motoqueiro.exception.GpsNotActiveException;
-import io.github.sithengineer.motoqueiro.hardware.Gps;
+import io.github.sithengineer.motoqueiro.hardware.gps.GpsStateListener;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import rx.Completable;
@@ -18,11 +18,11 @@ import rx.Single;
 public class RideManager {
 
   private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
-  private final Gps.GpsStateListener locationListener;
+  private final GpsStateListener locationListener;
   private final LocationManager locationManager;
   private final RideRepository rideRepo;
 
-  public RideManager(Gps.GpsStateListener locationListener, LocationManager locationManager, RideRepository rideRepo) {
+  public RideManager(GpsStateListener locationListener, LocationManager locationManager, RideRepository rideRepo) {
     this.locationListener = locationListener;
     this.locationManager = locationManager;
     this.rideRepo = rideRepo;

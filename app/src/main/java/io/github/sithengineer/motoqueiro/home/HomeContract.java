@@ -1,12 +1,11 @@
 package io.github.sithengineer.motoqueiro.home;
 
-import io.github.sithengineer.motoqueiro.BaseView;
 import rx.Completable;
 import rx.Observable;
 
 public interface HomeContract {
 
-  interface View extends BaseView {
+  interface View extends io.github.sithengineer.motoqueiro.View {
     /**
      * @return a {@link Completable} that should navigate after start data tracking is
      * pressed

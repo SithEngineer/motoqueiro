@@ -34,7 +34,10 @@ android {
     //multiDexEnabled true
 
     buildConfigField "int", "LIMIT", "100"
-    buildConfigField "int", "CACHETIME", "432000" // 5days
+    buildConfigField "int", "CACHE_TIME", "432000" // 5days
+
+    buildConfigField "String", "WS_URL", "\"http://192.168.1.68:5000/api/\"" // home
+    //buildConfigField "String", "WS_URL", "\"http://192.168.1.27:5000/api/\"" // office
   }
   compileOptions {
     sourceCompatibility JavaVersion.VERSION_1_8
@@ -49,9 +52,6 @@ android {
           'proguardTest-rules.pro'
       applicationIdSuffix '.debug'
       versionNameSuffix '-debug'
-      //buildConfigField "String", "BASEURL", "\"http://192.168.1.68:5000/api/\"" // home
-      //buildConfigField "String", "BASEURL", "\"http://192.168.1.27:5000/api/\"" // office
-      buildConfigField "String", "BASEURL", "\"http://motoqueiro.herokuapp.com/api/\""
     }
     release {
       minifyEnabled true
@@ -60,7 +60,7 @@ android {
       proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
       testProguardFiles getDefaultProguardFile('proguard-android.txt'),
           'proguardTest-rules.pro'
-      buildConfigField "String", "BASEURL", "\"http://motoqueiro.herokuapp.com/api/\""
+      buildConfigField "String", "WS_URL", "\"http://motoqueiro.herokuapp.com/api/\""
       signingConfig signingConfigs.config
     }
   }

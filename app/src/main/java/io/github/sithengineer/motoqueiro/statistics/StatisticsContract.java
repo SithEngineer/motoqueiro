@@ -1,11 +1,10 @@
 package io.github.sithengineer.motoqueiro.statistics;
 
-import io.github.sithengineer.motoqueiro.BaseView;
 import rx.Observable;
 import rx.Single;
 
 public interface StatisticsContract {
-  interface View extends BaseView {
+  interface View extends io.github.sithengineer.motoqueiro.View {
     Single<Boolean> isUploadCompleted();
 
     void setUploadCompletedMessageVisible();

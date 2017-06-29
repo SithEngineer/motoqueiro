@@ -10,6 +10,7 @@
   <string name="home_genericError_snackBar">An error occurred. Try again later.</string>
   <string name="home_rideName_editTextHint">(optional) Give this ride a name!</string>
   <string name="mi_band_address_error">Not a valid address</string>
-  <string name="statistics_upload_completed">Data upload completed.\n\nThank you!</string>
-  <string name="statistics_start_ride">Start a new ride</string>
+  <string name="statistics_view_upload_completed">Data upload completed.\n\nThank you!</string>
+  <string name="statistics_view_start_ride">Start a new ride</string>
+  <string name="cruising_view_saving_ride">Saving ride...</string>
 </resources>

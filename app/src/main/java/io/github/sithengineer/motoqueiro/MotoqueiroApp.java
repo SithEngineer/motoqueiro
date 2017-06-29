@@ -11,7 +11,7 @@ import io.github.sithengineer.motoqueiro.hardware.SensorModule;
 import io.github.sithengineer.motoqueiro.util.ReleaseTree;
 import timber.log.Timber;
 
-public class MotoqueiroApp extends AccountApplication {
+public class MotoqueiroApp extends android.app.Application {
 
   private AppComponent appComponent;
   private RideComponent rideComponent;

@@ -1,7 +1,6 @@
 package io.github.sithengineer.motoqueiro.cruising;
 
 import android.content.Context;
-import android.content.Intent;
 import io.github.sithengineer.motoqueiro.statistics.StatisticsActivity;
 
 class CruisingNavigator {
@@ -13,9 +12,6 @@ class CruisingNavigator {
   }
 
   public void goToStatistics(boolean uploadCompleted) {
-    Intent i = new Intent(context, StatisticsActivity.class);
-    i.putExtra(StatisticsActivity.EXTRA_UPLOAD_COMPLETE, uploadCompleted);
-    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-    context.startActivity(i);
+    context.startActivity(StatisticsActivity.getNavigationIntent(context, uploadCompleted));
   }
 }

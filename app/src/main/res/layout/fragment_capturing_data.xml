@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     >
-
   <Button
       android:id="@+id/stop_button"
       android:layout_width="match_parent"
@@ -13,11 +14,31 @@
       android:text="@string/stop"
       style="@style/DefaultButton"
       />
-
-  <TextView
+  <LinearLayout
+      android:id="@+id/upload_view_group"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_above="@id/stop_button"
+      android:orientation="vertical"
+      android:visibility="gone"
+      tools:visibility="visible"
+      >
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/cruising_view_saving_ride"
+        />
+    <ProgressBar
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:indeterminate="true"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        />
+  </LinearLayout>
+  <TextView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_above="@id/upload_view_group"
       android:layout_alignParentTop="true"
       android:text="@string/capturing_data"
       style="@style/DefaultTextAppearance"

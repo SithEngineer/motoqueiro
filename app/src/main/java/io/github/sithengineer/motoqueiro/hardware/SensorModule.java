@@ -5,6 +5,7 @@ import android.hardware.SensorManager;
 import android.location.LocationManager;
 import dagger.Module;
 import dagger.Provides;
+import io.github.sithengineer.motoqueiro.hardware.gps.GpsStateListener;
 import io.github.sithengineer.motoqueiro.scope.RideScope;
 
 @Module public class SensorModule {
@@ -23,8 +24,8 @@ import io.github.sithengineer.motoqueiro.scope.RideScope;
     return (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
   }
 
-  @Provides @RideScope Gps.GpsStateListener provideGpsStateListener() {
-    return new Gps.GpsStateListener();
+  @Provides @RideScope GpsStateListener provideGpsStateListener() {
+    return new GpsStateListener();
   }
 
 }

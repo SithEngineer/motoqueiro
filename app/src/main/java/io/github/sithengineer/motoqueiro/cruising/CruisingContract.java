@@ -1,11 +1,18 @@
 package io.github.sithengineer.motoqueiro.cruising;
 
-import io.github.sithengineer.motoqueiro.BaseView;
 import rx.Completable;
 import rx.Observable;
 
 public class CruisingContract {
-  interface View extends BaseView {
+  interface View extends io.github.sithengineer.motoqueiro.View {
+    void showUploadView();
+
+    void hideUploadView();
+
+    void setStopButtonEnabled();
+
+    void setStopButtonDisabled();
+
     Observable<Void> stopClick();
   }
 

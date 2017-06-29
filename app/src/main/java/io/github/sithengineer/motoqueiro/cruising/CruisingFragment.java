@@ -3,6 +3,7 @@ package io.github.sithengineer.motoqueiro.cruising;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.View;
 import android.widget.Button;
 import butterknife.BindView;
 import com.jakewharton.rxbinding.view.RxView;
@@ -16,6 +17,7 @@ import rx.Observable;
 public class CruisingFragment extends BaseFragment<CruisingContract.Presenter> implements CruisingContract.View {
 
   @BindView(R.id.stop_button) Button stopButton;
+  @BindView(R.id.upload_view_group) View uploadView;
   @Inject CruisingContract.Presenter presenter;
 
   public static CruisingFragment newInstance(String rideId) {
@@ -48,6 +50,22 @@ public class CruisingFragment extends BaseFragment<CruisingContract.Presenter> i
 
   @Nullable @Override public CruisingContract.Presenter getPresenter() {
     return presenter;
+  }
+
+  @Override public void showUploadView() {
+    uploadView.setVisibility(View.VISIBLE);
+  }
+
+  @Override public void hideUploadView() {
+    uploadView.setVisibility(View.GONE);
+  }
+
+  @Override public void setStopButtonEnabled() {
+    stopButton.setEnabled(true);
+  }
+
+  @Override public void setStopButtonDisabled() {
+    stopButton.setEnabled(false);
   }
 
   @Override public Observable<Void> stopClick() {

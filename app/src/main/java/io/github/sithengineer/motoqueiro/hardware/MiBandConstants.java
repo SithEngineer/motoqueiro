@@ -1,9 +1,9 @@
-package io.github.sithengineer.motoqueiro.util;
+package io.github.sithengineer.motoqueiro.hardware;
 
 import java.util.UUID;
 
 // based in constants from https://github.com/yonixw/mi-band-2
-public final class Consts {
+public final class MiBandConstants {
   //this is common for all BTLE devices. see http://stackoverflow.com/questions/18699251/finding-out-android-bluetooth-le-gatt-profiles
   public static final String BASE_UUID = "0000%s-0000-1000-8000-00805f9b34fb";
 

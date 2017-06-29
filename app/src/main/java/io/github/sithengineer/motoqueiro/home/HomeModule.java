@@ -5,7 +5,7 @@ import dagger.Module;
 import dagger.Provides;
 import io.github.sithengineer.motoqueiro.app.Preferences;
 import io.github.sithengineer.motoqueiro.data.RideRepository;
-import io.github.sithengineer.motoqueiro.hardware.Gps;
+import io.github.sithengineer.motoqueiro.hardware.gps.GpsStateListener;
 import io.github.sithengineer.motoqueiro.scope.ActivityScope;
 import io.github.sithengineer.motoqueiro.util.CompositeSubscriptionManager;
 
@@ -32,7 +32,7 @@ import io.github.sithengineer.motoqueiro.util.CompositeSubscriptionManager;
   }
 
   @Provides @ActivityScope RideManager providesRideManager(LocationManager locationManager,
-      Gps.GpsStateListener locationListener, RideRepository rideRepo) {
+      GpsStateListener locationListener, RideRepository rideRepo) {
     return new RideManager(locationListener, locationManager, rideRepo);
   }
 

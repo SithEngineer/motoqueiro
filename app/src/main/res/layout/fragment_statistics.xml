@@ -10,7 +10,7 @@
       android:id="@+id/upload_completed_message"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:text="@string/statistics_upload_completed"
+      android:text="@string/statistics_view_upload_completed"
       android:visibility="gone"
       tools:visibility="visible"
       style="@style/DefaultTextAppearance"
@@ -19,7 +19,7 @@
       android:id="@+id/go_home_button"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:text="@string/statistics_start_ride"
+      android:text="@string/statistics_view_start_ride"
       android:layout_alignParentBottom="true"
       style="@style/DefaultButton"
       />

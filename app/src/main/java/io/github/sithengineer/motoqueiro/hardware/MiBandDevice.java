@@ -8,7 +8,6 @@ import android.bluetooth.BluetoothGattService;
 import android.content.Context;
 import io.github.sithengineer.motoqueiro.hardware.bluetooth.RxBluetoothGattCallback;
 import io.github.sithengineer.motoqueiro.hardware.capture.MiBandData;
-import io.github.sithengineer.motoqueiro.util.Consts;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import rx.Observable;
@@ -34,10 +33,10 @@ public class MiBandDevice implements HardwareObservable<MiBandData>, MiBandServi
         .map(gattEvent -> {
           BluetoothGattCharacteristic characteristic = gattEvent.getCharacteristic();
           UUID alertUUID = characteristic.getUuid();
-          if (alertUUID.equals(Consts.UUID_NOTIFICATION_HEARTRATE)) {
+          if (alertUUID.equals(MiBandConstants.UUID_NOTIFICATION_HEARTRATE)) {
             final byte heartBeat = characteristic.getValue()[1];
             return new MiBandData(heartBeat);
-          } else if (alertUUID.equals(Consts.UUID_BUTTON_TOUCH)) {
+          } else if (alertUUID.equals(MiBandConstants.UUID_BUTTON_TOUCH)) {
             return new MiBandData(true);
           }
           return new MiBandData();
@@ -52,24 +51,24 @@ public class MiBandDevice implements HardwareObservable<MiBandData>, MiBandServi
   private Observable<Void> writeHeartBeatRequestInterval() {
     Observable<Void> setupNotificationsObservable =
         Observable.timer(5, TimeUnit.SECONDS).map(__ -> {
-          getNotifications(Consts.UUID_SERVICE_MIBAND2_SERVICE, Consts.UUID_BUTTON_TOUCH);
+          getNotifications(MiBandConstants.UUID_SERVICE_MIBAND2_SERVICE, MiBandConstants.UUID_BUTTON_TOUCH);
           Timber.d("setup to get touch notifications");
           return null;
         });
 
     Observable<Void> setupHeartRateObservable =
         Observable.timer(5, TimeUnit.SECONDS).map(__ -> {
-          getNotificationsWithDescriptor(Consts.UUID_SERVICE_HEARTBEAT,
-              Consts.UUID_NOTIFICATION_HEARTRATE,
-              Consts.UUID_DESCRIPTOR_UPDATE_NOTIFICATION);
+          getNotificationsWithDescriptor(MiBandConstants.UUID_SERVICE_HEARTBEAT,
+              MiBandConstants.UUID_NOTIFICATION_HEARTRATE,
+              MiBandConstants.UUID_DESCRIPTOR_UPDATE_NOTIFICATION);
           Timber.d("setup to get heart rate data");
           return null;
         });
 
     Observable<Void> sendHearRateReadRequests =
         Observable.interval(15, TimeUnit.SECONDS).map(__ -> {
-          writeData(Consts.UUID_SERVICE_HEARTBEAT,
-              Consts.UUID_START_HEARTRATE_CONTROL_POINT, Consts.BYTE_NEW_HEART_RATE_SCAN);
+          writeData(MiBandConstants.UUID_SERVICE_HEARTBEAT,
+              MiBandConstants.UUID_START_HEARTRATE_CONTROL_POINT, MiBandConstants.BYTE_NEW_HEART_RATE_SCAN);
           return null;
         });
 

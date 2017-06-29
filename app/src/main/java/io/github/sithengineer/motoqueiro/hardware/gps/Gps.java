@@ -1,9 +1,8 @@
-package io.github.sithengineer.motoqueiro.hardware;
+package io.github.sithengineer.motoqueiro.hardware.gps;
 
 import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
-import android.os.Bundle;
+import io.github.sithengineer.motoqueiro.hardware.HardwareObservable;
 import io.github.sithengineer.motoqueiro.hardware.capture.LatLng;
 import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
@@ -41,28 +40,5 @@ public class Gps implements HardwareObservable<LatLng> {
       locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 300L, 0.3f,
           listener);
     });
-  }
-
-  public static class GpsStateListener implements LocationListener {
-
-    @Override public void onLocationChanged(Location location) {
-      // does nothing
-    }
-
-    @Override public void onStatusChanged(String s, int i, Bundle bundle) {
-      // does nothing
-    }
-
-    @Override public void onProviderEnabled(String s) {
-      Timber.i("location provider enabled");
-    }
-
-    @Override public void onProviderDisabled(String s) {
-      Timber.w("location provider disabled");
-    }
-
-    public boolean isLocationServiceActive(LocationManager locationManager) {
-      return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-    }
   }
 }

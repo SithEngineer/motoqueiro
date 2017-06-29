@@ -49,15 +49,15 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
     // set response cache
     return new OkHttpClient.Builder().addInterceptor(maxAgeInterceptor)
         .addInterceptor(accountInterceptor)
-        .connectTimeout(2, TimeUnit.MINUTES)
-        .writeTimeout(4, TimeUnit.MINUTES)
-        .readTimeout(2, TimeUnit.MINUTES)
+        .connectTimeout(500, TimeUnit.MILLISECONDS)
+        .writeTimeout(1, TimeUnit.MINUTES)
+        .readTimeout(1, TimeUnit.MINUTES)
         .cache(cache)
         .build();
   }
 
   @Provides @Singleton Retrofit providesRetrofit(Gson gson, OkHttpClient okHttpClient) {
-    return new Retrofit.Builder().baseUrl(BuildConfig.BASEURL)
+    return new Retrofit.Builder().baseUrl(BuildConfig.WS_URL)
         .client(okHttpClient)
         .addConverterFactory(GsonConverterFactory.create(gson))
         .addConverterFactory(ScalarsConverterFactory.create())
@@ -81,7 +81,7 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
           .header("Content-Type", "application/json")
           .removeHeader("Pragma")
           .header("Cache-Control",
-              String.format(Locale.ENGLISH, "max-age=%d", BuildConfig.CACHETIME))
+              String.format(Locale.ENGLISH, "max-age=%d", BuildConfig.CACHE_TIME))
           .build();
 
       okhttp3.Response response = chain.proceed(request);

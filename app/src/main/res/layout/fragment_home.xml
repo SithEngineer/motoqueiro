@@ -50,7 +50,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/basic_padding"
-        android:text="@string/statistics_start_ride"
+        android:text="@string/statistics_view_start_ride"
         style="@style/DefaultButton"
         />
 
