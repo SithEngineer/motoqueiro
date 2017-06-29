@@ -8,11 +8,13 @@ public class StatisticsPresenter implements StatisticsContract.Presenter {
 
   private final StatisticsContract.View view;
   private final CompositeSubscriptionManager subscriptionManager;
+  private final StatisticsNavigator navigator;
 
-  public StatisticsPresenter(StatisticsContract.View view,
-      CompositeSubscriptionManager subscriptionManager) {
+  public StatisticsPresenter(StatisticsContract.View view, CompositeSubscriptionManager subscriptionManager,
+      StatisticsNavigator navigator) {
     this.view = view;
     this.subscriptionManager = subscriptionManager;
+    this.navigator = navigator;
   }
 
   @Override public void start() {
@@ -46,6 +48,6 @@ public class StatisticsPresenter implements StatisticsContract.Presenter {
   }
 
   @Override public void goHome() {
-    view.navigateToHome();
+    navigator.navigateToHome();
   }
 }

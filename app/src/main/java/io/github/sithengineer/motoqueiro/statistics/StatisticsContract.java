@@ -11,8 +11,6 @@ public interface StatisticsContract {
     void setUploadCompletedMessageVisible();
 
     Observable<Void> goHomeClick();
-
-    void navigateToHome();
   }
 
   interface Presenter extends io.github.sithengineer.motoqueiro.Presenter {

@@ -12,13 +12,19 @@ import io.github.sithengineer.motoqueiro.util.CompositeSubscriptionManager;
 @Module public class HomeModule {
 
   private final HomeContract.View view;
+  private final HomeNavigator homeNavigator;
 
-  public HomeModule(HomeContract.View view) {
+  public HomeModule(HomeContract.View view, HomeNavigator homeNavigator) {
     this.view = view;
+    this.homeNavigator = homeNavigator;
   }
 
   @Provides @ActivityScope HomeContract.View provideView() {
     return view;
+  }
+
+  @Provides @ActivityScope HomeNavigator provideNavigator() {
+    return homeNavigator;
   }
 
   @Provides @ActivityScope CompositeSubscriptionManager provideCompositeSubscriptionManager() {
@@ -32,7 +38,7 @@ import io.github.sithengineer.motoqueiro.util.CompositeSubscriptionManager;
 
   @Provides @ActivityScope HomeContract.Presenter providePresenter(HomeContract.View view,
       CompositeSubscriptionManager subscriptionManager, RideManager rideManager,
-      Preferences preferences) {
-    return new HomePresenter(view, subscriptionManager, rideManager, preferences);
+      Preferences preferences, HomeNavigator homeNavigator) {
+    return new HomePresenter(view, subscriptionManager, rideManager, preferences, homeNavigator);
   }
 }

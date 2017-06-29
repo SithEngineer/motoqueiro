@@ -13,12 +13,10 @@ import com.jakewharton.rxbinding.widget.RxTextView;
 import io.github.sithengineer.motoqueiro.BaseFragment;
 import io.github.sithengineer.motoqueiro.MotoqueiroApp;
 import io.github.sithengineer.motoqueiro.R;
-import io.github.sithengineer.motoqueiro.cruising.CruisingActivity;
 import javax.inject.Inject;
 import rx.Observable;
 
-public class HomeFragment extends BaseFragment<HomeContract.Presenter>
-    implements HomeContract.View {
+public class HomeFragment extends BaseFragment<HomeContract.Presenter> implements HomeContract.View {
 
   @BindView(R.id.miband_address_input_wrapper) TextInputLayout miBandAddressLayout;
   @BindView(R.id.miband_address_input) EditText miBandAddress;
@@ -38,7 +36,7 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter>
   @Override public void inject() {
     MotoqueiroApp.get(getContext())
         .createDataComponent()
-        .with(new HomeModule(this))
+        .with(new HomeModule(this, new HomeNavigator(getActivity())))
         .inject(this);
   }
 
@@ -56,19 +54,11 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter>
   }
 
   @Override public void showActivateGpsViewMessage() {
-    Snackbar.make(startButton, R.string.home_activateGps_snackbar, Snackbar.LENGTH_LONG)
-        .show();
-  }
-
-  @Override public void goToCruisingActivity(String rideId) {
-    Intent i = new Intent(getActivity(), CruisingActivity.class);
-    i.putExtra(CruisingActivity.EXTRA_RIDE_ID, rideId);
-    startActivity(i);
+    Snackbar.make(startButton, R.string.home_activateGps_snackbar, Snackbar.LENGTH_LONG).show();
   }
 
   @Override public void showGenericError() {
-    Snackbar.make(startButton, R.string.home_genericError_snackBar, Snackbar.LENGTH_LONG)
-        .show();
+    Snackbar.make(startButton, R.string.home_genericError_snackBar, Snackbar.LENGTH_LONG).show();
   }
 
   @Override public String getRideName() {

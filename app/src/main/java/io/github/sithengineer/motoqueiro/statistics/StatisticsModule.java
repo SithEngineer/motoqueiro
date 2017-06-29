@@ -9,18 +9,29 @@ import io.github.sithengineer.motoqueiro.util.CompositeSubscriptionManager;
 
   private final StatisticsContract.View view;
   private final CompositeSubscriptionManager subscriptionManager;
+  private final StatisticsNavigator navigator;
 
-  public StatisticsModule(StatisticsContract.View view) {
-    this(view, new CompositeSubscriptionManager());
+  public StatisticsModule(StatisticsContract.View view, StatisticsNavigator navigator) {
+    this(view, new CompositeSubscriptionManager(), navigator);
   }
 
-  public StatisticsModule(StatisticsContract.View view,
-      CompositeSubscriptionManager subscriptionManager) {
+  public StatisticsModule(StatisticsContract.View view, CompositeSubscriptionManager subscriptionManager,
+      StatisticsNavigator navigator) {
     this.view = view;
     this.subscriptionManager = subscriptionManager;
+    this.navigator = navigator;
   }
 
-  @Provides @ActivityScope StatisticsContract.Presenter providePresenter() {
-    return new StatisticsPresenter(view, subscriptionManager);
+  @Provides @ActivityScope StatisticsContract.View provideView() {
+    return view;
+  }
+
+  @Provides @ActivityScope StatisticsNavigator provideNavigator() {
+    return navigator;
+  }
+
+  @Provides @ActivityScope StatisticsContract.Presenter providePresenter(StatisticsContract.View view,
+      StatisticsNavigator statisticsNavigator) {
+    return new StatisticsPresenter(view, subscriptionManager, statisticsNavigator);
   }
 }

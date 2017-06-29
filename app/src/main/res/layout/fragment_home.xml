@@ -42,7 +42,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/basic_padding"
         android:text="@string/home_all_ready_textView"
-        style="@style/DefaultTextView"
+        style="@style/DefaultTextAppearance"
         />
 
     <Button

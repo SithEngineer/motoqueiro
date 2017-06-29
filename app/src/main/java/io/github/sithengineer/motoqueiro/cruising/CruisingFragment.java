@@ -1,7 +1,6 @@
 package io.github.sithengineer.motoqueiro.cruising;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.widget.Button;
@@ -11,12 +10,10 @@ import io.github.sithengineer.motoqueiro.BaseFragment;
 import io.github.sithengineer.motoqueiro.MotoqueiroApp;
 import io.github.sithengineer.motoqueiro.R;
 import io.github.sithengineer.motoqueiro.hardware.bluetooth.BluetoothModule;
-import io.github.sithengineer.motoqueiro.statistics.StatisticsActivity;
 import javax.inject.Inject;
 import rx.Observable;
 
-public class CruisingFragment extends BaseFragment<CruisingContract.Presenter>
-    implements CruisingContract.View {
+public class CruisingFragment extends BaseFragment<CruisingContract.Presenter> implements CruisingContract.View {
 
   @BindView(R.id.stop_button) Button stopButton;
   @Inject CruisingContract.Presenter presenter;
@@ -42,9 +39,8 @@ public class CruisingFragment extends BaseFragment<CruisingContract.Presenter>
       final Context context = getContext();
       MotoqueiroApp.get(context)
           .getRideComponent()
-          .with(new CruisingModule(this, rideId), new BluetoothModule(context))
+          .with(new CruisingModule(this, rideId, new CruisingNavigator(getActivity())), new BluetoothModule(context))
           .inject(this);
-
     } else {
       throw new IllegalStateException("Unable to start cruising without ride id");
     }
@@ -56,11 +52,5 @@ public class CruisingFragment extends BaseFragment<CruisingContract.Presenter>
 
   @Override public Observable<Void> stopClick() {
     return RxView.clicks(stopButton);
-  }
-
-  @Override public void goToStatistics(boolean uploadCompleted) {
-    Intent i = new Intent(getActivity(), StatisticsActivity.class);
-    i.putExtra(StatisticsActivity.EXTRA_UPLOAD_COMPLETE, uploadCompleted);
-    startActivity(i);
   }
 }

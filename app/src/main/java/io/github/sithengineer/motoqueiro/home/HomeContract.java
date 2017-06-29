@@ -17,8 +17,6 @@ public interface HomeContract {
 
     void showActivateGpsViewMessage();
 
-    void goToCruisingActivity(String rideId);
-
     void showGenericError();
 
     String getRideName();

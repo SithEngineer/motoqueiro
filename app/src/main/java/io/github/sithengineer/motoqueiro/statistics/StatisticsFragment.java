@@ -1,6 +1,5 @@
 package io.github.sithengineer.motoqueiro.statistics;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -11,13 +10,11 @@ import com.jakewharton.rxbinding.view.RxView;
 import io.github.sithengineer.motoqueiro.BaseFragment;
 import io.github.sithengineer.motoqueiro.MotoqueiroApp;
 import io.github.sithengineer.motoqueiro.R;
-import io.github.sithengineer.motoqueiro.home.HomeActivity;
 import javax.inject.Inject;
 import rx.Observable;
 import rx.Single;
 
-public class StatisticsFragment extends BaseFragment<StatisticsContract.Presenter>
-    implements StatisticsContract.View {
+public class StatisticsFragment extends BaseFragment<StatisticsContract.Presenter> implements StatisticsContract.View {
 
   @BindView(R.id.go_home_button) Button goHomeButton;
   @BindView(R.id.upload_completed_message) TextView uploadCompletedMessage;
@@ -39,7 +36,7 @@ public class StatisticsFragment extends BaseFragment<StatisticsContract.Presente
   @Override public void inject() {
     MotoqueiroApp.get(getContext())
         .getRideComponent()
-        .with(new StatisticsModule(this))
+        .with(new StatisticsModule(this, new StatisticsNavigator(getActivity())))
         .inject(this);
   }
 
@@ -48,8 +45,7 @@ public class StatisticsFragment extends BaseFragment<StatisticsContract.Presente
   }
 
   @Override protected void loadArguments(@Nullable Bundle args) {
-    uploadCompleted =
-        args != null && args.getBoolean(StatisticsActivity.EXTRA_UPLOAD_COMPLETE, false);
+    uploadCompleted = args != null && args.getBoolean(StatisticsActivity.EXTRA_UPLOAD_COMPLETE, false);
   }
 
   @Override public Single<Boolean> isUploadCompleted() {
@@ -62,10 +58,5 @@ public class StatisticsFragment extends BaseFragment<StatisticsContract.Presente
 
   @Override public Observable<Void> goHomeClick() {
     return RxView.clicks(goHomeButton);
-  }
-
-  @Override public void navigateToHome() {
-    Intent i = new Intent(getActivity(), HomeActivity.class);
-    startActivity(i);
   }
 }

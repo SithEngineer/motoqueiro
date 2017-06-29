@@ -17,16 +17,16 @@ public class HomePresenter implements HomeContract.Presenter {
   private final RideManager rideManager;
   private final Preferences preferences;
   private final Pattern macValidator;
+  private final HomeNavigator homeNavigator;
 
-  public HomePresenter(HomeContract.View view,
-      CompositeSubscriptionManager subscriptionManager, RideManager rideManager,
-      Preferences preferences) {
+  public HomePresenter(HomeContract.View view, CompositeSubscriptionManager subscriptionManager, RideManager rideManager,
+      Preferences preferences, HomeNavigator homeNavigator) {
     this.view = view;
     this.subscriptionManager = subscriptionManager;
     this.rideManager = rideManager;
     this.preferences = preferences;
-    macValidator = Pattern.compile(
-        "(([0-9A-Fa-f]{2}[-:]){5}[0-9A-Fa-f]{2})|(([0-9A-Fa-f]{4}.){2}[0-9A-Fa-f]{4})");
+    this.homeNavigator = homeNavigator;
+    macValidator = Pattern.compile("(([0-9A-Fa-f]{2}[-:]){5}[0-9A-Fa-f]{2})|(([0-9A-Fa-f]{4}.){2}[0-9A-Fa-f]{4})");
   }
 
   @Override public void start() {
@@ -40,15 +40,14 @@ public class HomePresenter implements HomeContract.Presenter {
   }
 
   private void watchMiBandAddressChange() {
-    Observable<Void> watchMiBandAddressChange =
-        view.getMiBandAddressChanges().doOnNext(address -> {
-          if (isValidBluetoothAddress(address)) {
-            view.cleanMiBandAddressError();
-            saveMiBandAddress(address);
-          } else {
-            view.showMiBandAddressError();
-          }
-        }).retry().map(__ -> null);
+    Observable<Void> watchMiBandAddressChange = view.getMiBandAddressChanges().doOnNext(address -> {
+      if (isValidBluetoothAddress(address)) {
+        view.cleanMiBandAddressError();
+        saveMiBandAddress(address);
+      } else {
+        view.showMiBandAddressError();
+      }
+    }).retry().map(__ -> null);
 
     subscriptionManager.add(view.lifecycle()
         .filter(event -> event == FragmentEvent.CREATE_VIEW)
@@ -59,19 +58,16 @@ public class HomePresenter implements HomeContract.Presenter {
   }
 
   private void handleStartClick() {
-    Observable<Void> handleStartClick = view.handleStartClick()
-        .flatMap(
-            __ -> view.getMiBandAddressChanges().first().toSingle().flatMap(address -> {
-              // fixme un-comment bluetooth address validation before continuing
-              //if (isValidBluetoothAddress(address)) {
-              return rideManager.start(view.getRideName()).doOnSuccess(rideId -> {
-                goToCruisingActivity(rideId);
-              });
-              //}
-              //return Single.just(address);
-            }).toObservable())
-        .onErrorResumeNext(err -> handleStartRideError(err).map(__ -> null))
-        .map(__ -> null);
+    Observable<Void> handleStartClick =
+        view.handleStartClick().flatMap(__ -> view.getMiBandAddressChanges().first().toSingle().flatMap(address -> {
+          // fixme un-comment bluetooth address validation before continuing
+          //if (isValidBluetoothAddress(address)) {
+          return rideManager.start(view.getRideName()).doOnSuccess(rideId -> {
+            homeNavigator.forward(rideId);
+          });
+          //}
+          //return Single.just(address);
+        }).toObservable()).onErrorResumeNext(err -> handleStartRideError(err).map(__ -> null)).map(__ -> null);
 
     subscriptionManager.add(view.lifecycle()
         .filter(event -> event == FragmentEvent.CREATE_VIEW)
@@ -90,8 +86,7 @@ public class HomePresenter implements HomeContract.Presenter {
   }
 
   private void showMiBandAddress() {
-    Completable showMiBandAddress = Completable.fromAction(
-        () -> view.showMiBandAddress(preferences.getMiBandAddressOrDefault()));
+    Completable showMiBandAddress = Completable.fromAction(() -> view.showMiBandAddress(preferences.getMiBandAddressOrDefault()));
 
     subscriptionManager.add(view.lifecycle()
         .filter(event -> event == FragmentEvent.CREATE_VIEW)
@@ -113,8 +108,7 @@ public class HomePresenter implements HomeContract.Presenter {
 
   private Observable<Void> sendToActivateGpsSettings() {
     return Completable.fromAction(() -> showActivateGpsViewMessage())
-        .andThen(Completable.timer(2, TimeUnit.SECONDS)
-            .doOnCompleted(() -> showActivateGpsView()))
+        .andThen(Completable.timer(2, TimeUnit.SECONDS).doOnCompleted(() -> showActivateGpsView()))
         .toObservable();
   }
 
@@ -124,9 +118,5 @@ public class HomePresenter implements HomeContract.Presenter {
 
   @Override public void showActivateGpsView() {
     view.sendToGpsSettings();
-  }
-
-  private void goToCruisingActivity(String rideId) {
-    view.goToCruisingActivity(rideId);
   }
 }

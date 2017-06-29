@@ -17,47 +17,48 @@ import javax.inject.Named;
 @Module public class CruisingModule {
 
   private final CruisingContract.View view;
+  private final CruisingNavigator cruisingNavigator;
   private final String rideId;
 
-  public CruisingModule(CruisingContract.View view, String rideId) {
+  public CruisingModule(CruisingContract.View view, String rideId, CruisingNavigator cruisingNavigator) {
     this.view = view;
     this.rideId = rideId;
+    this.cruisingNavigator = cruisingNavigator;
   }
 
   @Provides @ActivityScope CruisingContract.View provideView() {
     return view;
   }
 
+  @Provides @ActivityScope CruisingNavigator provideNavigator() {
+    return cruisingNavigator;
+  }
+
   @Provides @ActivityScope @Named(CruisingActivity.EXTRA_RIDE_ID) String provideRideId() {
     return rideId;
   }
 
-  @Provides @ActivityScope @Named(BluetoothModule.MI_BAND_ADDRESS)
-  String provideMiBandAddress(Preferences preferences) {
+  @Provides @ActivityScope @Named(BluetoothModule.MI_BAND_ADDRESS) String provideMiBandAddress(Preferences preferences) {
     return preferences.getMiBandAddressOrDefault();
   }
 
-  @Provides @ActivityScope
-  CompositeSubscriptionManager provideCompositeSubscriptionManager() {
+  @Provides @ActivityScope CompositeSubscriptionManager provideCompositeSubscriptionManager() {
     return new CompositeSubscriptionManager();
   }
 
-  @Provides @ActivityScope RideManager providesRideManager(
-      LocationManager locationManager, Gps.GpsStateListener locationListener,
+  @Provides @ActivityScope RideManager providesRideManager(LocationManager locationManager, Gps.GpsStateListener locationListener,
       RideRepository rideRepo) {
     return new RideManager(locationListener, locationManager, rideRepo);
   }
 
-  @Provides @ActivityScope DataManager providesDataManager(Accelerometer accelerometer,
-      Gps gps, MiBandService miBand, RideRepository rideRepo) {
+  @Provides @ActivityScope DataManager providesDataManager(Accelerometer accelerometer, Gps gps, MiBandService miBand,
+      RideRepository rideRepo) {
     return new DataManager(accelerometer, gps, miBand, rideRepo, rideId);
   }
 
-  @Provides @ActivityScope CruisingContract.Presenter provideCruisingPresenter(
-      CruisingContract.View view, CompositeSubscriptionManager subscriptionManager,
-      DataManager dataManager, RideManager rideManager,
-      @Named(CruisingActivity.EXTRA_RIDE_ID) String rideId) {
-    return new CruisingPresenter(view, subscriptionManager, dataManager, rideManager,
-        rideId);
+  @Provides @ActivityScope CruisingContract.Presenter provideCruisingPresenter(CruisingContract.View view,
+      CompositeSubscriptionManager subscriptionManager, DataManager dataManager, RideManager rideManager,
+      @Named(CruisingActivity.EXTRA_RIDE_ID) String rideId, CruisingNavigator navigator) {
+    return new CruisingPresenter(view, subscriptionManager, dataManager, rideManager, rideId, navigator);
   }
 }

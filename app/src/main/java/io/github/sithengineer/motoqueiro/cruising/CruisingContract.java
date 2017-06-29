@@ -7,8 +7,6 @@ import rx.Observable;
 public class CruisingContract {
   interface View extends BaseView {
     Observable<Void> stopClick();
-
-    void goToStatistics(boolean uploadCompleted);
   }
 
   interface Presenter extends io.github.sithengineer.motoqueiro.Presenter {

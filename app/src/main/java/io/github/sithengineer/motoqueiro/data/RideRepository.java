@@ -12,7 +12,6 @@ import timber.log.Timber;
 
 public class RideRepository {
   private final RideDataSource localDataSource;
-  // todo use this for remote sync
   private final RideDataSource remoteDataSource;
 
   public RideRepository(RideDataSource localDataSource, RideDataSource remoteDataSource) {
@@ -21,15 +20,12 @@ public class RideRepository {
   }
 
   public Single<String> startRide(@NonNull final String name) {
-    return generateRideId().flatMap(rideId -> {
-      RidePart ridePart =
-          new RidePart(rideId, name, System.currentTimeMillis(), 0, false, false);
-      return localDataSource.saveRide(ridePart).map(__ -> rideId);
-    });
+    return generateRideId().flatMap(rideId -> Single.just(new RidePart(rideId, name, System.currentTimeMillis(), 0, false, false))
+        .flatMap(ridePart -> localDataSource.saveRide(ridePart).map(__ -> rideId)));
   }
 
-  public Completable finishRide(String rideId) {
-    return localDataSource.markCompleted(rideId).toCompletable().andThen(sync());
+  public Single<Boolean> finishRide(String rideId) {
+    return localDataSource.markCompleted(rideId);
   }
 
   private Single<String> generateRideId() {
@@ -38,23 +34,17 @@ public class RideRepository {
 
   public Completable saveHeartRate(String rideId, int heartRate) {
     return Single.just(new HeartRatePoint(heartRate, System.currentTimeMillis()))
-        .flatMapCompletable(
-            heartRatePoint -> localDataSource.saveHeartRateData(rideId, heartRatePoint)
-                .toCompletable());
+        .flatMapCompletable(heartRatePoint -> localDataSource.saveHeartRateData(rideId, heartRatePoint).toCompletable());
   }
 
   public Completable saveGpsCoordinate(String rideId, double lat, double lng) {
     return Single.just(new GpsPoint(lat, lng, System.currentTimeMillis()))
-        .flatMapCompletable(
-            gpsPoint -> localDataSource.saveGpsData(rideId, gpsPoint).toCompletable());
+        .flatMapCompletable(gpsPoint -> localDataSource.saveGpsData(rideId, gpsPoint).toCompletable());
   }
 
-  public Completable saveAccelerometerCapture(String rideId, float xx, float yy,
-      float zz) {
+  public Completable saveAccelerometerCapture(String rideId, float xx, float yy, float zz) {
     return Single.just(new TriDimenPoint(xx, yy, zz, System.currentTimeMillis()))
-        .flatMapCompletable(
-            triDimenPoint -> localDataSource.saveAccelerometerData(rideId, triDimenPoint)
-                .toCompletable());
+        .flatMapCompletable(triDimenPoint -> localDataSource.saveAccelerometerData(rideId, triDimenPoint).toCompletable());
   }
 
   /**

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-  <style name="DefaultTextView" parent="TextAppearance.AppCompat">
+  <style name="DefaultTextAppearance" parent="TextAppearance.AppCompat">
     <item name="android:textAllCaps">true</item>
     <item name="android:textSize">@dimen/font_size</item>
     <item name="android:paddingEnd">@dimen/basic_padding</item>

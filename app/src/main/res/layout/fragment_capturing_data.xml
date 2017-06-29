@@ -20,7 +20,7 @@
       android:layout_above="@id/stop_button"
       android:layout_alignParentTop="true"
       android:text="@string/capturing_data"
-      style="@style/DefaultTextView"
+      style="@style/DefaultTextAppearance"
       />
 
 </RelativeLayout>

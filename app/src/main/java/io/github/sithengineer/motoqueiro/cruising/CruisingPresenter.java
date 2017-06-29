@@ -19,9 +19,8 @@ public class CruisingPresenter implements CruisingContract.Presenter {
   private RideManager rideManager;
   private String rideId;
 
-  public CruisingPresenter(CruisingContract.View view,
-      CompositeSubscriptionManager subscriptionManager, DataManager dataManager,
-      RideManager rideManager, String rideId) {
+  public CruisingPresenter(CruisingContract.View view, CompositeSubscriptionManager subscriptionManager, DataManager dataManager,
+      RideManager rideManager, String rideId, CruisingNavigator navigator) {
     this.view = view;
     this.subscriptionManager = subscriptionManager;
     this.dataManager = dataManager;
