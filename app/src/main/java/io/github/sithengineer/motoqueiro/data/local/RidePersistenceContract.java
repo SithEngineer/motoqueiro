@@ -35,6 +35,15 @@ public final class RidePersistenceContract {
     public static final String COLUMN_RIDE_ID = "ride_id";
   }
 
+  public static abstract class GyroscopeEntry implements BaseColumns {
+    public static final String TABLE_NAME = "gyroscope";
+    public static final String COLUMN_XX = "xx";
+    public static final String COLUMN_YY = "yy";
+    public static final String COLUMN_ZZ = "zz";
+    public static final String COLUMN_TIMESTAMP = "timestamp";
+    public static final String COLUMN_RIDE_ID = "ride_id";
+  }
+
   public static abstract class GpsEntry implements BaseColumns {
     public static final String TABLE_NAME = "gps";
     public static final String COLUMN_LAT = "lat";

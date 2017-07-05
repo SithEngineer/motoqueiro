@@ -12,6 +12,7 @@ class CruisingNavigator {
   }
 
   public void goToStatistics(boolean uploadCompleted) {
-    context.startActivity(StatisticsActivity.getNavigationIntent(context, uploadCompleted));
+    context.startActivity(
+        StatisticsActivity.getNavigationIntent(context, uploadCompleted));
   }
 }

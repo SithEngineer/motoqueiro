@@ -11,7 +11,7 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_alignParentBottom="true"
-      android:text="@string/stop"
+      android:text="@string/cruising_view_stop"
       style="@style/DefaultButton"
       />
   <LinearLayout
@@ -40,7 +40,7 @@
       android:layout_height="wrap_content"
       android:layout_above="@id/upload_view_group"
       android:layout_alignParentTop="true"
-      android:text="@string/capturing_data"
+      android:text="@string/cruising_view_capturing_data"
       style="@style/DefaultTextAppearance"
       />
 

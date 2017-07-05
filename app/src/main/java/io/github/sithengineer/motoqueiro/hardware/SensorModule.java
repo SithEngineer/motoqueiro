@@ -27,5 +27,4 @@ import io.github.sithengineer.motoqueiro.scope.RideScope;
   @Provides @RideScope GpsStateListener provideGpsStateListener() {
     return new GpsStateListener();
   }
-
 }

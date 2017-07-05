@@ -6,6 +6,8 @@ import dagger.Provides;
 import io.github.sithengineer.motoqueiro.app.Preferences;
 import io.github.sithengineer.motoqueiro.data.RideRepository;
 import io.github.sithengineer.motoqueiro.hardware.Accelerometer;
+import io.github.sithengineer.motoqueiro.hardware.Gravity;
+import io.github.sithengineer.motoqueiro.hardware.Gyroscope;
 import io.github.sithengineer.motoqueiro.hardware.MiBandService;
 import io.github.sithengineer.motoqueiro.hardware.bluetooth.BluetoothModule;
 import io.github.sithengineer.motoqueiro.hardware.gps.Gps;
@@ -21,7 +23,8 @@ import javax.inject.Named;
   private final CruisingNavigator cruisingNavigator;
   private final String rideId;
 
-  public CruisingModule(CruisingContract.View view, String rideId, CruisingNavigator cruisingNavigator) {
+  public CruisingModule(CruisingContract.View view, String rideId,
+      CruisingNavigator cruisingNavigator) {
     this.view = view;
     this.rideId = rideId;
     this.cruisingNavigator = cruisingNavigator;
@@ -39,27 +42,34 @@ import javax.inject.Named;
     return rideId;
   }
 
-  @Provides @ActivityScope @Named(BluetoothModule.MI_BAND_ADDRESS) String provideMiBandAddress(Preferences preferences) {
+  @Provides @ActivityScope @Named(BluetoothModule.MI_BAND_ADDRESS)
+  String provideMiBandAddress(Preferences preferences) {
     return preferences.getMiBandAddressOrDefault();
   }
 
-  @Provides @ActivityScope CompositeSubscriptionManager provideCompositeSubscriptionManager() {
+  @Provides @ActivityScope
+  CompositeSubscriptionManager provideCompositeSubscriptionManager() {
     return new CompositeSubscriptionManager();
   }
 
-  @Provides @ActivityScope RideManager providesRideManager(LocationManager locationManager, GpsStateListener locationListener,
+  @Provides @ActivityScope RideManager providesRideManager(
+      LocationManager locationManager, GpsStateListener locationListener,
       RideRepository rideRepo) {
     return new RideManager(locationListener, locationManager, rideRepo);
   }
 
-  @Provides @ActivityScope DataManager providesDataManager(Accelerometer accelerometer, Gps gps, MiBandService miBand,
+  @Provides @ActivityScope DataManager providesDataManager(Accelerometer accelerometer,
+      Gyroscope gyroscope, Gravity gravity, Gps gps, MiBandService miBand,
       RideRepository rideRepo) {
-    return new DataManager(accelerometer, gps, miBand, rideRepo, rideId);
+    return new DataManager(accelerometer, gyroscope, gravity, gps, miBand, rideRepo,
+        rideId);
   }
 
-  @Provides @ActivityScope CruisingContract.Presenter provideCruisingPresenter(CruisingContract.View view,
-      CompositeSubscriptionManager subscriptionManager, DataManager dataManager, RideManager rideManager,
+  @Provides @ActivityScope CruisingContract.Presenter provideCruisingPresenter(
+      CruisingContract.View view, CompositeSubscriptionManager subscriptionManager,
+      DataManager dataManager, RideManager rideManager,
       @Named(CruisingActivity.EXTRA_RIDE_ID) String rideId, CruisingNavigator navigator) {
-    return new CruisingPresenter(view, subscriptionManager, dataManager, rideManager, rideId, navigator);
+    return new CruisingPresenter(view, subscriptionManager, dataManager, rideManager,
+        rideId, navigator);
   }
 }

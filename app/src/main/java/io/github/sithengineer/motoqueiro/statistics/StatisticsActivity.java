@@ -21,15 +21,20 @@ public class StatisticsActivity extends BaseActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_content_frame);
 
-    StatisticsFragment fragment = (StatisticsFragment) getSupportFragmentManager().findFragmentById(R.id.content_frame);
+    StatisticsFragment fragment =
+        (StatisticsFragment) getSupportFragmentManager().findFragmentById(
+            R.id.content_frame);
 
     Intent intent = getIntent();
     if (fragment == null) {
-      boolean dataUploadComplete = intent != null && intent.getBooleanExtra(EXTRA_UPLOAD_COMPLETE, false);
+      boolean dataUploadComplete =
+          intent != null && intent.getBooleanExtra(EXTRA_UPLOAD_COMPLETE, false);
       fragment = StatisticsFragment.newInstance(dataUploadComplete);
 
       FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-      transaction.addToBackStack("statistics_activity_fragment").replace(R.id.content_frame, fragment).commit();
+      transaction.addToBackStack("statistics_activity_fragment")
+          .replace(R.id.content_frame, fragment)
+          .commit();
     }
   }
 }

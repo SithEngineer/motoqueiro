@@ -1,12 +1,14 @@
 package io.github.sithengineer.motoqueiro.network;
 
 import android.app.Application;
+import android.support.v4.util.Pair;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dagger.Module;
 import dagger.Provides;
 import io.github.sithengineer.motoqueiro.BuildConfig;
 import io.github.sithengineer.motoqueiro.authentication.AccountManager;
+import io.github.sithengineer.motoqueiro.util.VariableScrambler;
 import java.io.IOException;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
@@ -39,8 +41,9 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
   }
 
   @Provides @Singleton @Named("accountInterceptor")
-  Interceptor providesAccountInterceptor(AccountManager accountManager) {
-    return new AccountInfoInterceptor(accountManager);
+  Interceptor providesAccountInterceptor(AccountManager accountManager,
+      VariableScrambler scrambler) {
+    return new AccountInfoInterceptor(accountManager, scrambler);
   }
 
   @Provides @Singleton OkHttpClient providesHttpClient(
@@ -49,9 +52,9 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
     // set response cache
     return new OkHttpClient.Builder().addInterceptor(maxAgeInterceptor)
         .addInterceptor(accountInterceptor)
-        .connectTimeout(500, TimeUnit.MILLISECONDS)
-        .writeTimeout(1, TimeUnit.MINUTES)
-        .readTimeout(1, TimeUnit.MINUTES)
+        .connectTimeout(750, TimeUnit.MILLISECONDS)
+        .writeTimeout(2, TimeUnit.MINUTES)
+        .readTimeout(2, TimeUnit.MINUTES)
         .cache(cache)
         .build();
   }
@@ -94,16 +97,23 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
   private static class AccountInfoInterceptor implements Interceptor {
 
     private final AccountManager accountManager;
+    private final VariableScrambler scrambler;
 
-    public AccountInfoInterceptor(AccountManager accountManager) {
+    public AccountInfoInterceptor(AccountManager accountManager,
+        VariableScrambler scrambler) {
       this.accountManager = accountManager;
+      this.scrambler = scrambler;
     }
 
     @Override public okhttp3.Response intercept(Chain chain) throws IOException {
       Request original = chain.request();
 
+      Pair<String, String> scrambledData =
+          scrambler.scrambleUserId(accountManager.getUserSync().getId());
+
       Request request = original.newBuilder()
-          .header("X-User-Info", accountManager.getUserSync().getId())
+          .header("X-User-Info-1", scrambledData.first)
+          .header("X-User-Info-2", scrambledData.second)
           .build();
 
       return chain.proceed(request);

@@ -15,8 +15,8 @@ import io.github.sithengineer.motoqueiro.util.CompositeSubscriptionManager;
     this(view, new CompositeSubscriptionManager(), navigator);
   }
 
-  public StatisticsModule(StatisticsContract.View view, CompositeSubscriptionManager subscriptionManager,
-      StatisticsNavigator navigator) {
+  public StatisticsModule(StatisticsContract.View view,
+      CompositeSubscriptionManager subscriptionManager, StatisticsNavigator navigator) {
     this.view = view;
     this.subscriptionManager = subscriptionManager;
     this.navigator = navigator;
@@ -30,8 +30,8 @@ import io.github.sithengineer.motoqueiro.util.CompositeSubscriptionManager;
     return navigator;
   }
 
-  @Provides @ActivityScope StatisticsContract.Presenter providePresenter(StatisticsContract.View view,
-      StatisticsNavigator statisticsNavigator) {
+  @Provides @ActivityScope StatisticsContract.Presenter providePresenter(
+      StatisticsContract.View view, StatisticsNavigator statisticsNavigator) {
     return new StatisticsPresenter(view, subscriptionManager, statisticsNavigator);
   }
 }

@@ -14,7 +14,8 @@ import javax.inject.Inject;
 import rx.Observable;
 import rx.Single;
 
-public class StatisticsFragment extends BaseFragment<StatisticsContract.Presenter> implements StatisticsContract.View {
+public class StatisticsFragment extends BaseFragment<StatisticsContract.Presenter>
+    implements StatisticsContract.View {
 
   @BindView(R.id.go_home_button) Button goHomeButton;
   @BindView(R.id.upload_completed_message) TextView uploadCompletedMessage;
@@ -45,7 +46,8 @@ public class StatisticsFragment extends BaseFragment<StatisticsContract.Presente
   }
 
   @Override protected void loadArguments(@Nullable Bundle args) {
-    uploadCompleted = args != null && args.getBoolean(StatisticsActivity.EXTRA_UPLOAD_COMPLETE, false);
+    uploadCompleted =
+        args != null && args.getBoolean(StatisticsActivity.EXTRA_UPLOAD_COMPLETE, false);
   }
 
   @Override public Single<Boolean> isUploadCompleted() {

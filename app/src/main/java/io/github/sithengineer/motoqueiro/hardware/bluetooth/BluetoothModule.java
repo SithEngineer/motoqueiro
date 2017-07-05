@@ -30,7 +30,7 @@ import javax.inject.Named;
 
   @Provides @ActivityScope MiBandService provideMiBand(BluetoothAdapter bluetoothAdapter,
       @Named(MI_BAND_ADDRESS) String miBandAddress) {
-    if(!TextUtils.isEmpty(miBandAddress)){
+    if (!TextUtils.isEmpty(miBandAddress)) {
       BluetoothDevice device = bluetoothAdapter.getRemoteDevice(miBandAddress);
       return new MiBandDevice(context, device);
     }

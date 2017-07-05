@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="home_start_button">Começar</string>
+  <string name="home_all_ready_textView">Tudo pronto!\n\nClique em <b>Começar</b> para iniciar a sua viagem</string>
+  <string name="home_heart_rate_band_address_hint">(opcional) Tem uma MiBand? Insira o endereço MAC aqui!</string>
+  <string name="home_activate_gps">Active o GPS</string>
+  <string name="home_generic_error">Ocorreu um erro. Tente novamente mais tarde.</string>
+  <string name="home_rideName_editTextHint">(opcional) Dê um nome a esta viagem!</string>
+  <string name="home_need_all_permissions">Esta aplicação precisa de todas as permissões pedidas para funcionar.</string>
+  <string name="home_view_heart_rate_band_address_error">Endereço inválido</string>
+  <string name="cruising_view_capturing_data">A capturar dados.\nClique em <b>Parar</b> para terminar a sua viagem.</string>
+  <string name="cruising_view_stop">Parar</string>
+  <string name="cruising_view_saving_ride">A gravar dados…</string>
+  <string name="statistics_view_upload_completed">Dados gravados com sucesso.\n\nObrigado!</string>
+  <string name="statistics_view_start_ride">Começar uma nova viagem.</string>
+</resources>

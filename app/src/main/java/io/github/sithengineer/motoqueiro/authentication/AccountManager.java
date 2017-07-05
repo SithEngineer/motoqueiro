@@ -2,7 +2,6 @@ package io.github.sithengineer.motoqueiro.authentication;
 
 import android.accounts.Account;
 import io.github.sithengineer.motoqueiro.data.local.User;
-import rx.Observable;
 import timber.log.Timber;
 
 public class AccountManager {
@@ -16,7 +15,7 @@ public class AccountManager {
   protected static final String ACCOUNT = "dummyaccount";
   private final android.accounts.AccountManager androidAccountManager;
 
-  public AccountManager(android.accounts.AccountManager androidAccountManager, SecurityServices securityServices) {
+  public AccountManager(android.accounts.AccountManager androidAccountManager) {
     this.androidAccountManager = androidAccountManager;
   }
 
@@ -50,10 +49,5 @@ public class AccountManager {
       Timber.e(e);
     }
     return new User("", false);
-  }
-
-  public Observable<User> getUser() {
-    // todo
-    return Observable.just(getUserSync());
   }
 }

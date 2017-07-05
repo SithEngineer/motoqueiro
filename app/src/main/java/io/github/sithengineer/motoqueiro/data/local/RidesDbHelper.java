@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class RidesDbHelper extends SQLiteOpenHelper {
 
-  private static final int DB_VERSION = 1;
+  private static final int DB_VERSION = 2;
   private static final String DB_NAME = "rides.db";
 
   public RidesDbHelper(Context context) {
@@ -83,6 +83,31 @@ public class RidesDbHelper extends SQLiteOpenHelper {
         + " );";
     db.execSQL(createGravityTable);
 
+    final String createGyroscopeTable = "CREATE TABLE "
+        + RidePersistenceContract.GyroscopeEntry.TABLE_NAME
+        + " ("
+        + RidePersistenceContract.GyroscopeEntry._ID
+        + " INTEGER PRIMARY KEY,"
+        + RidePersistenceContract.GyroscopeEntry.COLUMN_XX
+        + " REAL,"
+        + RidePersistenceContract.GyroscopeEntry.COLUMN_YY
+        + " REAL,"
+        + RidePersistenceContract.GyroscopeEntry.COLUMN_ZZ
+        + " REAL,"
+        + RidePersistenceContract.GyroscopeEntry.COLUMN_TIMESTAMP
+        + " INTEGER,"
+        + RidePersistenceContract.GyroscopeEntry.COLUMN_RIDE_ID
+        + " TEXT,"
+        + " FOREIGN KEY("
+        + RidePersistenceContract.GyroscopeEntry.COLUMN_RIDE_ID
+        + ") REFERENCES "
+        + RidePersistenceContract.RideEntry.TABLE_NAME
+        + "("
+        + RidePersistenceContract.RideEntry._ID
+        + ")"
+        + " );";
+    db.execSQL(createGravityTable);
+
     final String createGpsTable = "CREATE TABLE "
         + RidePersistenceContract.GpsEntry.TABLE_NAME
         + " ("
@@ -129,7 +154,20 @@ public class RidesDbHelper extends SQLiteOpenHelper {
   }
 
   @Override public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-    // does nothing
+    // drops all tables and re-creates DB
+    String[] tables = new String[] {
+        RidePersistenceContract.HeartRateEntry.TABLE_NAME,
+        RidePersistenceContract.GpsEntry.TABLE_NAME,
+        RidePersistenceContract.GyroscopeEntry.TABLE_NAME,
+        RidePersistenceContract.GravityEntry.TABLE_NAME,
+        RidePersistenceContract.AccelerometerEntry.TABLE_NAME,
+        RidePersistenceContract.RideEntry.TABLE_NAME
+    };
+    for (final String table : tables) {
+      db.execSQL("DROP TABLE IF EXISTS " + table);
+    }
+
+    onCreate(db);
   }
 
   @Override public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {

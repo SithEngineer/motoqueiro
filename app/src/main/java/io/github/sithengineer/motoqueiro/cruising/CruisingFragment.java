@@ -14,7 +14,8 @@ import io.github.sithengineer.motoqueiro.hardware.bluetooth.BluetoothModule;
 import javax.inject.Inject;
 import rx.Observable;
 
-public class CruisingFragment extends BaseFragment<CruisingContract.Presenter> implements CruisingContract.View {
+public class CruisingFragment extends BaseFragment<CruisingContract.Presenter>
+    implements CruisingContract.View {
 
   @BindView(R.id.stop_button) Button stopButton;
   @BindView(R.id.upload_view_group) View uploadView;
@@ -41,7 +42,8 @@ public class CruisingFragment extends BaseFragment<CruisingContract.Presenter> i
       final Context context = getContext();
       MotoqueiroApp.get(context)
           .getRideComponent()
-          .with(new CruisingModule(this, rideId, new CruisingNavigator(getActivity())), new BluetoothModule(context))
+          .with(new CruisingModule(this, rideId, new CruisingNavigator(getActivity())),
+              new BluetoothModule(context))
           .inject(this);
     } else {
       throw new IllegalStateException("Unable to start cruising without ride id");

@@ -48,7 +48,7 @@ public class MotoqueiroApp extends android.app.Application {
         (AccountManager) getSystemService(Context.ACCOUNT_SERVICE);
 
     appComponent = DaggerAppComponent.builder()
-        .appModule(new AppModule(this, androidAccountManager))
+        .appModule(new AppModule(this, androidAccountManager, BuildConfig.MY_SECRET_KEY))
         .build();
   }
 

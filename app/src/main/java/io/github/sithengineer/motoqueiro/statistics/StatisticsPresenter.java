@@ -10,8 +10,8 @@ public class StatisticsPresenter implements StatisticsContract.Presenter {
   private final CompositeSubscriptionManager subscriptionManager;
   private final StatisticsNavigator navigator;
 
-  public StatisticsPresenter(StatisticsContract.View view, CompositeSubscriptionManager subscriptionManager,
-      StatisticsNavigator navigator) {
+  public StatisticsPresenter(StatisticsContract.View view,
+      CompositeSubscriptionManager subscriptionManager, StatisticsNavigator navigator) {
     this.view = view;
     this.subscriptionManager = subscriptionManager;
     this.navigator = navigator;

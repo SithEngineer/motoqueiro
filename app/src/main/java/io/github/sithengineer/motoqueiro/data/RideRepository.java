@@ -3,8 +3,9 @@ package io.github.sithengineer.motoqueiro.data;
 import android.support.annotation.NonNull;
 import io.github.sithengineer.motoqueiro.data.model.GpsPoint;
 import io.github.sithengineer.motoqueiro.data.model.HeartRatePoint;
-import io.github.sithengineer.motoqueiro.data.model.RidePart;
+import io.github.sithengineer.motoqueiro.data.model.Ride;
 import io.github.sithengineer.motoqueiro.data.model.TriDimenPoint;
+import java.util.Calendar;
 import java.util.UUID;
 import rx.Completable;
 import rx.Single;
@@ -20,7 +21,8 @@ public class RideRepository {
   }
 
   public Single<String> startRide(@NonNull final String name) {
-    return generateRideId().flatMap(rideId -> Single.just(new RidePart(rideId, name, System.currentTimeMillis(), 0, false, false))
+    return generateRideId().flatMap(rideId -> Single.just(
+        new Ride(rideId, name, Calendar.getInstance().getTimeInMillis(), 0, false, false))
         .flatMap(ridePart -> localDataSource.saveRide(ridePart).map(__ -> rideId)));
   }
 
@@ -33,18 +35,35 @@ public class RideRepository {
   }
 
   public Completable saveHeartRate(String rideId, int heartRate) {
-    return Single.just(new HeartRatePoint(heartRate, System.currentTimeMillis()))
-        .flatMapCompletable(heartRatePoint -> localDataSource.saveHeartRateData(rideId, heartRatePoint).toCompletable());
+    return Single.just(
+        new HeartRatePoint(heartRate, Calendar.getInstance().getTimeInMillis()))
+        .flatMapCompletable(
+            heartRatePoint -> localDataSource.saveHeartRateData(rideId, heartRatePoint)
+                .toCompletable());
   }
 
   public Completable saveGpsCoordinate(String rideId, double lat, double lng) {
-    return Single.just(new GpsPoint(lat, lng, System.currentTimeMillis()))
-        .flatMapCompletable(gpsPoint -> localDataSource.saveGpsData(rideId, gpsPoint).toCompletable());
+    return Single.just(new GpsPoint(lat, lng, Calendar.getInstance().getTimeInMillis()))
+        .flatMapCompletable(
+            gpsPoint -> localDataSource.saveGpsData(rideId, gpsPoint).toCompletable());
   }
 
-  public Completable saveAccelerometerCapture(String rideId, float xx, float yy, float zz) {
-    return Single.just(new TriDimenPoint(xx, yy, zz, System.currentTimeMillis()))
-        .flatMapCompletable(triDimenPoint -> localDataSource.saveAccelerometerData(rideId, triDimenPoint).toCompletable());
+  public Completable saveAccelerometerCapture(String rideId, float xx, float yy,
+      float zz) {
+    return Single.just(
+        new TriDimenPoint(xx, yy, zz, Calendar.getInstance().getTimeInMillis()))
+        .flatMapCompletable(
+            triDimenPoint -> localDataSource.saveAccelerometerData(rideId, triDimenPoint)
+                .toCompletable());
+  }
+
+  public Completable saveGyroscopeCapture(String rideId, float xx, float yy,
+      float zz) {
+    return Single.just(
+        new TriDimenPoint(xx, yy, zz, Calendar.getInstance().getTimeInMillis()))
+        .flatMapCompletable(
+            triDimenPoint -> localDataSource.saveGyroscopeData(rideId, triDimenPoint)
+                .toCompletable());
   }
 
   /**
@@ -62,5 +81,13 @@ public class RideRepository {
             .doOnError(err -> Timber.e(err)))
         .toList()
         .toCompletable();
+  }
+
+  public Completable saveGravityCapture(String rideId, float xx, float yy, float zz) {
+    return Single.just(
+        new TriDimenPoint(xx, yy, zz, Calendar.getInstance().getTimeInMillis()))
+        .flatMapCompletable(
+            triDimenPoint -> localDataSource.saveGravityData(rideId, triDimenPoint)
+                .toCompletable());
   }
 }

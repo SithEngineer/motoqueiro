@@ -17,7 +17,7 @@
           android:id="@+id/miband_address_input"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:hint="@string/home_mibandAdress_editTextHint"
+          android:hint="@string/home_heart_rate_band_address_hint"
           />
 
     </android.support.design.widget.TextInputLayout>
@@ -50,7 +50,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/basic_padding"
-        android:text="@string/statistics_view_start_ride"
+        android:text="@string/home_start_button"
         style="@style/DefaultButton"
         />
 

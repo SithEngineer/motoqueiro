@@ -13,11 +13,11 @@ import rx.Observable;
 import rx.subscriptions.Subscriptions;
 import timber.log.Timber;
 
-public class Accelerometer implements HardwareObservable<RelativeCoordinates> {
+public class Gravity implements HardwareObservable<RelativeCoordinates> {
 
   private final SensorManager sensorManager;
 
-  @Inject public Accelerometer(SensorManager sensorManager) {
+  @Inject public Gravity(SensorManager sensorManager) {
     this.sensorManager = sensorManager;
   }
 
@@ -30,10 +30,9 @@ public class Accelerometer implements HardwareObservable<RelativeCoordinates> {
   @Override public Observable<RelativeCoordinates> listen() {
     return Observable.create(subscriber -> {
       if (!subscriber.isUnsubscribed()) {
-        Sensor accelSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        if (accelSensor == null) {
-          subscriber.onError(
-              new SensorNotAvailableException("Accelerometer not available"));
+        Sensor gravitySensor = sensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY);
+        if (gravitySensor == null) {
+          subscriber.onError(new SensorNotAvailableException("Gyroscope not available"));
           return;
         }
         SensorEventListener listener = new SensorEventListener() {
@@ -42,7 +41,7 @@ public class Accelerometer implements HardwareObservable<RelativeCoordinates> {
               final RelativeCoordinates coordinates =
                   new RelativeCoordinates(sensorEvent.values[0], sensorEvent.values[1],
                       sensorEvent.values[2], sensorEvent.timestamp);
-              Timber.v("accelerometer: %s", coordinates.toString());
+              Timber.v("gravity: %s", coordinates.toString());
               subscriber.onNext(coordinates);
             }
           }
@@ -52,9 +51,9 @@ public class Accelerometer implements HardwareObservable<RelativeCoordinates> {
           }
         };
         subscriber.add(Subscriptions.create(() -> {
-          sensorManager.unregisterListener(listener, accelSensor);
+          sensorManager.unregisterListener(listener, gravitySensor);
         }));
-        sensorManager.registerListener(listener, accelSensor,
+        sensorManager.registerListener(listener, gravitySensor,
             SensorManager.SENSOR_DELAY_GAME);
       }
     });

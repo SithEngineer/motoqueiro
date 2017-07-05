@@ -38,7 +38,7 @@ public abstract class BaseFragment<P extends Presenter> extends RxFragment {
     return view;
   }
 
-  protected void loadArguments(@Nullable Bundle args){
+  protected void loadArguments(@Nullable Bundle args) {
     // optional method
   }
 

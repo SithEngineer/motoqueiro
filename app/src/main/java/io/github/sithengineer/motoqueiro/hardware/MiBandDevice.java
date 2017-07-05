@@ -51,7 +51,8 @@ public class MiBandDevice implements HardwareObservable<MiBandData>, MiBandServi
   private Observable<Void> writeHeartBeatRequestInterval() {
     Observable<Void> setupNotificationsObservable =
         Observable.timer(5, TimeUnit.SECONDS).map(__ -> {
-          getNotifications(MiBandConstants.UUID_SERVICE_MIBAND2_SERVICE, MiBandConstants.UUID_BUTTON_TOUCH);
+          getNotifications(MiBandConstants.UUID_SERVICE_MIBAND2_SERVICE,
+              MiBandConstants.UUID_BUTTON_TOUCH);
           Timber.d("setup to get touch notifications");
           return null;
         });
@@ -68,7 +69,8 @@ public class MiBandDevice implements HardwareObservable<MiBandData>, MiBandServi
     Observable<Void> sendHearRateReadRequests =
         Observable.interval(15, TimeUnit.SECONDS).map(__ -> {
           writeData(MiBandConstants.UUID_SERVICE_HEARTBEAT,
-              MiBandConstants.UUID_START_HEARTRATE_CONTROL_POINT, MiBandConstants.BYTE_NEW_HEART_RATE_SCAN);
+              MiBandConstants.UUID_START_HEARTRATE_CONTROL_POINT,
+              MiBandConstants.BYTE_NEW_HEART_RATE_SCAN);
           return null;
         });
 

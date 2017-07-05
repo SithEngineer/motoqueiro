@@ -12,11 +12,13 @@ import com.jakewharton.rxbinding.view.RxView;
 import com.jakewharton.rxbinding.widget.RxTextView;
 import io.github.sithengineer.motoqueiro.BaseFragment;
 import io.github.sithengineer.motoqueiro.MotoqueiroApp;
+import io.github.sithengineer.motoqueiro.PermissionAuthority;
 import io.github.sithengineer.motoqueiro.R;
 import javax.inject.Inject;
 import rx.Observable;
 
-public class HomeFragment extends BaseFragment<HomeContract.Presenter> implements HomeContract.View {
+public class HomeFragment extends BaseFragment<HomeContract.Presenter>
+    implements HomeContract.View {
 
   @BindView(R.id.miband_address_input_wrapper) TextInputLayout miBandAddressLayout;
   @BindView(R.id.miband_address_input) EditText miBandAddress;
@@ -36,7 +38,8 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
   @Override public void inject() {
     MotoqueiroApp.get(getContext())
         .createDataComponent()
-        .with(new HomeModule(this, new HomeNavigator(getActivity())))
+        .with(new HomeModule(this, new HomeNavigator(getActivity()),
+            (PermissionAuthority) getActivity()))
         .inject(this);
   }
 
@@ -54,11 +57,11 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
   }
 
   @Override public void showActivateGpsViewMessage() {
-    Snackbar.make(startButton, R.string.home_activateGps_snackbar, Snackbar.LENGTH_LONG).show();
+    Snackbar.make(startButton, R.string.home_activate_gps, Snackbar.LENGTH_LONG).show();
   }
 
   @Override public void showGenericError() {
-    Snackbar.make(startButton, R.string.home_genericError_snackBar, Snackbar.LENGTH_LONG).show();
+    Snackbar.make(startButton, R.string.home_generic_error, Snackbar.LENGTH_LONG).show();
   }
 
   @Override public String getRideName() {
@@ -74,10 +77,16 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
   }
 
   @Override public void showMiBandAddressError() {
-    miBandAddressLayout.setError(getString(R.string.mi_band_address_error));
+    miBandAddressLayout.setError(
+        getString(R.string.home_view_heart_rate_band_address_error));
   }
 
   @Override public void cleanMiBandAddressError() {
     miBandAddressLayout.setError(null);
+  }
+
+  @Override public void showGivePermissionsMessage() {
+    Snackbar.make(startButton, R.string.home_need_all_permissions, Snackbar.LENGTH_LONG)
+        .show();
   }
 }

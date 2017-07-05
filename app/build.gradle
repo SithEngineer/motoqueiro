@@ -22,13 +22,13 @@ android {
     }
   }
   compileSdkVersion rootProject.ext.compileSdkVersion
-  buildToolsVersion '26.0.0'
+  buildToolsVersion rootProject.ext.buildToolsVersion
   defaultConfig {
     applicationId "io.github.sithengineer.motoqueiro"
     minSdkVersion rootProject.ext.minSdkVersion
     targetSdkVersion rootProject.ext.compileSdkVersion
     versionCode 1
-    versionName "1.0"
+    versionName "0.1"
     testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
     //multiDexEnabled true
@@ -36,8 +36,8 @@ android {
     buildConfigField "int", "LIMIT", "100"
     buildConfigField "int", "CACHE_TIME", "432000" // 5days
 
-    buildConfigField "String", "WS_URL", "\"http://192.168.1.68:5000/api/\"" // home
-    //buildConfigField "String", "WS_URL", "\"http://192.168.1.27:5000/api/\"" // office
+    buildConfigField "String", "WS_URL", "\"http://192.168.1.68:5000/api/\""
+    buildConfigField "String", "MY_SECRET_KEY", "\"MY_SECRET_KEY\""
   }
   compileOptions {
     sourceCompatibility JavaVersion.VERSION_1_8
@@ -55,11 +55,11 @@ android {
     }
     release {
       minifyEnabled true
-      //      useProguard true
       shrinkResources true
       proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
       testProguardFiles getDefaultProguardFile('proguard-android.txt'),
           'proguardTest-rules.pro'
+      buildConfigField "String", "MY_SECRET_KEY", keystoreProperties['dataPassword']
       buildConfigField "String", "WS_URL", "\"http://motoqueiro.herokuapp.com/api/\""
       signingConfig signingConfigs.config
     }
@@ -101,7 +101,8 @@ android {
 
 dependencies {
   compile fileTree(include: ['*.jar'], dir: 'libs')
-  androidTestCompile("com.android.support.test.espresso:espresso-core:$rootProject.espressoVersion",
+  androidTestCompile(
+      "com.android.support.test.espresso:espresso-core:$rootProject.espressoVersion",
       {
         exclude group: 'com.android.support', module: 'support-annotations'
         exclude group: 'com.google.code.findbugs'

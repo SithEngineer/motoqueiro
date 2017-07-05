@@ -25,7 +25,10 @@ public interface HomeContract {
     Observable<String> getMiBandAddressChanges();
 
     void showMiBandAddressError();
+
     void cleanMiBandAddressError();
+
+    void showGivePermissionsMessage();
   }
 
   interface Presenter extends io.github.sithengineer.motoqueiro.Presenter {

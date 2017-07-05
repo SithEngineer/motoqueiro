@@ -17,12 +17,14 @@ import rx.Single;
  */
 public class RideManager {
 
-  private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+  private static final SimpleDateFormat DATE_FORMAT =
+      new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
   private final GpsStateListener locationListener;
   private final LocationManager locationManager;
   private final RideRepository rideRepo;
 
-  public RideManager(GpsStateListener locationListener, LocationManager locationManager, RideRepository rideRepo) {
+  public RideManager(GpsStateListener locationListener, LocationManager locationManager,
+      RideRepository rideRepo) {
     this.locationListener = locationListener;
     this.locationManager = locationManager;
     this.rideRepo = rideRepo;
@@ -55,15 +57,16 @@ public class RideManager {
 
   public Completable stop(String rideId) {
     return rideRepo.finishRide(rideId).flatMapCompletable(success -> {
-      if(success){
+      if (success) {
         return rideRepo.sync();
-      }else{
+      } else {
         return Completable.complete();
       }
     });
   }
 
   private Single<Boolean> isGpsActive() {
-    return Single.fromCallable(() -> locationListener.isLocationServiceActive(locationManager));
+    return Single.fromCallable(
+        () -> locationListener.isLocationServiceActive(locationManager));
   }
 }

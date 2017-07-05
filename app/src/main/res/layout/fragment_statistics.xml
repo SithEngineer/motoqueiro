@@ -19,8 +19,8 @@
       android:id="@+id/go_home_button"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:text="@string/statistics_view_start_ride"
       android:layout_alignParentBottom="true"
+      android:text="@string/statistics_view_start_ride"
       style="@style/DefaultButton"
       />
 </RelativeLayout>

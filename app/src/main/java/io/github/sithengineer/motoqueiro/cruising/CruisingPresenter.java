@@ -18,7 +18,8 @@ public class CruisingPresenter implements CruisingContract.Presenter {
   private RideManager rideManager;
   private String rideId;
 
-  public CruisingPresenter(CruisingContract.View view, CompositeSubscriptionManager subscriptionManager, DataManager dataManager,
+  public CruisingPresenter(CruisingContract.View view,
+      CompositeSubscriptionManager subscriptionManager, DataManager dataManager,
       RideManager rideManager, String rideId, CruisingNavigator navigator) {
     this.view = view;
     this.subscriptionManager = subscriptionManager;
@@ -52,9 +53,10 @@ public class CruisingPresenter implements CruisingContract.Presenter {
         .flatMap(__ -> view.stopClick()
             .doOnNext(__2 -> view.setStopButtonDisabled())
             .doOnNext(__2 -> view.showUploadView())
-            .flatMap(__2 -> stopCruising(rideId).doOnCompleted(() -> view.hideUploadView())
-                .doOnCompleted(() -> view.setStopButtonEnabled())
-                .toObservable())
+            .flatMap(
+                __2 -> stopCruising(rideId).doOnCompleted(() -> view.hideUploadView())
+                    .doOnCompleted(() -> view.setStopButtonEnabled())
+                    .toObservable())
             .retry())
         .compose(view.bindUntilEvent(FragmentEvent.DESTROY_VIEW))
         .subscribe(__ -> {
@@ -62,14 +64,17 @@ public class CruisingPresenter implements CruisingContract.Presenter {
   }
 
   @Override public Completable stopCruising(String rideId) {
-    return rideManager.stop(rideId).doOnCompleted(() -> navigator.goToStatistics(true)).doOnError(err -> {
-      Timber.e(err);
-      navigator.goToStatistics(false);
-    }).doOnTerminate(() -> {
-      // the user pressed stop button in this chain of events and at this point we
-      // already sync'ed the data with the server. we do not need to keep listening
-      // to sensor updates so cleaning all subscriptions (to sensors) will stop them
-      stop();
-    });
+    return rideManager.stop(rideId)
+        .doOnCompleted(() -> navigator.goToStatistics(true))
+        .doOnError(err -> {
+          Timber.e(err);
+          navigator.goToStatistics(false);
+        })
+        .doOnTerminate(() -> {
+          // the user pressed stop button in this chain of events and at this point we
+          // already sync'ed the data with the server. we do not need to keep listening
+          // to sensor updates so cleaning all subscriptions (to sensors) will stop them
+          stop();
+        });
   }
 }

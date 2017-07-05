@@ -12,7 +12,7 @@ public class StatisticsNavigator {
     this.context = context;
   }
 
-  public void navigateToHome(){
+  public void navigateToHome() {
     context.startActivity(HomeActivity.getNavigationIntent(context));
   }
 }

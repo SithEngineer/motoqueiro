@@ -2,7 +2,7 @@ package io.github.sithengineer.motoqueiro.data;
 
 import io.github.sithengineer.motoqueiro.data.model.GpsPoint;
 import io.github.sithengineer.motoqueiro.data.model.HeartRatePoint;
-import io.github.sithengineer.motoqueiro.data.model.RidePart;
+import io.github.sithengineer.motoqueiro.data.model.Ride;
 import io.github.sithengineer.motoqueiro.data.model.TriDimenPoint;
 import java.util.List;
 import rx.Completable;
@@ -21,6 +21,10 @@ public interface RideDataSource {
 
   Single<List<TriDimenPoint>> getAccelerometerData(String rideId);
 
+  Completable saveGyroscopeData(String rideId, List<TriDimenPoint> points);
+
+  Single<Long> saveGyroscopeData(String rideId, TriDimenPoint point);
+
   Completable saveGravityData(String rideId, List<TriDimenPoint> points);
 
   Single<Long> saveGravityData(String rideId, TriDimenPoint point);
@@ -33,13 +37,15 @@ public interface RideDataSource {
 
   Single<List<HeartRatePoint>> getHeartRateData(String rideId);
 
-  Single<Long> saveRide(RidePart ride);
+  Single<Long> saveRide(Ride ride);
 
-  Single<RidePart> getRide(String rideId);
+  Single<List<TriDimenPoint>> getGyroscopeData(String rideId);
+
+  Single<Ride> getRide(String rideId);
 
   Single<Boolean> markCompleted(String rideId);
 
-  Single<List<RidePart>> getCompletedRides();
+  Single<List<Ride>> getCompletedRides();
 
   Single<Boolean> markSynced(String rideId);
 }

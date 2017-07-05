@@ -3,7 +3,7 @@ package io.github.sithengineer.motoqueiro.data.remote;
 import io.github.sithengineer.motoqueiro.data.RideDataSource;
 import io.github.sithengineer.motoqueiro.data.model.GpsPoint;
 import io.github.sithengineer.motoqueiro.data.model.HeartRatePoint;
-import io.github.sithengineer.motoqueiro.data.model.RidePart;
+import io.github.sithengineer.motoqueiro.data.model.Ride;
 import io.github.sithengineer.motoqueiro.data.model.TriDimenPoint;
 import io.github.sithengineer.motoqueiro.network.RideWebService;
 import java.util.List;
@@ -45,6 +45,15 @@ public class RideRemoteDataSource implements RideDataSource {
   }
 
   @Override
+  public Completable saveGyroscopeData(String rideId, List<TriDimenPoint> points) {
+    return Completable.error(new NoSuchMethodException());
+  }
+
+  @Override public Single<Long> saveGyroscopeData(String rideId, TriDimenPoint point) {
+    return Single.error(new NoSuchMethodException());
+  }
+
+  @Override
   public Completable saveGravityData(String rideId, List<TriDimenPoint> points) {
     return Completable.error(new NoSuchMethodException());
   }
@@ -70,11 +79,15 @@ public class RideRemoteDataSource implements RideDataSource {
     return Single.error(new NoSuchMethodException());
   }
 
-  @Override public Single<Long> saveRide(RidePart ride) {
+  @Override public Single<Long> saveRide(Ride ride) {
     return rideWebService.upload(ride).toSingleDefault(0L);
   }
 
-  @Override public Single<RidePart> getRide(String rideId) {
+  @Override public Single<List<TriDimenPoint>> getGyroscopeData(String rideId) {
+    return Single.error(new NoSuchMethodException());
+  }
+
+  @Override public Single<Ride> getRide(String rideId) {
     return Single.error(new NoSuchMethodException());
   }
 
@@ -82,7 +95,7 @@ public class RideRemoteDataSource implements RideDataSource {
     return Single.error(new NoSuchMethodException());
   }
 
-  @Override public Single<List<RidePart>> getCompletedRides() {
+  @Override public Single<List<Ride>> getCompletedRides() {
     return Single.error(new NoSuchMethodException());
   }
 
