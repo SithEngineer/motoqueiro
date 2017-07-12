@@ -5,6 +5,7 @@ import dagger.Module;
 import dagger.Provides;
 import io.github.sithengineer.motoqueiro.PermissionAuthority;
 import io.github.sithengineer.motoqueiro.app.Preferences;
+import io.github.sithengineer.motoqueiro.data.RideManager;
 import io.github.sithengineer.motoqueiro.data.RideRepository;
 import io.github.sithengineer.motoqueiro.hardware.gps.GpsStateListener;
 import io.github.sithengineer.motoqueiro.scope.ActivityScope;

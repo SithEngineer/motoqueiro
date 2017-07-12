@@ -53,7 +53,7 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
     return new OkHttpClient.Builder().addInterceptor(maxAgeInterceptor)
         .addInterceptor(accountInterceptor)
         .connectTimeout(750, TimeUnit.MILLISECONDS)
-        .writeTimeout(2, TimeUnit.MINUTES)
+        .writeTimeout(5, TimeUnit.MINUTES)
         .readTimeout(2, TimeUnit.MINUTES)
         .cache(cache)
         .build();

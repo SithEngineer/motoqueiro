@@ -6,6 +6,7 @@ import com.trello.rxlifecycle.android.FragmentEvent;
 import io.github.sithengineer.motoqueiro.PermissionAuthority;
 import io.github.sithengineer.motoqueiro.PermissionResponse;
 import io.github.sithengineer.motoqueiro.app.Preferences;
+import io.github.sithengineer.motoqueiro.data.RideManager;
 import io.github.sithengineer.motoqueiro.exception.GpsNotActiveException;
 import io.github.sithengineer.motoqueiro.util.CompositeSubscriptionManager;
 import java.util.List;

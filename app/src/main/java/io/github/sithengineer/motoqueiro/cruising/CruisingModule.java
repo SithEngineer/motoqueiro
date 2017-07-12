@@ -12,7 +12,7 @@ import io.github.sithengineer.motoqueiro.hardware.MiBandService;
 import io.github.sithengineer.motoqueiro.hardware.bluetooth.BluetoothModule;
 import io.github.sithengineer.motoqueiro.hardware.gps.Gps;
 import io.github.sithengineer.motoqueiro.hardware.gps.GpsStateListener;
-import io.github.sithengineer.motoqueiro.home.RideManager;
+import io.github.sithengineer.motoqueiro.data.RideManager;
 import io.github.sithengineer.motoqueiro.scope.ActivityScope;
 import io.github.sithengineer.motoqueiro.util.CompositeSubscriptionManager;
 import javax.inject.Named;

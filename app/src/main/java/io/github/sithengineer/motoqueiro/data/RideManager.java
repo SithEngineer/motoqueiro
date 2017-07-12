@@ -1,9 +1,8 @@
-package io.github.sithengineer.motoqueiro.home;
+package io.github.sithengineer.motoqueiro.data;
 
 import android.location.LocationManager;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import io.github.sithengineer.motoqueiro.data.RideRepository;
 import io.github.sithengineer.motoqueiro.exception.GpsNotActiveException;
 import io.github.sithengineer.motoqueiro.hardware.gps.GpsStateListener;
 import java.text.SimpleDateFormat;

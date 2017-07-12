@@ -5768,6 +5768,7 @@ android.support.v4.util.MapCollections$ValuesCollection -> android.support.v4.h.
 android.support.v4.util.Pair -> android.support.v4.h.i:
     java.lang.Object first -> a
     java.lang.Object second -> b
+    void <init>(java.lang.Object,java.lang.Object) -> <init>
     boolean equals(java.lang.Object) -> equals
     boolean objectsEqual(java.lang.Object,java.lang.Object) -> a
     int hashCode() -> hashCode
@@ -18138,18 +18139,18 @@ io.github.sithengineer.motoqueiro.app.AppComponent -> io.github.sithengineer.mot
 io.github.sithengineer.motoqueiro.app.AppModule -> io.github.sithengineer.motoqueiro.a.b:
     android.app.Application application -> a
     android.accounts.AccountManager androidAccountManager -> b
-    void <init>(android.app.Application,android.accounts.AccountManager) -> <init>
+    java.lang.String mySecretKey -> c
+    void <init>(android.app.Application,android.accounts.AccountManager,java.lang.String) -> <init>
     android.app.Application providesApplication() -> a
     io.github.sithengineer.motoqueiro.app.Preferences providesSharedPrefs() -> b
-    io.github.sithengineer.motoqueiro.authentication.SecurityServices providesSecurityServices() -> c
-    io.github.sithengineer.motoqueiro.authentication.AccountManager providesAccountManager(io.github.sithengineer.motoqueiro.authentication.SecurityServices) -> a
+    io.github.sithengineer.motoqueiro.util.VariableScrambler providesVariableScrambler() -> c
+    io.github.sithengineer.motoqueiro.authentication.AccountManager providesAccountManager() -> d
 io.github.sithengineer.motoqueiro.app.AppModule_ProvidesAccountManagerFactory -> io.github.sithengineer.motoqueiro.a.c:
     io.github.sithengineer.motoqueiro.app.AppModule module -> b
-    javax.inject.Provider securityServicesProvider -> c
     boolean $assertionsDisabled -> a
-    void <init>(io.github.sithengineer.motoqueiro.app.AppModule,javax.inject.Provider) -> <init>
+    void <init>(io.github.sithengineer.motoqueiro.app.AppModule) -> <init>
     io.github.sithengineer.motoqueiro.authentication.AccountManager get() -> b
-    dagger.internal.Factory create(io.github.sithengineer.motoqueiro.app.AppModule,javax.inject.Provider) -> a
+    dagger.internal.Factory create(io.github.sithengineer.motoqueiro.app.AppModule) -> a
     java.lang.Object get() -> a
     void <clinit>() -> <clinit>
 io.github.sithengineer.motoqueiro.app.AppModule_ProvidesApplicationFactory -> io.github.sithengineer.motoqueiro.a.d:
@@ -18160,15 +18161,7 @@ io.github.sithengineer.motoqueiro.app.AppModule_ProvidesApplicationFactory -> io
     dagger.internal.Factory create(io.github.sithengineer.motoqueiro.app.AppModule) -> a
     java.lang.Object get() -> a
     void <clinit>() -> <clinit>
-io.github.sithengineer.motoqueiro.app.AppModule_ProvidesSecurityServicesFactory -> io.github.sithengineer.motoqueiro.a.e:
-    io.github.sithengineer.motoqueiro.app.AppModule module -> b
-    boolean $assertionsDisabled -> a
-    void <init>(io.github.sithengineer.motoqueiro.app.AppModule) -> <init>
-    io.github.sithengineer.motoqueiro.authentication.SecurityServices get() -> b
-    dagger.internal.Factory create(io.github.sithengineer.motoqueiro.app.AppModule) -> a
-    java.lang.Object get() -> a
-    void <clinit>() -> <clinit>
-io.github.sithengineer.motoqueiro.app.AppModule_ProvidesSharedPrefsFactory -> io.github.sithengineer.motoqueiro.a.f:
+io.github.sithengineer.motoqueiro.app.AppModule_ProvidesSharedPrefsFactory -> io.github.sithengineer.motoqueiro.a.e:
     io.github.sithengineer.motoqueiro.app.AppModule module -> b
     boolean $assertionsDisabled -> a
     void <init>(io.github.sithengineer.motoqueiro.app.AppModule) -> <init>
@@ -18176,12 +18169,20 @@ io.github.sithengineer.motoqueiro.app.AppModule_ProvidesSharedPrefsFactory -> io
     dagger.internal.Factory create(io.github.sithengineer.motoqueiro.app.AppModule) -> a
     java.lang.Object get() -> a
     void <clinit>() -> <clinit>
+io.github.sithengineer.motoqueiro.app.AppModule_ProvidesVariableScramblerFactory -> io.github.sithengineer.motoqueiro.a.f:
+    io.github.sithengineer.motoqueiro.app.AppModule module -> b
+    boolean $assertionsDisabled -> a
+    void <init>(io.github.sithengineer.motoqueiro.app.AppModule) -> <init>
+    io.github.sithengineer.motoqueiro.util.VariableScrambler get() -> b
+    dagger.internal.Factory create(io.github.sithengineer.motoqueiro.app.AppModule) -> a
+    java.lang.Object get() -> a
+    void <clinit>() -> <clinit>
 io.github.sithengineer.motoqueiro.app.DaggerAppComponent -> io.github.sithengineer.motoqueiro.a.g:
     javax.inject.Provider providesSharedPrefsProvider -> b
     javax.inject.Provider providesGsonConfigurationProvider -> c
     javax.inject.Provider providesMaxAgeInterceptorProvider -> d
-    javax.inject.Provider providesSecurityServicesProvider -> e
-    javax.inject.Provider providesAccountManagerProvider -> f
+    javax.inject.Provider providesAccountManagerProvider -> e
+    javax.inject.Provider providesVariableScramblerProvider -> f
     javax.inject.Provider providesAccountInterceptorProvider -> g
     javax.inject.Provider providesApplicationProvider -> h
     javax.inject.Provider providesRetrofitCacheProvider -> i
@@ -18236,16 +18237,18 @@ io.github.sithengineer.motoqueiro.app.DaggerAppComponent$RideComponentImpl$Cruis
     javax.inject.Provider provideViewProvider -> d
     javax.inject.Provider provideCompositeSubscriptionManagerProvider -> e
     javax.inject.Provider accelerometerProvider -> f
-    javax.inject.Provider gpsProvider -> g
-    javax.inject.Provider provideBluetoothAdapterProvider -> h
-    javax.inject.Provider provideMiBandAddressProvider -> i
-    javax.inject.Provider provideMiBandProvider -> j
-    javax.inject.Provider providesDataManagerProvider -> k
-    javax.inject.Provider providesRideManagerProvider -> l
-    javax.inject.Provider provideRideIdProvider -> m
-    javax.inject.Provider provideNavigatorProvider -> n
-    javax.inject.Provider provideCruisingPresenterProvider -> o
-    dagger.MembersInjector cruisingFragmentMembersInjector -> p
+    javax.inject.Provider gyroscopeProvider -> g
+    javax.inject.Provider gravityProvider -> h
+    javax.inject.Provider gpsProvider -> i
+    javax.inject.Provider provideBluetoothAdapterProvider -> j
+    javax.inject.Provider provideMiBandAddressProvider -> k
+    javax.inject.Provider provideMiBandProvider -> l
+    javax.inject.Provider providesDataManagerProvider -> m
+    javax.inject.Provider providesRideManagerProvider -> n
+    javax.inject.Provider provideRideIdProvider -> o
+    javax.inject.Provider provideNavigatorProvider -> p
+    javax.inject.Provider provideCruisingPresenterProvider -> q
+    dagger.MembersInjector cruisingFragmentMembersInjector -> r
     io.github.sithengineer.motoqueiro.app.DaggerAppComponent$RideComponentImpl this$1 -> a
     void <init>(io.github.sithengineer.motoqueiro.app.DaggerAppComponent$RideComponentImpl,io.github.sithengineer.motoqueiro.cruising.CruisingModule,io.github.sithengineer.motoqueiro.hardware.bluetooth.BluetoothModule) -> <init>
     void initialize() -> a
@@ -18294,12 +18297,10 @@ io.github.sithengineer.motoqueiro.app.RideComponent -> io.github.sithengineer.mo
     io.github.sithengineer.motoqueiro.data.sync.SyncComponent with(io.github.sithengineer.motoqueiro.data.sync.SyncModule) -> a
 io.github.sithengineer.motoqueiro.authentication.AccountManager -> io.github.sithengineer.motoqueiro.b.a:
     android.accounts.AccountManager androidAccountManager -> a
-    void <init>(android.accounts.AccountManager,io.github.sithengineer.motoqueiro.authentication.SecurityServices) -> <init>
+    void <init>(android.accounts.AccountManager) -> <init>
     android.accounts.Account createSyncAccount() -> c
     android.accounts.Account getMainUserAccount() -> a
     io.github.sithengineer.motoqueiro.data.local.User getUserSync() -> b
-io.github.sithengineer.motoqueiro.authentication.SecurityServices -> io.github.sithengineer.motoqueiro.b.b:
-    void <init>() -> <init>
 io.github.sithengineer.motoqueiro.cruising.CruisingActivity -> io.github.sithengineer.motoqueiro.cruising.CruisingActivity:
     void <init>() -> <init>
     android.content.Intent getNavigationIntent(android.content.Context,java.lang.String) -> a
@@ -18353,7 +18354,7 @@ io.github.sithengineer.motoqueiro.cruising.CruisingModule -> io.github.sithengin
     java.lang.String provideMiBandAddress(io.github.sithengineer.motoqueiro.app.Preferences) -> a
     io.github.sithengineer.motoqueiro.util.CompositeSubscriptionManager provideCompositeSubscriptionManager() -> d
     io.github.sithengineer.motoqueiro.home.RideManager providesRideManager(android.location.LocationManager,io.github.sithengineer.motoqueiro.hardware.gps.GpsStateListener,io.github.sithengineer.motoqueiro.data.RideRepository) -> a
-    io.github.sithengineer.motoqueiro.cruising.DataManager providesDataManager(io.github.sithengineer.motoqueiro.hardware.Accelerometer,io.github.sithengineer.motoqueiro.hardware.gps.Gps,io.github.sithengineer.motoqueiro.hardware.MiBandService,io.github.sithengineer.motoqueiro.data.RideRepository) -> a
+    io.github.sithengineer.motoqueiro.cruising.DataManager providesDataManager(io.github.sithengineer.motoqueiro.hardware.Accelerometer,io.github.sithengineer.motoqueiro.hardware.Gyroscope,io.github.sithengineer.motoqueiro.hardware.Gravity,io.github.sithengineer.motoqueiro.hardware.gps.Gps,io.github.sithengineer.motoqueiro.hardware.MiBandService,io.github.sithengineer.motoqueiro.data.RideRepository) -> a
     io.github.sithengineer.motoqueiro.cruising.CruisingContract$Presenter provideCruisingPresenter(io.github.sithengineer.motoqueiro.cruising.CruisingContract$View,io.github.sithengineer.motoqueiro.util.CompositeSubscriptionManager,io.github.sithengineer.motoqueiro.cruising.DataManager,io.github.sithengineer.motoqueiro.home.RideManager,java.lang.String,io.github.sithengineer.motoqueiro.cruising.CruisingNavigator) -> a
 io.github.sithengineer.motoqueiro.cruising.CruisingModule_ProvideCompositeSubscriptionManagerFactory -> io.github.sithengineer.motoqueiro.cruising.e:
     io.github.sithengineer.motoqueiro.cruising.CruisingModule module -> b
@@ -18413,13 +18414,15 @@ io.github.sithengineer.motoqueiro.cruising.CruisingModule_ProvideViewFactory -> 
 io.github.sithengineer.motoqueiro.cruising.CruisingModule_ProvidesDataManagerFactory -> io.github.sithengineer.motoqueiro.cruising.k:
     io.github.sithengineer.motoqueiro.cruising.CruisingModule module -> b
     javax.inject.Provider accelerometerProvider -> c
-    javax.inject.Provider gpsProvider -> d
-    javax.inject.Provider miBandProvider -> e
-    javax.inject.Provider rideRepoProvider -> f
+    javax.inject.Provider gyroscopeProvider -> d
+    javax.inject.Provider gravityProvider -> e
+    javax.inject.Provider gpsProvider -> f
+    javax.inject.Provider miBandProvider -> g
+    javax.inject.Provider rideRepoProvider -> h
     boolean $assertionsDisabled -> a
-    void <init>(io.github.sithengineer.motoqueiro.cruising.CruisingModule,javax.inject.Provider,javax.inject.Provider,javax.inject.Provider,javax.inject.Provider) -> <init>
+    void <init>(io.github.sithengineer.motoqueiro.cruising.CruisingModule,javax.inject.Provider,javax.inject.Provider,javax.inject.Provider,javax.inject.Provider,javax.inject.Provider,javax.inject.Provider) -> <init>
     io.github.sithengineer.motoqueiro.cruising.DataManager get() -> b
-    dagger.internal.Factory create(io.github.sithengineer.motoqueiro.cruising.CruisingModule,javax.inject.Provider,javax.inject.Provider,javax.inject.Provider,javax.inject.Provider) -> a
+    dagger.internal.Factory create(io.github.sithengineer.motoqueiro.cruising.CruisingModule,javax.inject.Provider,javax.inject.Provider,javax.inject.Provider,javax.inject.Provider,javax.inject.Provider,javax.inject.Provider) -> a
     java.lang.Object get() -> a
     void <clinit>() -> <clinit>
 io.github.sithengineer.motoqueiro.cruising.CruisingModule_ProvidesRideManagerFactory -> io.github.sithengineer.motoqueiro.cruising.l:
@@ -18554,54 +18557,84 @@ io.github.sithengineer.motoqueiro.cruising.CruisingPresenter$$Lambda$9 -> io.git
     rx.functions.Action0 lambdaFactory$(io.github.sithengineer.motoqueiro.cruising.CruisingPresenter) -> a
 io.github.sithengineer.motoqueiro.cruising.DataManager -> io.github.sithengineer.motoqueiro.cruising.ae:
     io.github.sithengineer.motoqueiro.hardware.Accelerometer accelerometer -> a
-    io.github.sithengineer.motoqueiro.hardware.gps.Gps gps -> b
-    io.github.sithengineer.motoqueiro.hardware.MiBandService miBand -> c
-    io.github.sithengineer.motoqueiro.data.RideRepository rideRepo -> d
-    java.lang.String rideId -> e
-    void <init>(io.github.sithengineer.motoqueiro.hardware.Accelerometer,io.github.sithengineer.motoqueiro.hardware.gps.Gps,io.github.sithengineer.motoqueiro.hardware.MiBandService,io.github.sithengineer.motoqueiro.data.RideRepository,java.lang.String) -> <init>
+    io.github.sithengineer.motoqueiro.hardware.Gyroscope gyroscope -> b
+    io.github.sithengineer.motoqueiro.hardware.Gravity gravity -> c
+    io.github.sithengineer.motoqueiro.hardware.gps.Gps gps -> d
+    io.github.sithengineer.motoqueiro.hardware.MiBandService miBand -> e
+    io.github.sithengineer.motoqueiro.data.RideRepository rideRepo -> f
+    java.lang.String rideId -> g
+    void <init>(io.github.sithengineer.motoqueiro.hardware.Accelerometer,io.github.sithengineer.motoqueiro.hardware.Gyroscope,io.github.sithengineer.motoqueiro.hardware.Gravity,io.github.sithengineer.motoqueiro.hardware.gps.Gps,io.github.sithengineer.motoqueiro.hardware.MiBandService,io.github.sithengineer.motoqueiro.data.RideRepository,java.lang.String) -> <init>
     rx.Observable gatherData() -> a
     rx.Completable handleMiBandCapture(io.github.sithengineer.motoqueiro.hardware.capture.MiBandData) -> b
     rx.Completable handleGpsPositionCapture(io.github.sithengineer.motoqueiro.hardware.capture.LatLng) -> b
-    rx.Completable handleAccelerometerCapture(io.github.sithengineer.motoqueiro.hardware.capture.RelativeCoordinates) -> b
-    java.lang.Void lambda$gatherData$5(java.lang.Object) -> a
-    rx.Observable lambda$gatherData$4(io.github.sithengineer.motoqueiro.hardware.capture.MiBandData) -> a
-    java.lang.Void lambda$gatherData$3(java.lang.Object) -> b
-    rx.Observable lambda$gatherData$2(io.github.sithengineer.motoqueiro.hardware.capture.RelativeCoordinates) -> a
-    java.lang.Void lambda$gatherData$1(java.lang.Object) -> c
+    rx.Completable handleAccelerometerCapture(io.github.sithengineer.motoqueiro.hardware.capture.RelativeCoordinates) -> d
+    rx.Completable handleGravityCapture(io.github.sithengineer.motoqueiro.hardware.capture.RelativeCoordinates) -> e
+    rx.Completable handleGyroscopeCapture(io.github.sithengineer.motoqueiro.hardware.capture.RelativeCoordinates) -> f
+    java.lang.Void lambda$gatherData$9(java.lang.Object) -> a
+    rx.Observable lambda$gatherData$8(io.github.sithengineer.motoqueiro.hardware.capture.MiBandData) -> a
+    java.lang.Void lambda$gatherData$7(java.lang.Object) -> b
+    rx.Observable lambda$gatherData$6(io.github.sithengineer.motoqueiro.hardware.capture.RelativeCoordinates) -> a
+    java.lang.Void lambda$gatherData$5(java.lang.Object) -> c
+    rx.Observable lambda$gatherData$4(io.github.sithengineer.motoqueiro.hardware.capture.RelativeCoordinates) -> b
+    java.lang.Void lambda$gatherData$3(java.lang.Object) -> d
+    rx.Observable lambda$gatherData$2(io.github.sithengineer.motoqueiro.hardware.capture.RelativeCoordinates) -> c
+    java.lang.Void lambda$gatherData$1(java.lang.Object) -> e
     rx.Observable lambda$gatherData$0(io.github.sithengineer.motoqueiro.hardware.capture.LatLng) -> a
 io.github.sithengineer.motoqueiro.cruising.DataManager$$Lambda$1 -> io.github.sithengineer.motoqueiro.cruising.af:
     io.github.sithengineer.motoqueiro.cruising.DataManager arg$1 -> a
     void <init>(io.github.sithengineer.motoqueiro.cruising.DataManager) -> <init>
     java.lang.Object call(java.lang.Object) -> a
     rx.functions.Func1 lambdaFactory$(io.github.sithengineer.motoqueiro.cruising.DataManager) -> a
-io.github.sithengineer.motoqueiro.cruising.DataManager$$Lambda$2 -> io.github.sithengineer.motoqueiro.cruising.ag:
+io.github.sithengineer.motoqueiro.cruising.DataManager$$Lambda$10 -> io.github.sithengineer.motoqueiro.cruising.ag:
+    io.github.sithengineer.motoqueiro.cruising.DataManager$$Lambda$10 instance -> a
+    void <init>() -> <init>
+    java.lang.Object call(java.lang.Object) -> a
+    void <clinit>() -> <clinit>
+    rx.functions.Func1 lambdaFactory$() -> a
+io.github.sithengineer.motoqueiro.cruising.DataManager$$Lambda$2 -> io.github.sithengineer.motoqueiro.cruising.ah:
     io.github.sithengineer.motoqueiro.cruising.DataManager$$Lambda$2 instance -> a
     void <init>() -> <init>
     java.lang.Object call(java.lang.Object) -> a
     void <clinit>() -> <clinit>
     rx.functions.Func1 lambdaFactory$() -> a
-io.github.sithengineer.motoqueiro.cruising.DataManager$$Lambda$3 -> io.github.sithengineer.motoqueiro.cruising.ah:
+io.github.sithengineer.motoqueiro.cruising.DataManager$$Lambda$3 -> io.github.sithengineer.motoqueiro.cruising.ai:
     io.github.sithengineer.motoqueiro.cruising.DataManager arg$1 -> a
     void <init>(io.github.sithengineer.motoqueiro.cruising.DataManager) -> <init>
     java.lang.Object call(java.lang.Object) -> a
     rx.functions.Func1 lambdaFactory$(io.github.sithengineer.motoqueiro.cruising.DataManager) -> a
-io.github.sithengineer.motoqueiro.cruising.DataManager$$Lambda$4 -> io.github.sithengineer.motoqueiro.cruising.ai:
+io.github.sithengineer.motoqueiro.cruising.DataManager$$Lambda$4 -> io.github.sithengineer.motoqueiro.cruising.aj:
     io.github.sithengineer.motoqueiro.cruising.DataManager$$Lambda$4 instance -> a
     void <init>() -> <init>
     java.lang.Object call(java.lang.Object) -> a
     void <clinit>() -> <clinit>
     rx.functions.Func1 lambdaFactory$() -> a
-io.github.sithengineer.motoqueiro.cruising.DataManager$$Lambda$5 -> io.github.sithengineer.motoqueiro.cruising.aj:
+io.github.sithengineer.motoqueiro.cruising.DataManager$$Lambda$5 -> io.github.sithengineer.motoqueiro.cruising.ak:
     io.github.sithengineer.motoqueiro.cruising.DataManager arg$1 -> a
     void <init>(io.github.sithengineer.motoqueiro.cruising.DataManager) -> <init>
     java.lang.Object call(java.lang.Object) -> a
     rx.functions.Func1 lambdaFactory$(io.github.sithengineer.motoqueiro.cruising.DataManager) -> a
-io.github.sithengineer.motoqueiro.cruising.DataManager$$Lambda$6 -> io.github.sithengineer.motoqueiro.cruising.ak:
+io.github.sithengineer.motoqueiro.cruising.DataManager$$Lambda$6 -> io.github.sithengineer.motoqueiro.cruising.al:
     io.github.sithengineer.motoqueiro.cruising.DataManager$$Lambda$6 instance -> a
     void <init>() -> <init>
     java.lang.Object call(java.lang.Object) -> a
     void <clinit>() -> <clinit>
     rx.functions.Func1 lambdaFactory$() -> a
+io.github.sithengineer.motoqueiro.cruising.DataManager$$Lambda$7 -> io.github.sithengineer.motoqueiro.cruising.am:
+    io.github.sithengineer.motoqueiro.cruising.DataManager arg$1 -> a
+    void <init>(io.github.sithengineer.motoqueiro.cruising.DataManager) -> <init>
+    java.lang.Object call(java.lang.Object) -> a
+    rx.functions.Func1 lambdaFactory$(io.github.sithengineer.motoqueiro.cruising.DataManager) -> a
+io.github.sithengineer.motoqueiro.cruising.DataManager$$Lambda$8 -> io.github.sithengineer.motoqueiro.cruising.an:
+    io.github.sithengineer.motoqueiro.cruising.DataManager$$Lambda$8 instance -> a
+    void <init>() -> <init>
+    java.lang.Object call(java.lang.Object) -> a
+    void <clinit>() -> <clinit>
+    rx.functions.Func1 lambdaFactory$() -> a
+io.github.sithengineer.motoqueiro.cruising.DataManager$$Lambda$9 -> io.github.sithengineer.motoqueiro.cruising.ao:
+    io.github.sithengineer.motoqueiro.cruising.DataManager arg$1 -> a
+    void <init>(io.github.sithengineer.motoqueiro.cruising.DataManager) -> <init>
+    java.lang.Object call(java.lang.Object) -> a
+    rx.functions.Func1 lambdaFactory$(io.github.sithengineer.motoqueiro.cruising.DataManager) -> a
 io.github.sithengineer.motoqueiro.data.DataCaptureService -> io.github.sithengineer.motoqueiro.data.DataCaptureService:
     io.github.sithengineer.motoqueiro.data.DataCaptureService$StopSignalReceiver stopSignalReceiver -> a
     void <init>() -> <init>
@@ -18659,6 +18692,8 @@ io.github.sithengineer.motoqueiro.data.DataModule_ProvideRideRepositoryFactory -
 io.github.sithengineer.motoqueiro.data.RideDataSource -> io.github.sithengineer.motoqueiro.data.f:
     rx.Single saveGpsData(java.lang.String,io.github.sithengineer.motoqueiro.data.model.GpsPoint) -> a
     rx.Single saveAccelerometerData(java.lang.String,io.github.sithengineer.motoqueiro.data.model.TriDimenPoint) -> a
+    rx.Single saveGyroscopeData(java.lang.String,io.github.sithengineer.motoqueiro.data.model.TriDimenPoint) -> b
+    rx.Single saveGravityData(java.lang.String,io.github.sithengineer.motoqueiro.data.model.TriDimenPoint) -> c
     rx.Single saveHeartRateData(java.lang.String,io.github.sithengineer.motoqueiro.data.model.HeartRatePoint) -> a
     rx.Single saveRide(io.github.sithengineer.motoqueiro.data.model.Ride) -> a
     rx.Single markCompleted(java.lang.String) -> a
@@ -18674,13 +18709,17 @@ io.github.sithengineer.motoqueiro.data.RideRepository -> io.github.sithengineer.
     rx.Completable saveHeartRate(java.lang.String,int) -> a
     rx.Completable saveGpsCoordinate(java.lang.String,double,double) -> a
     rx.Completable saveAccelerometerCapture(java.lang.String,float,float,float) -> a
+    rx.Completable saveGyroscopeCapture(java.lang.String,float,float,float) -> b
     rx.Completable sync() -> a
-    rx.Single lambda$sync$10(io.github.sithengineer.motoqueiro.data.model.Ride) -> a
-    void lambda$null$9(java.lang.Throwable) -> a
-    rx.Single lambda$null$8(io.github.sithengineer.motoqueiro.data.model.Ride,java.lang.Long) -> a
-    java.lang.Boolean lambda$sync$7(io.github.sithengineer.motoqueiro.data.model.Ride) -> b
-    java.lang.Iterable lambda$sync$6(java.util.List) -> a
-    rx.Completable lambda$saveAccelerometerCapture$5(java.lang.String,io.github.sithengineer.motoqueiro.data.model.TriDimenPoint) -> a
+    rx.Completable saveGravityCapture(java.lang.String,float,float,float) -> c
+    rx.Completable lambda$saveGravityCapture$12(java.lang.String,io.github.sithengineer.motoqueiro.data.model.TriDimenPoint) -> a
+    rx.Single lambda$sync$11(io.github.sithengineer.motoqueiro.data.model.Ride) -> a
+    void lambda$null$10(java.lang.Throwable) -> a
+    rx.Single lambda$null$9(io.github.sithengineer.motoqueiro.data.model.Ride,java.lang.Long) -> a
+    java.lang.Boolean lambda$sync$8(io.github.sithengineer.motoqueiro.data.model.Ride) -> b
+    java.lang.Iterable lambda$sync$7(java.util.List) -> a
+    rx.Completable lambda$saveGyroscopeCapture$6(java.lang.String,io.github.sithengineer.motoqueiro.data.model.TriDimenPoint) -> b
+    rx.Completable lambda$saveAccelerometerCapture$5(java.lang.String,io.github.sithengineer.motoqueiro.data.model.TriDimenPoint) -> c
     rx.Completable lambda$saveGpsCoordinate$4(java.lang.String,io.github.sithengineer.motoqueiro.data.model.GpsPoint) -> a
     rx.Completable lambda$saveHeartRate$3(java.lang.String,io.github.sithengineer.motoqueiro.data.model.HeartRatePoint) -> a
     rx.Single lambda$startRide$2(java.lang.String,java.lang.String) -> a
@@ -18694,75 +18733,89 @@ io.github.sithengineer.motoqueiro.data.RideRepository$$Lambda$1 -> io.github.sit
     rx.functions.Func1 lambdaFactory$(io.github.sithengineer.motoqueiro.data.RideRepository,java.lang.String) -> a
 io.github.sithengineer.motoqueiro.data.RideRepository$$Lambda$10 -> io.github.sithengineer.motoqueiro.data.i:
     io.github.sithengineer.motoqueiro.data.RideRepository arg$1 -> a
+    io.github.sithengineer.motoqueiro.data.model.Ride arg$2 -> b
+    void <init>(io.github.sithengineer.motoqueiro.data.RideRepository,io.github.sithengineer.motoqueiro.data.model.Ride) -> <init>
+    java.lang.Object call(java.lang.Object) -> a
+    rx.functions.Func1 lambdaFactory$(io.github.sithengineer.motoqueiro.data.RideRepository,io.github.sithengineer.motoqueiro.data.model.Ride) -> a
+io.github.sithengineer.motoqueiro.data.RideRepository$$Lambda$11 -> io.github.sithengineer.motoqueiro.data.j:
+    io.github.sithengineer.motoqueiro.data.RideRepository$$Lambda$11 instance -> a
+    void <init>() -> <init>
+    void call(java.lang.Object) -> a
+    void <clinit>() -> <clinit>
+    rx.functions.Action1 lambdaFactory$() -> a
+io.github.sithengineer.motoqueiro.data.RideRepository$$Lambda$12 -> io.github.sithengineer.motoqueiro.data.k:
+    io.github.sithengineer.motoqueiro.data.RideRepository arg$1 -> a
     java.lang.String arg$2 -> b
     void <init>(io.github.sithengineer.motoqueiro.data.RideRepository,java.lang.String) -> <init>
     java.lang.Object call(java.lang.Object) -> a
     rx.functions.Func1 lambdaFactory$(io.github.sithengineer.motoqueiro.data.RideRepository,java.lang.String) -> a
-io.github.sithengineer.motoqueiro.data.RideRepository$$Lambda$11 -> io.github.sithengineer.motoqueiro.data.j:
+io.github.sithengineer.motoqueiro.data.RideRepository$$Lambda$13 -> io.github.sithengineer.motoqueiro.data.l:
     java.lang.String arg$1 -> a
     void <init>(java.lang.String) -> <init>
     java.lang.Object call(java.lang.Object) -> a
     rx.functions.Func1 lambdaFactory$(java.lang.String) -> a
-io.github.sithengineer.motoqueiro.data.RideRepository$$Lambda$2 -> io.github.sithengineer.motoqueiro.data.k:
+io.github.sithengineer.motoqueiro.data.RideRepository$$Lambda$2 -> io.github.sithengineer.motoqueiro.data.m:
     io.github.sithengineer.motoqueiro.data.RideRepository arg$1 -> a
     java.lang.String arg$2 -> b
     void <init>(io.github.sithengineer.motoqueiro.data.RideRepository,java.lang.String) -> <init>
     java.lang.Object call(java.lang.Object) -> a
     rx.functions.Func1 lambdaFactory$(io.github.sithengineer.motoqueiro.data.RideRepository,java.lang.String) -> a
-io.github.sithengineer.motoqueiro.data.RideRepository$$Lambda$3 -> io.github.sithengineer.motoqueiro.data.l:
+io.github.sithengineer.motoqueiro.data.RideRepository$$Lambda$3 -> io.github.sithengineer.motoqueiro.data.n:
     io.github.sithengineer.motoqueiro.data.RideRepository arg$1 -> a
     java.lang.String arg$2 -> b
     void <init>(io.github.sithengineer.motoqueiro.data.RideRepository,java.lang.String) -> <init>
     java.lang.Object call(java.lang.Object) -> a
     rx.functions.Func1 lambdaFactory$(io.github.sithengineer.motoqueiro.data.RideRepository,java.lang.String) -> a
-io.github.sithengineer.motoqueiro.data.RideRepository$$Lambda$4 -> io.github.sithengineer.motoqueiro.data.m:
+io.github.sithengineer.motoqueiro.data.RideRepository$$Lambda$4 -> io.github.sithengineer.motoqueiro.data.o:
     io.github.sithengineer.motoqueiro.data.RideRepository arg$1 -> a
     java.lang.String arg$2 -> b
     void <init>(io.github.sithengineer.motoqueiro.data.RideRepository,java.lang.String) -> <init>
     java.lang.Object call(java.lang.Object) -> a
     rx.functions.Func1 lambdaFactory$(io.github.sithengineer.motoqueiro.data.RideRepository,java.lang.String) -> a
-io.github.sithengineer.motoqueiro.data.RideRepository$$Lambda$5 -> io.github.sithengineer.motoqueiro.data.n:
-    io.github.sithengineer.motoqueiro.data.RideRepository$$Lambda$5 instance -> a
-    void <init>() -> <init>
+io.github.sithengineer.motoqueiro.data.RideRepository$$Lambda$5 -> io.github.sithengineer.motoqueiro.data.p:
+    io.github.sithengineer.motoqueiro.data.RideRepository arg$1 -> a
+    java.lang.String arg$2 -> b
+    void <init>(io.github.sithengineer.motoqueiro.data.RideRepository,java.lang.String) -> <init>
     java.lang.Object call(java.lang.Object) -> a
-    void <clinit>() -> <clinit>
-    rx.functions.Func1 lambdaFactory$() -> a
-io.github.sithengineer.motoqueiro.data.RideRepository$$Lambda$6 -> io.github.sithengineer.motoqueiro.data.o:
+    rx.functions.Func1 lambdaFactory$(io.github.sithengineer.motoqueiro.data.RideRepository,java.lang.String) -> a
+io.github.sithengineer.motoqueiro.data.RideRepository$$Lambda$6 -> io.github.sithengineer.motoqueiro.data.q:
     io.github.sithengineer.motoqueiro.data.RideRepository$$Lambda$6 instance -> a
     void <init>() -> <init>
     java.lang.Object call(java.lang.Object) -> a
     void <clinit>() -> <clinit>
     rx.functions.Func1 lambdaFactory$() -> a
-io.github.sithengineer.motoqueiro.data.RideRepository$$Lambda$7 -> io.github.sithengineer.motoqueiro.data.p:
+io.github.sithengineer.motoqueiro.data.RideRepository$$Lambda$7 -> io.github.sithengineer.motoqueiro.data.r:
+    io.github.sithengineer.motoqueiro.data.RideRepository$$Lambda$7 instance -> a
+    void <init>() -> <init>
+    java.lang.Object call(java.lang.Object) -> a
+    void <clinit>() -> <clinit>
+    rx.functions.Func1 lambdaFactory$() -> a
+io.github.sithengineer.motoqueiro.data.RideRepository$$Lambda$8 -> io.github.sithengineer.motoqueiro.data.s:
     io.github.sithengineer.motoqueiro.data.RideRepository arg$1 -> a
     void <init>(io.github.sithengineer.motoqueiro.data.RideRepository) -> <init>
     java.lang.Object call(java.lang.Object) -> a
     rx.functions.Func1 lambdaFactory$(io.github.sithengineer.motoqueiro.data.RideRepository) -> a
-io.github.sithengineer.motoqueiro.data.RideRepository$$Lambda$8 -> io.github.sithengineer.motoqueiro.data.q:
+io.github.sithengineer.motoqueiro.data.RideRepository$$Lambda$9 -> io.github.sithengineer.motoqueiro.data.t:
     io.github.sithengineer.motoqueiro.data.RideRepository arg$1 -> a
-    io.github.sithengineer.motoqueiro.data.model.Ride arg$2 -> b
-    void <init>(io.github.sithengineer.motoqueiro.data.RideRepository,io.github.sithengineer.motoqueiro.data.model.Ride) -> <init>
+    java.lang.String arg$2 -> b
+    void <init>(io.github.sithengineer.motoqueiro.data.RideRepository,java.lang.String) -> <init>
     java.lang.Object call(java.lang.Object) -> a
-    rx.functions.Func1 lambdaFactory$(io.github.sithengineer.motoqueiro.data.RideRepository,io.github.sithengineer.motoqueiro.data.model.Ride) -> a
-io.github.sithengineer.motoqueiro.data.RideRepository$$Lambda$9 -> io.github.sithengineer.motoqueiro.data.r:
-    io.github.sithengineer.motoqueiro.data.RideRepository$$Lambda$9 instance -> a
-    void <init>() -> <init>
-    void call(java.lang.Object) -> a
-    void <clinit>() -> <clinit>
-    rx.functions.Action1 lambdaFactory$() -> a
+    rx.functions.Func1 lambdaFactory$(io.github.sithengineer.motoqueiro.data.RideRepository,java.lang.String) -> a
 io.github.sithengineer.motoqueiro.data.local.Mapper -> io.github.sithengineer.motoqueiro.data.a.a:
-    rx.functions.Func5 CURSOR_TO_RIDE -> a
+    rx.functions.Func6 CURSOR_TO_RIDE -> a
     rx.functions.Func1 CURSOR_TO_GPS_POINT -> b
     rx.functions.Func1 CURSOR_TO_HEART_RATE_POINT -> c
     rx.functions.Func1 CURSOR_TO_ACCEL_POINT -> d
     rx.functions.Func1 CURSOR_TO_GRAVITY_POINT -> e
-    rx.functions.Func1 CURSOR_TO_RIDE_ID -> f
-    java.lang.String lambda$static$5(android.database.Cursor) -> a
-    io.github.sithengineer.motoqueiro.data.model.Ride lambda$static$4(android.database.Cursor,java.util.List,java.util.List,java.util.List,java.util.List) -> a
-    io.github.sithengineer.motoqueiro.data.model.TriDimenPoint lambda$static$3(android.database.Cursor) -> b
-    io.github.sithengineer.motoqueiro.data.model.TriDimenPoint lambda$static$2(android.database.Cursor) -> c
-    io.github.sithengineer.motoqueiro.data.model.HeartRatePoint lambda$static$1(android.database.Cursor) -> d
-    io.github.sithengineer.motoqueiro.data.model.GpsPoint lambda$static$0(android.database.Cursor) -> e
+    rx.functions.Func1 CURSOR_TO_GYROSCOPE_POINT -> f
+    rx.functions.Func1 CURSOR_TO_RIDE_ID -> g
+    java.lang.String lambda$static$6(android.database.Cursor) -> a
+    io.github.sithengineer.motoqueiro.data.model.Ride lambda$static$5(android.database.Cursor,java.util.List,java.util.List,java.util.List,java.util.List,java.util.List) -> a
+    io.github.sithengineer.motoqueiro.data.model.TriDimenPoint lambda$static$4(android.database.Cursor) -> b
+    io.github.sithengineer.motoqueiro.data.model.TriDimenPoint lambda$static$3(android.database.Cursor) -> c
+    io.github.sithengineer.motoqueiro.data.model.TriDimenPoint lambda$static$2(android.database.Cursor) -> d
+    io.github.sithengineer.motoqueiro.data.model.HeartRatePoint lambda$static$1(android.database.Cursor) -> e
+    io.github.sithengineer.motoqueiro.data.model.GpsPoint lambda$static$0(android.database.Cursor) -> f
     void <clinit>() -> <clinit>
 io.github.sithengineer.motoqueiro.data.local.Mapper$$Lambda$1 -> io.github.sithengineer.motoqueiro.data.a.b:
     io.github.sithengineer.motoqueiro.data.local.Mapper$$Lambda$1 instance -> a
@@ -18791,16 +18844,22 @@ io.github.sithengineer.motoqueiro.data.local.Mapper$$Lambda$4 -> io.github.sithe
 io.github.sithengineer.motoqueiro.data.local.Mapper$$Lambda$5 -> io.github.sithengineer.motoqueiro.data.a.f:
     io.github.sithengineer.motoqueiro.data.local.Mapper$$Lambda$5 instance -> a
     void <init>() -> <init>
-    java.lang.Object call(java.lang.Object,java.lang.Object,java.lang.Object,java.lang.Object,java.lang.Object) -> a
+    java.lang.Object call(java.lang.Object) -> a
     void <clinit>() -> <clinit>
-    rx.functions.Func5 lambdaFactory$() -> a
+    rx.functions.Func1 lambdaFactory$() -> a
 io.github.sithengineer.motoqueiro.data.local.Mapper$$Lambda$6 -> io.github.sithengineer.motoqueiro.data.a.g:
     io.github.sithengineer.motoqueiro.data.local.Mapper$$Lambda$6 instance -> a
+    void <init>() -> <init>
+    java.lang.Object call(java.lang.Object,java.lang.Object,java.lang.Object,java.lang.Object,java.lang.Object,java.lang.Object) -> a
+    void <clinit>() -> <clinit>
+    rx.functions.Func6 lambdaFactory$() -> a
+io.github.sithengineer.motoqueiro.data.local.Mapper$$Lambda$7 -> io.github.sithengineer.motoqueiro.data.a.h:
+    io.github.sithengineer.motoqueiro.data.local.Mapper$$Lambda$7 instance -> a
     void <init>() -> <init>
     java.lang.Object call(java.lang.Object) -> a
     void <clinit>() -> <clinit>
     rx.functions.Func1 lambdaFactory$() -> a
-io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource -> io.github.sithengineer.motoqueiro.data.a.h:
+io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource -> io.github.sithengineer.motoqueiro.data.a.i:
     com.squareup.sqlbrite.BriteDatabase databaseHelper -> a
     void <init>(android.content.Context,rx.Scheduler) -> <init>
     rx.Completable saveGpsData(java.lang.String,java.util.List) -> a
@@ -18809,49 +18868,52 @@ io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource -> io.github.si
     rx.Completable saveAccelerometerData(java.lang.String,java.util.List) -> b
     rx.Single saveAccelerometerData(java.lang.String,io.github.sithengineer.motoqueiro.data.model.TriDimenPoint) -> a
     rx.Single getAccelerometerData(java.lang.String) -> d
+    rx.Single saveGyroscopeData(java.lang.String,io.github.sithengineer.motoqueiro.data.model.TriDimenPoint) -> b
     rx.Completable saveGravityData(java.lang.String,java.util.List) -> c
-    rx.Single saveGravityData(java.lang.String,io.github.sithengineer.motoqueiro.data.model.TriDimenPoint) -> b
+    rx.Single saveGravityData(java.lang.String,io.github.sithengineer.motoqueiro.data.model.TriDimenPoint) -> c
     rx.Single getGravityData(java.lang.String) -> e
     rx.Completable saveHeartRateData(java.lang.String,java.util.List) -> d
     rx.Single saveHeartRateData(java.lang.String,io.github.sithengineer.motoqueiro.data.model.HeartRatePoint) -> a
     rx.Single getHeartRateData(java.lang.String) -> f
     rx.Single saveRide(io.github.sithengineer.motoqueiro.data.model.Ride) -> a
-    rx.Single getRide(java.lang.String) -> g
+    rx.Single getGyroscopeData(java.lang.String) -> g
+    rx.Single getRide(java.lang.String) -> h
     rx.Single markCompleted(java.lang.String) -> a
     rx.Single getCompletedRides() -> a
     rx.Single markSynced(java.lang.String) -> b
     rx.Single getRides(java.util.List) -> f
-    rx.Single markRideColumnTrue(java.lang.String,java.lang.String) -> b
     rx.Single getCompletedRideIds() -> b
-    java.lang.Boolean lambda$markRideColumnTrue$37(java.lang.String,java.lang.String) -> a
-    rx.Observable lambda$getRides$36(java.lang.String) -> h
-    rx.Single lambda$getCompletedRides$35(java.util.List) -> a
-    rx.Single lambda$getRide$34(rx.Single,rx.Single,rx.Single,rx.Single,com.squareup.sqlbrite.SqlBrite$Query) -> a
-    io.github.sithengineer.motoqueiro.data.model.Ride lambda$null$33(android.database.Cursor,java.util.List,java.util.List,java.util.List,java.util.List) -> a
-    rx.Single lambda$saveRide$32(io.github.sithengineer.motoqueiro.data.model.Ride,com.squareup.sqlbrite.BriteDatabase$Transaction) -> a
-    rx.Single lambda$null$31(io.github.sithengineer.motoqueiro.data.model.Ride,com.squareup.sqlbrite.BriteDatabase$Transaction,java.lang.Long) -> a
-    void lambda$null$30(com.squareup.sqlbrite.BriteDatabase$Transaction,java.lang.Throwable) -> a
-    void lambda$null$29(com.squareup.sqlbrite.BriteDatabase$Transaction) -> a
-    java.lang.Long lambda$null$28(io.github.sithengineer.motoqueiro.data.model.Ride) -> b
-    java.lang.Long lambda$saveHeartRateData$27(java.lang.String,io.github.sithengineer.motoqueiro.data.model.HeartRatePoint) -> b
-    rx.Completable lambda$saveHeartRateData$26(java.util.List,java.lang.String,com.squareup.sqlbrite.BriteDatabase$Transaction) -> a
-    void lambda$null$25(com.squareup.sqlbrite.BriteDatabase$Transaction,java.lang.Throwable) -> b
-    void lambda$null$24(com.squareup.sqlbrite.BriteDatabase$Transaction) -> b
-    void lambda$null$23(java.lang.String,io.github.sithengineer.motoqueiro.data.model.HeartRatePoint) -> c
-    java.lang.Iterable lambda$null$22(java.util.List) -> b
-    com.squareup.sqlbrite.BriteDatabase$Transaction lambda$saveHeartRateData$21(java.lang.String,java.util.List) -> e
-    java.lang.Long lambda$saveGravityData$20(java.lang.String,io.github.sithengineer.motoqueiro.data.model.TriDimenPoint) -> c
-    rx.Completable lambda$saveGravityData$19(java.util.List,java.lang.String,com.squareup.sqlbrite.BriteDatabase$Transaction) -> b
-    void lambda$null$18(com.squareup.sqlbrite.BriteDatabase$Transaction,java.lang.Throwable) -> c
-    void lambda$null$17(com.squareup.sqlbrite.BriteDatabase$Transaction) -> c
-    void lambda$null$16(java.lang.String,io.github.sithengineer.motoqueiro.data.model.TriDimenPoint) -> d
-    java.lang.Iterable lambda$null$15(java.util.List) -> c
-    com.squareup.sqlbrite.BriteDatabase$Transaction lambda$saveGravityData$14(java.lang.String,java.util.List) -> f
-    java.lang.Long lambda$saveAccelerometerData$13(java.lang.String,io.github.sithengineer.motoqueiro.data.model.TriDimenPoint) -> e
+    rx.Observable lambda$getRides$45(java.lang.String) -> i
+    java.lang.Boolean lambda$markSynced$44(java.lang.String) -> j
+    rx.Single lambda$getCompletedRides$43(java.util.List) -> a
+    java.lang.Boolean lambda$markCompleted$42(java.lang.String) -> k
+    rx.Single lambda$getRide$41(rx.Single,rx.Single,rx.Single,rx.Single,rx.Single,com.squareup.sqlbrite.SqlBrite$Query) -> a
+    io.github.sithengineer.motoqueiro.data.model.Ride lambda$null$40(android.database.Cursor,java.util.List,java.util.List,java.util.List,java.util.List,java.util.List) -> a
+    rx.Single lambda$saveRide$39(io.github.sithengineer.motoqueiro.data.model.Ride,com.squareup.sqlbrite.BriteDatabase$Transaction) -> a
+    rx.Single lambda$null$38(io.github.sithengineer.motoqueiro.data.model.Ride,com.squareup.sqlbrite.BriteDatabase$Transaction,java.lang.Long) -> a
+    void lambda$null$37(com.squareup.sqlbrite.BriteDatabase$Transaction,java.lang.Throwable) -> a
+    void lambda$null$36(com.squareup.sqlbrite.BriteDatabase$Transaction) -> a
+    java.lang.Long lambda$null$35(io.github.sithengineer.motoqueiro.data.model.Ride) -> b
+    java.lang.Long lambda$saveHeartRateData$34(java.lang.String,io.github.sithengineer.motoqueiro.data.model.HeartRatePoint) -> b
+    rx.Completable lambda$saveHeartRateData$33(java.util.List,java.lang.String,com.squareup.sqlbrite.BriteDatabase$Transaction) -> a
+    void lambda$null$32(com.squareup.sqlbrite.BriteDatabase$Transaction,java.lang.Throwable) -> b
+    void lambda$null$31(com.squareup.sqlbrite.BriteDatabase$Transaction) -> b
+    void lambda$null$30(java.lang.String,io.github.sithengineer.motoqueiro.data.model.HeartRatePoint) -> c
+    java.lang.Iterable lambda$null$29(java.util.List) -> b
+    com.squareup.sqlbrite.BriteDatabase$Transaction lambda$saveHeartRateData$28(java.lang.String,java.util.List) -> e
+    java.lang.Long lambda$saveGravityData$27(java.lang.String,io.github.sithengineer.motoqueiro.data.model.TriDimenPoint) -> d
+    rx.Completable lambda$saveGravityData$26(java.util.List,java.lang.String,com.squareup.sqlbrite.BriteDatabase$Transaction) -> b
+    void lambda$null$25(com.squareup.sqlbrite.BriteDatabase$Transaction,java.lang.Throwable) -> c
+    void lambda$null$24(com.squareup.sqlbrite.BriteDatabase$Transaction) -> c
+    void lambda$null$23(java.lang.String,io.github.sithengineer.motoqueiro.data.model.TriDimenPoint) -> e
+    java.lang.Iterable lambda$null$22(java.util.List) -> c
+    com.squareup.sqlbrite.BriteDatabase$Transaction lambda$saveGravityData$21(java.lang.String,java.util.List) -> f
+    java.lang.Long lambda$saveGyroscopeData$20(java.lang.String,io.github.sithengineer.motoqueiro.data.model.TriDimenPoint) -> f
+    java.lang.Long lambda$saveAccelerometerData$13(java.lang.String,io.github.sithengineer.motoqueiro.data.model.TriDimenPoint) -> g
     rx.Completable lambda$saveAccelerometerData$12(java.util.List,java.lang.String,com.squareup.sqlbrite.BriteDatabase$Transaction) -> c
     void lambda$null$11(com.squareup.sqlbrite.BriteDatabase$Transaction,java.lang.Throwable) -> d
     void lambda$null$10(com.squareup.sqlbrite.BriteDatabase$Transaction) -> d
-    void lambda$null$9(java.lang.String,io.github.sithengineer.motoqueiro.data.model.TriDimenPoint) -> f
+    void lambda$null$9(java.lang.String,io.github.sithengineer.motoqueiro.data.model.TriDimenPoint) -> h
     java.lang.Iterable lambda$null$8(java.util.List) -> d
     com.squareup.sqlbrite.BriteDatabase$Transaction lambda$saveAccelerometerData$7(java.lang.String,java.util.List) -> g
     java.lang.Long lambda$saveGpsData$6(java.lang.String,io.github.sithengineer.motoqueiro.data.model.GpsPoint) -> b
@@ -18861,20 +18923,13 @@ io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource -> io.github.si
     void lambda$null$2(java.lang.String,io.github.sithengineer.motoqueiro.data.model.GpsPoint) -> c
     java.lang.Iterable lambda$null$1(java.util.List) -> e
     com.squareup.sqlbrite.BriteDatabase$Transaction lambda$saveGpsData$0(java.lang.String,java.util.List) -> h
-io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource$$Lambda$1 -> io.github.sithengineer.motoqueiro.data.a.i:
+io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource$$Lambda$1 -> io.github.sithengineer.motoqueiro.data.a.j:
     io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource arg$1 -> a
     java.lang.String arg$2 -> b
     java.util.List arg$3 -> c
     void <init>(io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource,java.lang.String,java.util.List) -> <init>
     java.lang.Object call() -> call
     java.util.concurrent.Callable lambdaFactory$(io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource,java.lang.String,java.util.List) -> a
-io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource$$Lambda$10 -> io.github.sithengineer.motoqueiro.data.a.j:
-    io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource arg$1 -> a
-    java.util.List arg$2 -> b
-    java.lang.String arg$3 -> c
-    void <init>(io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource,java.util.List,java.lang.String) -> <init>
-    java.lang.Object call(java.lang.Object) -> a
-    rx.functions.Func1 lambdaFactory$(io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource,java.util.List,java.lang.String) -> a
 io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource$$Lambda$11 -> io.github.sithengineer.motoqueiro.data.a.k:
     io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource arg$1 -> a
     java.lang.String arg$2 -> b
@@ -18899,81 +18954,86 @@ io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource$$Lambda$13 -> i
 io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource$$Lambda$14 -> io.github.sithengineer.motoqueiro.data.a.n:
     io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource arg$1 -> a
     java.lang.String arg$2 -> b
+    io.github.sithengineer.motoqueiro.data.model.TriDimenPoint arg$3 -> c
+    void <init>(io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource,java.lang.String,io.github.sithengineer.motoqueiro.data.model.TriDimenPoint) -> <init>
+    java.lang.Object call() -> call
+    java.util.concurrent.Callable lambdaFactory$(io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource,java.lang.String,io.github.sithengineer.motoqueiro.data.model.TriDimenPoint) -> a
+io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource$$Lambda$15 -> io.github.sithengineer.motoqueiro.data.a.o:
+    io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource arg$1 -> a
+    java.lang.String arg$2 -> b
+    java.util.List arg$3 -> c
+    void <init>(io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource,java.lang.String,java.util.List) -> <init>
+    java.lang.Object call() -> call
+    java.util.concurrent.Callable lambdaFactory$(io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource,java.lang.String,java.util.List) -> a
+io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource$$Lambda$16 -> io.github.sithengineer.motoqueiro.data.a.p:
+    io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource arg$1 -> a
+    java.util.List arg$2 -> b
+    java.lang.String arg$3 -> c
+    void <init>(io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource,java.util.List,java.lang.String) -> <init>
+    java.lang.Object call(java.lang.Object) -> a
+    rx.functions.Func1 lambdaFactory$(io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource,java.util.List,java.lang.String) -> a
+io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource$$Lambda$17 -> io.github.sithengineer.motoqueiro.data.a.q:
+    io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource arg$1 -> a
+    java.lang.String arg$2 -> b
     io.github.sithengineer.motoqueiro.data.model.HeartRatePoint arg$3 -> c
     void <init>(io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource,java.lang.String,io.github.sithengineer.motoqueiro.data.model.HeartRatePoint) -> <init>
     java.lang.Object call() -> call
     java.util.concurrent.Callable lambdaFactory$(io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource,java.lang.String,io.github.sithengineer.motoqueiro.data.model.HeartRatePoint) -> a
-io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource$$Lambda$15 -> io.github.sithengineer.motoqueiro.data.a.o:
+io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource$$Lambda$18 -> io.github.sithengineer.motoqueiro.data.a.r:
     io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource arg$1 -> a
     io.github.sithengineer.motoqueiro.data.model.Ride arg$2 -> b
     void <init>(io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource,io.github.sithengineer.motoqueiro.data.model.Ride) -> <init>
     java.lang.Object call(java.lang.Object) -> a
     rx.functions.Func1 lambdaFactory$(io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource,io.github.sithengineer.motoqueiro.data.model.Ride) -> a
-io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource$$Lambda$16 -> io.github.sithengineer.motoqueiro.data.a.p:
+io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource$$Lambda$19 -> io.github.sithengineer.motoqueiro.data.a.s:
     rx.Single arg$1 -> a
     rx.Single arg$2 -> b
     rx.Single arg$3 -> c
     rx.Single arg$4 -> d
-    void <init>(rx.Single,rx.Single,rx.Single,rx.Single) -> <init>
+    rx.Single arg$5 -> e
+    void <init>(rx.Single,rx.Single,rx.Single,rx.Single,rx.Single) -> <init>
     java.lang.Object call(java.lang.Object) -> a
-    rx.functions.Func1 lambdaFactory$(rx.Single,rx.Single,rx.Single,rx.Single) -> a
-io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource$$Lambda$17 -> io.github.sithengineer.motoqueiro.data.a.q:
-    io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource arg$1 -> a
-    void <init>(io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource) -> <init>
-    java.lang.Object call(java.lang.Object) -> a
-    rx.functions.Func1 lambdaFactory$(io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource) -> a
-io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource$$Lambda$18 -> io.github.sithengineer.motoqueiro.data.a.r:
-    io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource arg$1 -> a
-    void <init>(io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource) -> <init>
-    java.lang.Object call(java.lang.Object) -> a
-    rx.functions.Func1 lambdaFactory$(io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource) -> a
-io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource$$Lambda$19 -> io.github.sithengineer.motoqueiro.data.a.s:
+    rx.functions.Func1 lambdaFactory$(rx.Single,rx.Single,rx.Single,rx.Single,rx.Single) -> a
+io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource$$Lambda$20 -> io.github.sithengineer.motoqueiro.data.a.t:
     io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource arg$1 -> a
     java.lang.String arg$2 -> b
-    java.lang.String arg$3 -> c
-    void <init>(io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource,java.lang.String,java.lang.String) -> <init>
+    void <init>(io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource,java.lang.String) -> <init>
     java.lang.Object call() -> call
-    java.util.concurrent.Callable lambdaFactory$(io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource,java.lang.String,java.lang.String) -> a
-io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource$$Lambda$20 -> io.github.sithengineer.motoqueiro.data.a.t:
+    java.util.concurrent.Callable lambdaFactory$(io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource,java.lang.String) -> a
+io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource$$Lambda$21 -> io.github.sithengineer.motoqueiro.data.a.u:
+    io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource arg$1 -> a
+    void <init>(io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource) -> <init>
+    java.lang.Object call(java.lang.Object) -> a
+    rx.functions.Func1 lambdaFactory$(io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource) -> a
+io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource$$Lambda$22 -> io.github.sithengineer.motoqueiro.data.a.v:
+    io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource arg$1 -> a
+    java.lang.String arg$2 -> b
+    void <init>(io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource,java.lang.String) -> <init>
+    java.lang.Object call() -> call
+    java.util.concurrent.Callable lambdaFactory$(io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource,java.lang.String) -> a
+io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource$$Lambda$23 -> io.github.sithengineer.motoqueiro.data.a.w:
+    io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource arg$1 -> a
+    void <init>(io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource) -> <init>
+    java.lang.Object call(java.lang.Object) -> a
+    rx.functions.Func1 lambdaFactory$(io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource) -> a
+io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource$$Lambda$24 -> io.github.sithengineer.motoqueiro.data.a.x:
     android.database.Cursor arg$1 -> a
     void <init>(android.database.Cursor) -> <init>
-    java.lang.Object call(java.lang.Object,java.lang.Object,java.lang.Object,java.lang.Object) -> a
-    rx.functions.Func4 lambdaFactory$(android.database.Cursor) -> a
-io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource$$Lambda$21 -> io.github.sithengineer.motoqueiro.data.a.u:
+    java.lang.Object call(java.lang.Object,java.lang.Object,java.lang.Object,java.lang.Object,java.lang.Object) -> a
+    rx.functions.Func5 lambdaFactory$(android.database.Cursor) -> a
+io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource$$Lambda$25 -> io.github.sithengineer.motoqueiro.data.a.y:
     io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource arg$1 -> a
     io.github.sithengineer.motoqueiro.data.model.Ride arg$2 -> b
     void <init>(io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource,io.github.sithengineer.motoqueiro.data.model.Ride) -> <init>
     java.lang.Object call() -> call
     java.util.concurrent.Callable lambdaFactory$(io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource,io.github.sithengineer.motoqueiro.data.model.Ride) -> a
-io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource$$Lambda$22 -> io.github.sithengineer.motoqueiro.data.a.v:
+io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource$$Lambda$26 -> io.github.sithengineer.motoqueiro.data.a.z:
     io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource arg$1 -> a
     io.github.sithengineer.motoqueiro.data.model.Ride arg$2 -> b
     com.squareup.sqlbrite.BriteDatabase$Transaction arg$3 -> c
     void <init>(io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource,io.github.sithengineer.motoqueiro.data.model.Ride,com.squareup.sqlbrite.BriteDatabase$Transaction) -> <init>
     java.lang.Object call(java.lang.Object) -> a
     rx.functions.Func1 lambdaFactory$(io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource,io.github.sithengineer.motoqueiro.data.model.Ride,com.squareup.sqlbrite.BriteDatabase$Transaction) -> a
-io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource$$Lambda$23 -> io.github.sithengineer.motoqueiro.data.a.w:
-    com.squareup.sqlbrite.BriteDatabase$Transaction arg$1 -> a
-    void <init>(com.squareup.sqlbrite.BriteDatabase$Transaction) -> <init>
-    void call() -> a
-    rx.functions.Action0 lambdaFactory$(com.squareup.sqlbrite.BriteDatabase$Transaction) -> a
-io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource$$Lambda$24 -> io.github.sithengineer.motoqueiro.data.a.x:
-    com.squareup.sqlbrite.BriteDatabase$Transaction arg$1 -> a
-    void <init>(com.squareup.sqlbrite.BriteDatabase$Transaction) -> <init>
-    void call(java.lang.Object) -> a
-    rx.functions.Action1 lambdaFactory$(com.squareup.sqlbrite.BriteDatabase$Transaction) -> a
-io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource$$Lambda$25 -> io.github.sithengineer.motoqueiro.data.a.y:
-    io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource$$Lambda$25 instance -> a
-    void <init>() -> <init>
-    java.lang.Object call(java.lang.Object) -> a
-    void <clinit>() -> <clinit>
-    rx.functions.Func1 lambdaFactory$() -> a
-io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource$$Lambda$26 -> io.github.sithengineer.motoqueiro.data.a.z:
-    io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource arg$1 -> a
-    java.lang.String arg$2 -> b
-    void <init>(io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource,java.lang.String) -> <init>
-    void call(java.lang.Object) -> a
-    rx.functions.Action1 lambdaFactory$(io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource,java.lang.String) -> a
 io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource$$Lambda$27 -> io.github.sithengineer.motoqueiro.data.a.aa:
     com.squareup.sqlbrite.BriteDatabase$Transaction arg$1 -> a
     void <init>(com.squareup.sqlbrite.BriteDatabase$Transaction) -> <init>
@@ -19028,76 +19088,91 @@ io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource$$Lambda$36 -> i
     void <init>(com.squareup.sqlbrite.BriteDatabase$Transaction) -> <init>
     void call(java.lang.Object) -> a
     rx.functions.Action1 lambdaFactory$(com.squareup.sqlbrite.BriteDatabase$Transaction) -> a
-io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource$$Lambda$37 -> io.github.sithengineer.motoqueiro.data.a.ak:
-    io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource$$Lambda$37 instance -> a
-    void <init>() -> <init>
-    java.lang.Object call(java.lang.Object) -> a
-    void <clinit>() -> <clinit>
-    rx.functions.Func1 lambdaFactory$() -> a
-io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource$$Lambda$38 -> io.github.sithengineer.motoqueiro.data.a.al:
-    io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource arg$1 -> a
-    java.lang.String arg$2 -> b
-    void <init>(io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource,java.lang.String) -> <init>
-    void call(java.lang.Object) -> a
-    rx.functions.Action1 lambdaFactory$(io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource,java.lang.String) -> a
-io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource$$Lambda$39 -> io.github.sithengineer.motoqueiro.data.a.am:
-    com.squareup.sqlbrite.BriteDatabase$Transaction arg$1 -> a
-    void <init>(com.squareup.sqlbrite.BriteDatabase$Transaction) -> <init>
-    void call() -> a
-    rx.functions.Action0 lambdaFactory$(com.squareup.sqlbrite.BriteDatabase$Transaction) -> a
-io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource$$Lambda$4 -> io.github.sithengineer.motoqueiro.data.a.an:
+io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource$$Lambda$4 -> io.github.sithengineer.motoqueiro.data.a.ak:
     io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource arg$1 -> a
     java.util.List arg$2 -> b
     java.lang.String arg$3 -> c
     void <init>(io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource,java.util.List,java.lang.String) -> <init>
     java.lang.Object call(java.lang.Object) -> a
     rx.functions.Func1 lambdaFactory$(io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource,java.util.List,java.lang.String) -> a
-io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource$$Lambda$40 -> io.github.sithengineer.motoqueiro.data.a.ao:
+io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource$$Lambda$41 -> io.github.sithengineer.motoqueiro.data.a.al:
+    io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource$$Lambda$41 instance -> a
+    void <init>() -> <init>
+    java.lang.Object call(java.lang.Object) -> a
+    void <clinit>() -> <clinit>
+    rx.functions.Func1 lambdaFactory$() -> a
+io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource$$Lambda$42 -> io.github.sithengineer.motoqueiro.data.a.am:
+    io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource arg$1 -> a
+    java.lang.String arg$2 -> b
+    void <init>(io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource,java.lang.String) -> <init>
+    void call(java.lang.Object) -> a
+    rx.functions.Action1 lambdaFactory$(io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource,java.lang.String) -> a
+io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource$$Lambda$43 -> io.github.sithengineer.motoqueiro.data.a.an:
+    com.squareup.sqlbrite.BriteDatabase$Transaction arg$1 -> a
+    void <init>(com.squareup.sqlbrite.BriteDatabase$Transaction) -> <init>
+    void call() -> a
+    rx.functions.Action0 lambdaFactory$(com.squareup.sqlbrite.BriteDatabase$Transaction) -> a
+io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource$$Lambda$44 -> io.github.sithengineer.motoqueiro.data.a.ao:
     com.squareup.sqlbrite.BriteDatabase$Transaction arg$1 -> a
     void <init>(com.squareup.sqlbrite.BriteDatabase$Transaction) -> <init>
     void call(java.lang.Object) -> a
     rx.functions.Action1 lambdaFactory$(com.squareup.sqlbrite.BriteDatabase$Transaction) -> a
-io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource$$Lambda$5 -> io.github.sithengineer.motoqueiro.data.a.ap:
+io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource$$Lambda$45 -> io.github.sithengineer.motoqueiro.data.a.ap:
+    io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource$$Lambda$45 instance -> a
+    void <init>() -> <init>
+    java.lang.Object call(java.lang.Object) -> a
+    void <clinit>() -> <clinit>
+    rx.functions.Func1 lambdaFactory$() -> a
+io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource$$Lambda$46 -> io.github.sithengineer.motoqueiro.data.a.aq:
+    io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource arg$1 -> a
+    java.lang.String arg$2 -> b
+    void <init>(io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource,java.lang.String) -> <init>
+    void call(java.lang.Object) -> a
+    rx.functions.Action1 lambdaFactory$(io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource,java.lang.String) -> a
+io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource$$Lambda$47 -> io.github.sithengineer.motoqueiro.data.a.ar:
+    com.squareup.sqlbrite.BriteDatabase$Transaction arg$1 -> a
+    void <init>(com.squareup.sqlbrite.BriteDatabase$Transaction) -> <init>
+    void call() -> a
+    rx.functions.Action0 lambdaFactory$(com.squareup.sqlbrite.BriteDatabase$Transaction) -> a
+io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource$$Lambda$48 -> io.github.sithengineer.motoqueiro.data.a.as:
+    com.squareup.sqlbrite.BriteDatabase$Transaction arg$1 -> a
+    void <init>(com.squareup.sqlbrite.BriteDatabase$Transaction) -> <init>
+    void call(java.lang.Object) -> a
+    rx.functions.Action1 lambdaFactory$(com.squareup.sqlbrite.BriteDatabase$Transaction) -> a
+io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource$$Lambda$5 -> io.github.sithengineer.motoqueiro.data.a.at:
     io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource arg$1 -> a
     java.lang.String arg$2 -> b
     io.github.sithengineer.motoqueiro.data.model.GpsPoint arg$3 -> c
     void <init>(io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource,java.lang.String,io.github.sithengineer.motoqueiro.data.model.GpsPoint) -> <init>
     java.lang.Object call() -> call
     java.util.concurrent.Callable lambdaFactory$(io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource,java.lang.String,io.github.sithengineer.motoqueiro.data.model.GpsPoint) -> a
-io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource$$Lambda$6 -> io.github.sithengineer.motoqueiro.data.a.aq:
+io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource$$Lambda$6 -> io.github.sithengineer.motoqueiro.data.a.au:
     io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource arg$1 -> a
     java.lang.String arg$2 -> b
     java.util.List arg$3 -> c
     void <init>(io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource,java.lang.String,java.util.List) -> <init>
     java.lang.Object call() -> call
     java.util.concurrent.Callable lambdaFactory$(io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource,java.lang.String,java.util.List) -> a
-io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource$$Lambda$7 -> io.github.sithengineer.motoqueiro.data.a.ar:
+io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource$$Lambda$7 -> io.github.sithengineer.motoqueiro.data.a.av:
     io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource arg$1 -> a
     java.util.List arg$2 -> b
     java.lang.String arg$3 -> c
     void <init>(io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource,java.util.List,java.lang.String) -> <init>
     java.lang.Object call(java.lang.Object) -> a
     rx.functions.Func1 lambdaFactory$(io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource,java.util.List,java.lang.String) -> a
-io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource$$Lambda$8 -> io.github.sithengineer.motoqueiro.data.a.as:
+io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource$$Lambda$8 -> io.github.sithengineer.motoqueiro.data.a.aw:
     io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource arg$1 -> a
     java.lang.String arg$2 -> b
     io.github.sithengineer.motoqueiro.data.model.TriDimenPoint arg$3 -> c
     void <init>(io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource,java.lang.String,io.github.sithengineer.motoqueiro.data.model.TriDimenPoint) -> <init>
     java.lang.Object call() -> call
     java.util.concurrent.Callable lambdaFactory$(io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource,java.lang.String,io.github.sithengineer.motoqueiro.data.model.TriDimenPoint) -> a
-io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource$$Lambda$9 -> io.github.sithengineer.motoqueiro.data.a.at:
-    io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource arg$1 -> a
-    java.lang.String arg$2 -> b
-    java.util.List arg$3 -> c
-    void <init>(io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource,java.lang.String,java.util.List) -> <init>
-    java.lang.Object call() -> call
-    java.util.concurrent.Callable lambdaFactory$(io.github.sithengineer.motoqueiro.data.local.RideLocalDataSource,java.lang.String,java.util.List) -> a
-io.github.sithengineer.motoqueiro.data.local.RidesDbHelper -> io.github.sithengineer.motoqueiro.data.a.au:
+io.github.sithengineer.motoqueiro.data.local.RidesDbHelper -> io.github.sithengineer.motoqueiro.data.a.ax:
     void <init>(android.content.Context) -> <init>
     void onCreate(android.database.sqlite.SQLiteDatabase) -> onCreate
     void onUpgrade(android.database.sqlite.SQLiteDatabase,int,int) -> onUpgrade
     void onDowngrade(android.database.sqlite.SQLiteDatabase,int,int) -> onDowngrade
-io.github.sithengineer.motoqueiro.data.local.User -> io.github.sithengineer.motoqueiro.data.a.av:
+io.github.sithengineer.motoqueiro.data.local.User -> io.github.sithengineer.motoqueiro.data.a.ay:
     java.lang.String id -> a
     boolean isLoggedIn -> b
     void <init>(java.lang.String,boolean) -> <init>
@@ -19128,7 +19203,9 @@ io.github.sithengineer.motoqueiro.data.model.Ride -> io.github.sithengineer.moto
     java.util.List gpsCoordinates -> k
     int heartRateCapturesCount -> l
     java.util.List heartRateCaptures -> m
-    boolean synced -> n
+    java.util.List gyroscopeCaptures -> n
+    int gyroscopeCapturesCount -> o
+    boolean synced -> p
     void <init>(java.lang.String,java.lang.String,long,long,boolean,boolean) -> <init>
     java.lang.String getId() -> a
     long getInitialTimestamp() -> b
@@ -19137,12 +19214,13 @@ io.github.sithengineer.motoqueiro.data.model.Ride -> io.github.sithengineer.moto
     java.lang.String getName() -> e
     java.util.List getAccelerometerCaptures() -> f
     void setAccelerometerCaptures(java.util.List) -> a
+    void setGyroscopeCaptures(java.util.List) -> b
     java.util.List getGravityCaptures() -> g
-    void setGravityCaptures(java.util.List) -> b
+    void setGravityCaptures(java.util.List) -> c
     java.util.List getGpsCoordinates() -> h
-    void setGpsCoordinates(java.util.List) -> c
+    void setGpsCoordinates(java.util.List) -> d
     java.util.List getHeartRateCaptures() -> i
-    void setHeartRateCaptures(java.util.List) -> d
+    void setHeartRateCaptures(java.util.List) -> e
     boolean isSynced() -> j
 io.github.sithengineer.motoqueiro.data.model.TimeStamped -> io.github.sithengineer.motoqueiro.data.b.d:
     long timestamp -> a
@@ -19162,6 +19240,8 @@ io.github.sithengineer.motoqueiro.data.remote.RideRemoteDataSource -> io.github.
     void <init>(io.github.sithengineer.motoqueiro.network.RideWebService) -> <init>
     rx.Single saveGpsData(java.lang.String,io.github.sithengineer.motoqueiro.data.model.GpsPoint) -> a
     rx.Single saveAccelerometerData(java.lang.String,io.github.sithengineer.motoqueiro.data.model.TriDimenPoint) -> a
+    rx.Single saveGyroscopeData(java.lang.String,io.github.sithengineer.motoqueiro.data.model.TriDimenPoint) -> b
+    rx.Single saveGravityData(java.lang.String,io.github.sithengineer.motoqueiro.data.model.TriDimenPoint) -> c
     rx.Single saveHeartRateData(java.lang.String,io.github.sithengineer.motoqueiro.data.model.HeartRatePoint) -> a
     rx.Single saveRide(io.github.sithengineer.motoqueiro.data.model.Ride) -> a
     rx.Single markCompleted(java.lang.String) -> a
@@ -19235,7 +19315,71 @@ io.github.sithengineer.motoqueiro.hardware.Accelerometer_Factory -> io.github.si
     dagger.internal.Factory create(javax.inject.Provider) -> a
     java.lang.Object get() -> a
     void <clinit>() -> <clinit>
-io.github.sithengineer.motoqueiro.hardware.MiBandConstants -> io.github.sithengineer.motoqueiro.d.e:
+io.github.sithengineer.motoqueiro.hardware.Gravity -> io.github.sithengineer.motoqueiro.d.e:
+    android.hardware.SensorManager sensorManager -> a
+    void <init>(android.hardware.SensorManager) -> <init>
+    rx.Observable listen() -> a
+    void lambda$listen$2(rx.Subscriber) -> a
+    void lambda$null$1(android.hardware.SensorEventListener,android.hardware.Sensor) -> a
+io.github.sithengineer.motoqueiro.hardware.Gravity$$Lambda$2 -> io.github.sithengineer.motoqueiro.d.f:
+    io.github.sithengineer.motoqueiro.hardware.Gravity arg$1 -> a
+    void <init>(io.github.sithengineer.motoqueiro.hardware.Gravity) -> <init>
+    void call(java.lang.Object) -> a
+    rx.Observable$OnSubscribe lambdaFactory$(io.github.sithengineer.motoqueiro.hardware.Gravity) -> a
+io.github.sithengineer.motoqueiro.hardware.Gravity$$Lambda$3 -> io.github.sithengineer.motoqueiro.d.g:
+    io.github.sithengineer.motoqueiro.hardware.Gravity arg$1 -> a
+    android.hardware.SensorEventListener arg$2 -> b
+    android.hardware.Sensor arg$3 -> c
+    void <init>(io.github.sithengineer.motoqueiro.hardware.Gravity,android.hardware.SensorEventListener,android.hardware.Sensor) -> <init>
+    void call() -> a
+    rx.functions.Action0 lambdaFactory$(io.github.sithengineer.motoqueiro.hardware.Gravity,android.hardware.SensorEventListener,android.hardware.Sensor) -> a
+io.github.sithengineer.motoqueiro.hardware.Gravity$1 -> io.github.sithengineer.motoqueiro.d.e$1:
+    rx.Subscriber val$subscriber -> a
+    io.github.sithengineer.motoqueiro.hardware.Gravity this$0 -> b
+    void <init>(io.github.sithengineer.motoqueiro.hardware.Gravity,rx.Subscriber) -> <init>
+    void onSensorChanged(android.hardware.SensorEvent) -> onSensorChanged
+    void onAccuracyChanged(android.hardware.Sensor,int) -> onAccuracyChanged
+io.github.sithengineer.motoqueiro.hardware.Gravity_Factory -> io.github.sithengineer.motoqueiro.d.h:
+    javax.inject.Provider sensorManagerProvider -> b
+    boolean $assertionsDisabled -> a
+    void <init>(javax.inject.Provider) -> <init>
+    io.github.sithengineer.motoqueiro.hardware.Gravity get() -> b
+    dagger.internal.Factory create(javax.inject.Provider) -> a
+    java.lang.Object get() -> a
+    void <clinit>() -> <clinit>
+io.github.sithengineer.motoqueiro.hardware.Gyroscope -> io.github.sithengineer.motoqueiro.d.i:
+    android.hardware.SensorManager sensorManager -> a
+    void <init>(android.hardware.SensorManager) -> <init>
+    rx.Observable listen() -> a
+    void lambda$listen$2(rx.Subscriber) -> a
+    void lambda$null$1(android.hardware.SensorEventListener,android.hardware.Sensor) -> a
+io.github.sithengineer.motoqueiro.hardware.Gyroscope$$Lambda$2 -> io.github.sithengineer.motoqueiro.d.j:
+    io.github.sithengineer.motoqueiro.hardware.Gyroscope arg$1 -> a
+    void <init>(io.github.sithengineer.motoqueiro.hardware.Gyroscope) -> <init>
+    void call(java.lang.Object) -> a
+    rx.Observable$OnSubscribe lambdaFactory$(io.github.sithengineer.motoqueiro.hardware.Gyroscope) -> a
+io.github.sithengineer.motoqueiro.hardware.Gyroscope$$Lambda$3 -> io.github.sithengineer.motoqueiro.d.k:
+    io.github.sithengineer.motoqueiro.hardware.Gyroscope arg$1 -> a
+    android.hardware.SensorEventListener arg$2 -> b
+    android.hardware.Sensor arg$3 -> c
+    void <init>(io.github.sithengineer.motoqueiro.hardware.Gyroscope,android.hardware.SensorEventListener,android.hardware.Sensor) -> <init>
+    void call() -> a
+    rx.functions.Action0 lambdaFactory$(io.github.sithengineer.motoqueiro.hardware.Gyroscope,android.hardware.SensorEventListener,android.hardware.Sensor) -> a
+io.github.sithengineer.motoqueiro.hardware.Gyroscope$1 -> io.github.sithengineer.motoqueiro.d.i$1:
+    rx.Subscriber val$subscriber -> a
+    io.github.sithengineer.motoqueiro.hardware.Gyroscope this$0 -> b
+    void <init>(io.github.sithengineer.motoqueiro.hardware.Gyroscope,rx.Subscriber) -> <init>
+    void onSensorChanged(android.hardware.SensorEvent) -> onSensorChanged
+    void onAccuracyChanged(android.hardware.Sensor,int) -> onAccuracyChanged
+io.github.sithengineer.motoqueiro.hardware.Gyroscope_Factory -> io.github.sithengineer.motoqueiro.d.l:
+    javax.inject.Provider sensorManagerProvider -> b
+    boolean $assertionsDisabled -> a
+    void <init>(javax.inject.Provider) -> <init>
+    io.github.sithengineer.motoqueiro.hardware.Gyroscope get() -> b
+    dagger.internal.Factory create(javax.inject.Provider) -> a
+    java.lang.Object get() -> a
+    void <clinit>() -> <clinit>
+io.github.sithengineer.motoqueiro.hardware.MiBandConstants -> io.github.sithengineer.motoqueiro.d.m:
     java.util.UUID UUID_SERVICE_GENERIC -> a
     java.util.UUID UUID_SERVICE_MIBAND_SERVICE -> b
     java.util.UUID UUID_SERVICE_MIBAND2_SERVICE -> c
@@ -19248,7 +19392,7 @@ io.github.sithengineer.motoqueiro.hardware.MiBandConstants -> io.github.sithengi
     byte[] BYTE_NEW_HEART_RATE_SCAN -> j
     java.util.UUID UUID_DESCRIPTOR_UPDATE_NOTIFICATION -> k
     void <clinit>() -> <clinit>
-io.github.sithengineer.motoqueiro.hardware.MiBandDevice -> io.github.sithengineer.motoqueiro.d.f:
+io.github.sithengineer.motoqueiro.hardware.MiBandDevice -> io.github.sithengineer.motoqueiro.d.n:
     android.content.Context context -> a
     android.bluetooth.BluetoothDevice miBandDevice -> b
     io.github.sithengineer.motoqueiro.hardware.bluetooth.RxBluetoothGattCallback callBack -> c
@@ -19270,66 +19414,66 @@ io.github.sithengineer.motoqueiro.hardware.MiBandDevice -> io.github.sithenginee
     rx.Observable lambda$listen$2(rx.Observable,java.lang.Void) -> a
     io.github.sithengineer.motoqueiro.hardware.capture.MiBandData lambda$listen$1(io.github.sithengineer.motoqueiro.hardware.bluetooth.GattEvent) -> a
     java.lang.Boolean lambda$listen$0(io.github.sithengineer.motoqueiro.hardware.bluetooth.GattEvent) -> b
-io.github.sithengineer.motoqueiro.hardware.MiBandDevice$$Lambda$1 -> io.github.sithengineer.motoqueiro.d.g:
+io.github.sithengineer.motoqueiro.hardware.MiBandDevice$$Lambda$1 -> io.github.sithengineer.motoqueiro.d.o:
     io.github.sithengineer.motoqueiro.hardware.MiBandDevice$$Lambda$1 instance -> a
     void <init>() -> <init>
     java.lang.Object call(java.lang.Object) -> a
     void <clinit>() -> <clinit>
     rx.functions.Func1 lambdaFactory$() -> a
-io.github.sithengineer.motoqueiro.hardware.MiBandDevice$$Lambda$2 -> io.github.sithengineer.motoqueiro.d.h:
+io.github.sithengineer.motoqueiro.hardware.MiBandDevice$$Lambda$2 -> io.github.sithengineer.motoqueiro.d.p:
     io.github.sithengineer.motoqueiro.hardware.MiBandDevice$$Lambda$2 instance -> a
     void <init>() -> <init>
     java.lang.Object call(java.lang.Object) -> a
     void <clinit>() -> <clinit>
     rx.functions.Func1 lambdaFactory$() -> a
-io.github.sithengineer.motoqueiro.hardware.MiBandDevice$$Lambda$3 -> io.github.sithengineer.motoqueiro.d.i:
+io.github.sithengineer.motoqueiro.hardware.MiBandDevice$$Lambda$3 -> io.github.sithengineer.motoqueiro.d.q:
     rx.Observable arg$1 -> a
     void <init>(rx.Observable) -> <init>
     java.lang.Object call(java.lang.Object) -> a
     rx.functions.Func1 lambdaFactory$(rx.Observable) -> a
-io.github.sithengineer.motoqueiro.hardware.MiBandDevice$$Lambda$4 -> io.github.sithengineer.motoqueiro.d.j:
+io.github.sithengineer.motoqueiro.hardware.MiBandDevice$$Lambda$4 -> io.github.sithengineer.motoqueiro.d.r:
     io.github.sithengineer.motoqueiro.hardware.MiBandDevice$$Lambda$4 instance -> a
     void <init>() -> <init>
     void call(java.lang.Object) -> a
     void <clinit>() -> <clinit>
     rx.functions.Action1 lambdaFactory$() -> a
-io.github.sithengineer.motoqueiro.hardware.MiBandDevice$$Lambda$5 -> io.github.sithengineer.motoqueiro.d.k:
+io.github.sithengineer.motoqueiro.hardware.MiBandDevice$$Lambda$5 -> io.github.sithengineer.motoqueiro.d.s:
     io.github.sithengineer.motoqueiro.hardware.MiBandDevice arg$1 -> a
     void <init>(io.github.sithengineer.motoqueiro.hardware.MiBandDevice) -> <init>
     java.lang.Object call(java.lang.Object) -> a
     rx.functions.Func1 lambdaFactory$(io.github.sithengineer.motoqueiro.hardware.MiBandDevice) -> a
-io.github.sithengineer.motoqueiro.hardware.MiBandDevice$$Lambda$6 -> io.github.sithengineer.motoqueiro.d.l:
+io.github.sithengineer.motoqueiro.hardware.MiBandDevice$$Lambda$6 -> io.github.sithengineer.motoqueiro.d.t:
     io.github.sithengineer.motoqueiro.hardware.MiBandDevice arg$1 -> a
     void <init>(io.github.sithengineer.motoqueiro.hardware.MiBandDevice) -> <init>
     java.lang.Object call(java.lang.Object) -> a
     rx.functions.Func1 lambdaFactory$(io.github.sithengineer.motoqueiro.hardware.MiBandDevice) -> a
-io.github.sithengineer.motoqueiro.hardware.MiBandDevice$$Lambda$7 -> io.github.sithengineer.motoqueiro.d.m:
+io.github.sithengineer.motoqueiro.hardware.MiBandDevice$$Lambda$7 -> io.github.sithengineer.motoqueiro.d.u:
     io.github.sithengineer.motoqueiro.hardware.MiBandDevice arg$1 -> a
     void <init>(io.github.sithengineer.motoqueiro.hardware.MiBandDevice) -> <init>
     java.lang.Object call(java.lang.Object) -> a
     rx.functions.Func1 lambdaFactory$(io.github.sithengineer.motoqueiro.hardware.MiBandDevice) -> a
-io.github.sithengineer.motoqueiro.hardware.MiBandDevice$$Lambda$8 -> io.github.sithengineer.motoqueiro.d.n:
+io.github.sithengineer.motoqueiro.hardware.MiBandDevice$$Lambda$8 -> io.github.sithengineer.motoqueiro.d.v:
     io.github.sithengineer.motoqueiro.hardware.MiBandDevice arg$1 -> a
     void <init>(io.github.sithengineer.motoqueiro.hardware.MiBandDevice) -> <init>
     void call() -> a
     rx.functions.Action0 lambdaFactory$(io.github.sithengineer.motoqueiro.hardware.MiBandDevice) -> a
-io.github.sithengineer.motoqueiro.hardware.MiBandDevice$$Lambda$9 -> io.github.sithengineer.motoqueiro.d.o:
+io.github.sithengineer.motoqueiro.hardware.MiBandDevice$$Lambda$9 -> io.github.sithengineer.motoqueiro.d.w:
     io.github.sithengineer.motoqueiro.hardware.MiBandDevice arg$1 -> a
     void <init>(io.github.sithengineer.motoqueiro.hardware.MiBandDevice) -> <init>
     void call() -> a
     rx.functions.Action0 lambdaFactory$(io.github.sithengineer.motoqueiro.hardware.MiBandDevice) -> a
-io.github.sithengineer.motoqueiro.hardware.MiBandEmpty -> io.github.sithengineer.motoqueiro.d.p:
+io.github.sithengineer.motoqueiro.hardware.MiBandEmpty -> io.github.sithengineer.motoqueiro.d.x:
     void <init>() -> <init>
     rx.Observable listen() -> a
-io.github.sithengineer.motoqueiro.hardware.MiBandService -> io.github.sithengineer.motoqueiro.d.q:
+io.github.sithengineer.motoqueiro.hardware.MiBandService -> io.github.sithengineer.motoqueiro.d.y:
     rx.Observable listen() -> a
-io.github.sithengineer.motoqueiro.hardware.SensorModule -> io.github.sithengineer.motoqueiro.d.r:
+io.github.sithengineer.motoqueiro.hardware.SensorModule -> io.github.sithengineer.motoqueiro.d.z:
     android.content.Context context -> a
     void <init>(android.content.Context) -> <init>
     android.location.LocationManager provideLocationManager() -> a
     android.hardware.SensorManager provideSensorManager() -> b
     io.github.sithengineer.motoqueiro.hardware.gps.GpsStateListener provideGpsStateListener() -> c
-io.github.sithengineer.motoqueiro.hardware.SensorModule_ProvideGpsStateListenerFactory -> io.github.sithengineer.motoqueiro.d.s:
+io.github.sithengineer.motoqueiro.hardware.SensorModule_ProvideGpsStateListenerFactory -> io.github.sithengineer.motoqueiro.d.aa:
     io.github.sithengineer.motoqueiro.hardware.SensorModule module -> b
     boolean $assertionsDisabled -> a
     void <init>(io.github.sithengineer.motoqueiro.hardware.SensorModule) -> <init>
@@ -19337,7 +19481,7 @@ io.github.sithengineer.motoqueiro.hardware.SensorModule_ProvideGpsStateListenerF
     dagger.internal.Factory create(io.github.sithengineer.motoqueiro.hardware.SensorModule) -> a
     java.lang.Object get() -> a
     void <clinit>() -> <clinit>
-io.github.sithengineer.motoqueiro.hardware.SensorModule_ProvideLocationManagerFactory -> io.github.sithengineer.motoqueiro.d.t:
+io.github.sithengineer.motoqueiro.hardware.SensorModule_ProvideLocationManagerFactory -> io.github.sithengineer.motoqueiro.d.ab:
     io.github.sithengineer.motoqueiro.hardware.SensorModule module -> b
     boolean $assertionsDisabled -> a
     void <init>(io.github.sithengineer.motoqueiro.hardware.SensorModule) -> <init>
@@ -19345,7 +19489,7 @@ io.github.sithengineer.motoqueiro.hardware.SensorModule_ProvideLocationManagerFa
     dagger.internal.Factory create(io.github.sithengineer.motoqueiro.hardware.SensorModule) -> a
     java.lang.Object get() -> a
     void <clinit>() -> <clinit>
-io.github.sithengineer.motoqueiro.hardware.SensorModule_ProvideSensorManagerFactory -> io.github.sithengineer.motoqueiro.d.u:
+io.github.sithengineer.motoqueiro.hardware.SensorModule_ProvideSensorManagerFactory -> io.github.sithengineer.motoqueiro.d.ac:
     io.github.sithengineer.motoqueiro.hardware.SensorModule module -> b
     boolean $assertionsDisabled -> a
     void <init>(io.github.sithengineer.motoqueiro.hardware.SensorModule) -> <init>
@@ -19847,7 +19991,7 @@ io.github.sithengineer.motoqueiro.network.RideApiModule -> io.github.sithenginee
     okhttp3.Cache providesRetrofitCache(android.app.Application) -> a
     com.google.gson.Gson providesGsonConfiguration() -> a
     okhttp3.Interceptor providesMaxAgeInterceptor() -> b
-    okhttp3.Interceptor providesAccountInterceptor(io.github.sithengineer.motoqueiro.authentication.AccountManager) -> a
+    okhttp3.Interceptor providesAccountInterceptor(io.github.sithengineer.motoqueiro.authentication.AccountManager,io.github.sithengineer.motoqueiro.util.VariableScrambler) -> a
     okhttp3.OkHttpClient providesHttpClient(okhttp3.Interceptor,okhttp3.Interceptor,okhttp3.Cache) -> a
     retrofit2.Retrofit providesRetrofit(com.google.gson.Gson,okhttp3.OkHttpClient) -> a
     io.github.sithengineer.motoqueiro.network.NetworkService providesNetworkService(retrofit2.Retrofit) -> a
@@ -19855,7 +19999,8 @@ io.github.sithengineer.motoqueiro.network.RideApiModule -> io.github.sithenginee
 io.github.sithengineer.motoqueiro.network.RideApiModule$1 -> io.github.sithengineer.motoqueiro.e.b$1:
 io.github.sithengineer.motoqueiro.network.RideApiModule$AccountInfoInterceptor -> io.github.sithengineer.motoqueiro.e.b$a:
     io.github.sithengineer.motoqueiro.authentication.AccountManager accountManager -> a
-    void <init>(io.github.sithengineer.motoqueiro.authentication.AccountManager) -> <init>
+    io.github.sithengineer.motoqueiro.util.VariableScrambler scrambler -> b
+    void <init>(io.github.sithengineer.motoqueiro.authentication.AccountManager,io.github.sithengineer.motoqueiro.util.VariableScrambler) -> <init>
     okhttp3.Response intercept(okhttp3.Interceptor$Chain) -> a
 io.github.sithengineer.motoqueiro.network.RideApiModule$RequestMaxAgeInterceptor -> io.github.sithengineer.motoqueiro.e.b$b:
     void <init>() -> <init>
@@ -19864,10 +20009,11 @@ io.github.sithengineer.motoqueiro.network.RideApiModule$RequestMaxAgeInterceptor
 io.github.sithengineer.motoqueiro.network.RideApiModule_ProvidesAccountInterceptorFactory -> io.github.sithengineer.motoqueiro.e.c:
     io.github.sithengineer.motoqueiro.network.RideApiModule module -> b
     javax.inject.Provider accountManagerProvider -> c
+    javax.inject.Provider scramblerProvider -> d
     boolean $assertionsDisabled -> a
-    void <init>(io.github.sithengineer.motoqueiro.network.RideApiModule,javax.inject.Provider) -> <init>
+    void <init>(io.github.sithengineer.motoqueiro.network.RideApiModule,javax.inject.Provider,javax.inject.Provider) -> <init>
     okhttp3.Interceptor get() -> b
-    dagger.internal.Factory create(io.github.sithengineer.motoqueiro.network.RideApiModule,javax.inject.Provider) -> a
+    dagger.internal.Factory create(io.github.sithengineer.motoqueiro.network.RideApiModule,javax.inject.Provider,javax.inject.Provider) -> a
     java.lang.Object get() -> a
     void <clinit>() -> <clinit>
 io.github.sithengineer.motoqueiro.network.RideApiModule_ProvidesGsonConfigurationFactory -> io.github.sithengineer.motoqueiro.e.d:
@@ -20086,6 +20232,12 @@ io.github.sithengineer.motoqueiro.util.CompositeSubscriptionManager -> io.github
 io.github.sithengineer.motoqueiro.util.ReleaseTree -> io.github.sithengineer.motoqueiro.f.b:
     void <init>() -> <init>
     boolean isLoggable(java.lang.String,int) -> a
+io.github.sithengineer.motoqueiro.util.VariableScrambler -> io.github.sithengineer.motoqueiro.f.c:
+    java.nio.charset.Charset CHARSET -> a
+    java.lang.String mySecretPass -> b
+    void <init>(java.lang.String) -> <init>
+    android.support.v4.util.Pair scrambleUserId(java.lang.String) -> a
+    void <clinit>() -> <clinit>
 javax.inject.Provider -> javax.a.a:
     java.lang.Object get() -> a
 okhttp3.Address -> b.a:
@@ -23562,7 +23714,7 @@ rx.Observable -> e.e:
     rx.Observable just(java.lang.Object,java.lang.Object) -> a
     rx.Observable merge(rx.Observable) -> b
     rx.Observable merge(rx.Observable,rx.Observable) -> b
-    rx.Observable merge(rx.Observable,rx.Observable,rx.Observable) -> a
+    rx.Observable merge(rx.Observable,rx.Observable,rx.Observable,rx.Observable) -> a
     rx.Observable merge(rx.Observable[]) -> a
     rx.Observable timer(long,java.util.concurrent.TimeUnit) -> b
     rx.Observable timer(long,java.util.concurrent.TimeUnit,rx.Scheduler) -> a
@@ -23634,7 +23786,7 @@ rx.Single -> e.i:
     rx.Single fromCallable(java.util.concurrent.Callable) -> a
     rx.Single just(java.lang.Object) -> a
     rx.Single merge(rx.Single) -> a
-    rx.Single zip(rx.Single,rx.Single,rx.Single,rx.Single,rx.functions.Func4) -> a
+    rx.Single zip(rx.Single,rx.Single,rx.Single,rx.Single,rx.Single,rx.functions.Func5) -> a
     rx.Single flatMap(rx.functions.Func1) -> a
     rx.Completable flatMapCompletable(rx.functions.Func1) -> b
     rx.Single map(rx.functions.Func1) -> c
@@ -23666,9 +23818,9 @@ rx.Single$2$1 -> e.i$3$1:
     void onSuccess(rx.Single) -> a
     void onError(java.lang.Throwable) -> a
     void onSuccess(java.lang.Object) -> a
-rx.Single$5 -> e.i$4:
-    rx.functions.Func4 val$zipFunction -> a
-    void <init>(rx.functions.Func4) -> <init>
+rx.Single$6 -> e.i$4:
+    rx.functions.Func5 val$zipFunction -> a
+    void <init>(rx.functions.Func5) -> <init>
     java.lang.Object call(java.lang.Object[]) -> a
 rx.Single$OnSubscribe -> e.i$a:
 rx.SingleSubscriber -> e.j:
@@ -23837,10 +23989,10 @@ rx.functions.Func1 -> e.c.e:
     java.lang.Object call(java.lang.Object) -> a
 rx.functions.Func2 -> e.c.f:
     java.lang.Object call(java.lang.Object,java.lang.Object) -> a
-rx.functions.Func4 -> e.c.g:
-    java.lang.Object call(java.lang.Object,java.lang.Object,java.lang.Object,java.lang.Object) -> a
-rx.functions.Func5 -> e.c.h:
+rx.functions.Func5 -> e.c.g:
     java.lang.Object call(java.lang.Object,java.lang.Object,java.lang.Object,java.lang.Object,java.lang.Object) -> a
+rx.functions.Func6 -> e.c.h:
+    java.lang.Object call(java.lang.Object,java.lang.Object,java.lang.Object,java.lang.Object,java.lang.Object,java.lang.Object) -> a
 rx.functions.FuncN -> e.c.i:
     java.lang.Object call(java.lang.Object[]) -> a
 rx.internal.operators.BackpressureUtils -> e.d.a.a:

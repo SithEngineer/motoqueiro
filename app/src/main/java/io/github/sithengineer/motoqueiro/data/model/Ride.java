@@ -107,6 +107,25 @@ public class Ride {
     this.gpsCoordinatesCount = gpsCoordinatesCount;
   }
 
+  public List<TriDimenPoint> getGyroscopeCaptures() {
+    return gyroscopeCaptures;
+  }
+
+  public void setGyroscopeCaptures(List<TriDimenPoint> gyroscopeCaptures) {
+    this.gyroscopeCaptures = gyroscopeCaptures;
+    if (gyroscopeCaptures != null && !gyroscopeCaptures.isEmpty()) {
+      gyroscopeCapturesCount = gyroscopeCaptures.size();
+    }
+  }
+
+  public int getGyroscopeCapturesCount() {
+    return gyroscopeCapturesCount;
+  }
+
+  public void setGyroscopeCapturesCount(int gyroscopeCapturesCount) {
+    this.gyroscopeCapturesCount = gyroscopeCapturesCount;
+  }
+
   public int getHeartRateCapturesCount() {
     return heartRateCapturesCount;
   }
@@ -123,13 +142,6 @@ public class Ride {
     this.gravityCaptures = gravityCaptures;
     if (gravityCaptures != null && !gravityCaptures.isEmpty()) {
       gravityCapturesCount = gravityCaptures.size();
-    }
-  }
-
-  public void setGyroscopeCaptures(List<TriDimenPoint> gyroscopeCaptures) {
-    this.gyroscopeCaptures = gyroscopeCaptures;
-    if (gyroscopeCaptures != null && !gyroscopeCaptures.isEmpty()) {
-      gyroscopeCapturesCount = gyroscopeCaptures.size();
     }
   }
 

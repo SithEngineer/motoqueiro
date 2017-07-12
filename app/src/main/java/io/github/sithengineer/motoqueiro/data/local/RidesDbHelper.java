@@ -106,7 +106,7 @@ public class RidesDbHelper extends SQLiteOpenHelper {
         + RidePersistenceContract.RideEntry._ID
         + ")"
         + " );";
-    db.execSQL(createGravityTable);
+    db.execSQL(createGyroscopeTable);
 
     final String createGpsTable = "CREATE TABLE "
         + RidePersistenceContract.GpsEntry.TABLE_NAME
