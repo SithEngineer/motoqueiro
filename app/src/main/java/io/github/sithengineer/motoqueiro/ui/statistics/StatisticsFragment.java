@@ -1,4 +1,4 @@
-package io.github.sithengineer.motoqueiro.statistics;
+package io.github.sithengineer.motoqueiro.ui.statistics;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

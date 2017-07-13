@@ -1,7 +1,8 @@
-package io.github.sithengineer.motoqueiro.cruising;
+package io.github.sithengineer.motoqueiro.ui.cruising;
 
 import com.trello.rxlifecycle.android.FragmentEvent;
 import io.github.sithengineer.motoqueiro.data.RideManager;
+import io.github.sithengineer.motoqueiro.data.DataManager;
 import io.github.sithengineer.motoqueiro.util.CompositeSubscriptionManager;
 import rx.Completable;
 import timber.log.Timber;

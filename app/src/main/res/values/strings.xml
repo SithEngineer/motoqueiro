@@ -4,7 +4,7 @@
   <!-- Home View -->
   <string name="home_start_button">Start</string>
   <string name="home_all_ready_textView">All ready!\n\nClick on <b>start</b> to begin your trip</string>
-  <string name="home_heart_rate_band_address_hint">(optional) Do you have a MiBand? Insert its address here!</string>
+  <string name="home_heart_rate_band_address_hint">(optional) Do you have a MiBand?\nInsert its address here!</string>
   <string name="home_activate_gps">Activate GPS</string>
   <string name="home_generic_error">An error occurred. Try again later.</string>
   <string name="home_rideName_editTextHint">(optional) Give this ride a name!</string>
@@ -17,4 +17,6 @@
   <!-- Statistics View -->
   <string name="statistics_view_upload_completed">Data upload completed.\n\nThank you!</string>
   <string name="statistics_view_start_ride">Start a new ride</string>
+    <string name="home_text_enter_learning_mode">Enter Learning Mode</string>
+  <string name="home_text_enter_testing_mode">Enter Testing Mode</string>
 </resources>

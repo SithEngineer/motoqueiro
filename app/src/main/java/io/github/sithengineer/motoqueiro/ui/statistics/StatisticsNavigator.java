@@ -1,8 +1,8 @@
-package io.github.sithengineer.motoqueiro.statistics;
+package io.github.sithengineer.motoqueiro.ui.statistics;
 
 import android.content.Context;
 import android.support.v4.app.FragmentActivity;
-import io.github.sithengineer.motoqueiro.home.HomeActivity;
+import io.github.sithengineer.motoqueiro.ui.home.HomeActivity;
 
 public class StatisticsNavigator {
 

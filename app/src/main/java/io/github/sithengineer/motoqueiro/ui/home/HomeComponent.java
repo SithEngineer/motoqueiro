@@ -1,4 +1,4 @@
-package io.github.sithengineer.motoqueiro.home;
+package io.github.sithengineer.motoqueiro.ui.home;
 
 import dagger.Subcomponent;
 import io.github.sithengineer.motoqueiro.scope.ActivityScope;

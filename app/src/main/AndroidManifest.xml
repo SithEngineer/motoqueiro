@@ -37,7 +37,7 @@
       >
 
     <activity
-        android:name=".home.HomeActivity"
+        android:name=".ui.home.HomeActivity"
         android:configChanges="keyboardHidden|orientation|screenSize"
         android:screenOrientation="portrait">
       <intent-filter>
@@ -47,12 +47,12 @@
     </activity>
 
     <activity
-        android:name=".cruising.CruisingActivity"
+        android:name=".ui.cruising.CruisingActivity"
         android:configChanges="keyboardHidden|orientation|screenSize"
         android:screenOrientation="portrait"/>
 
     <activity
-        android:name=".statistics.StatisticsActivity"
+        android:name=".ui.statistics.StatisticsActivity"
         android:configChanges="keyboardHidden|orientation|screenSize"
         android:screenOrientation="portrait"/>
 

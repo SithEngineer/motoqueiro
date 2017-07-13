@@ -2,7 +2,7 @@
 <resources>
   <string name="home_start_button">Começar</string>
   <string name="home_all_ready_textView">Tudo pronto!\n\nClique em <b>Começar</b> para iniciar a sua viagem</string>
-  <string name="home_heart_rate_band_address_hint">(opcional) Tem uma MiBand? Insira o endereço MAC aqui!</string>
+  <string name="home_heart_rate_band_address_hint">(opcional) Tem uma MiBand?\nInsira o endereço MAC aqui!</string>
   <string name="home_activate_gps">Active o GPS</string>
   <string name="home_generic_error">Ocorreu um erro. Tente novamente mais tarde.</string>
   <string name="home_rideName_editTextHint">(opcional) Dê um nome a esta viagem!</string>

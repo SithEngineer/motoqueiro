@@ -1,4 +1,4 @@
-package io.github.sithengineer.motoqueiro.statistics;
+package io.github.sithengineer.motoqueiro.ui.statistics;
 
 import dagger.Subcomponent;
 import io.github.sithengineer.motoqueiro.scope.ActivityScope;

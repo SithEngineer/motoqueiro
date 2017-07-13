@@ -1,7 +1,7 @@
-package io.github.sithengineer.motoqueiro.cruising;
+package io.github.sithengineer.motoqueiro.ui.cruising;
 
 import android.content.Context;
-import io.github.sithengineer.motoqueiro.statistics.StatisticsActivity;
+import io.github.sithengineer.motoqueiro.ui.statistics.StatisticsActivity;
 
 class CruisingNavigator {
 

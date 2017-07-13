@@ -31,22 +31,14 @@ public class RideManager {
 
   /**
    * This {@link Observable} chain can throw a GpsNotActiveException if GPS is off or in
-   * coarse
-   * location mode.
+   * coarse location mode.
    */
-  public Single<String> start(@Nullable final String name) {
+  public Single<String> start() {
     return isGpsActive().flatMap(gpsActive -> {
       if (!gpsActive) {
         return Single.error(new GpsNotActiveException());
       }
-      final String rideName;
-      if (TextUtils.isEmpty(name)) {
-        rideName = generateName();
-      } else {
-        rideName = name;
-      }
-
-      return rideRepo.startRide(rideName);
+      return rideRepo.startRide(generateName());
     });
   }
 

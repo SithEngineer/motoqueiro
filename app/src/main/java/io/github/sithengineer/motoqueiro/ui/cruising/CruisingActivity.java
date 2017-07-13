@@ -1,4 +1,4 @@
-package io.github.sithengineer.motoqueiro.cruising;
+package io.github.sithengineer.motoqueiro.ui.cruising;
 
 import android.content.Context;
 import android.content.Intent;

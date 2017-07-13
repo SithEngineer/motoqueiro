@@ -1,4 +1,4 @@
-package io.github.sithengineer.motoqueiro.statistics;
+package io.github.sithengineer.motoqueiro.ui.statistics;
 
 import com.trello.rxlifecycle.android.FragmentEvent;
 import io.github.sithengineer.motoqueiro.util.CompositeSubscriptionManager;

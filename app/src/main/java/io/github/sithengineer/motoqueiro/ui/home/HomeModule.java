@@ -1,4 +1,4 @@
-package io.github.sithengineer.motoqueiro.home;
+package io.github.sithengineer.motoqueiro.ui.home;
 
 import android.location.LocationManager;
 import dagger.Module;

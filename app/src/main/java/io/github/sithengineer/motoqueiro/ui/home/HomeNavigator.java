@@ -1,7 +1,7 @@
-package io.github.sithengineer.motoqueiro.home;
+package io.github.sithengineer.motoqueiro.ui.home;
 
 import android.content.Context;
-import io.github.sithengineer.motoqueiro.cruising.CruisingActivity;
+import io.github.sithengineer.motoqueiro.ui.cruising.CruisingActivity;
 
 public class HomeNavigator {
 

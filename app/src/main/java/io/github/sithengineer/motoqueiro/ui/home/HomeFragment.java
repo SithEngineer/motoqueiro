@@ -1,4 +1,4 @@
-package io.github.sithengineer.motoqueiro.home;
+package io.github.sithengineer.motoqueiro.ui.home;
 
 import android.content.Intent;
 import android.provider.Settings;
@@ -22,9 +22,8 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter>
 
   @BindView(R.id.miband_address_input_wrapper) TextInputLayout miBandAddressLayout;
   @BindView(R.id.miband_address_input) EditText miBandAddress;
-  @BindView(R.id.ride_name_input_wrapper) TextInputLayout rideNameLayout;
-  @BindView(R.id.ride_name_input) EditText rideName;
-  @BindView(R.id.start_button) Button startButton;
+  @BindView(R.id.start_button) Button enterTestingButton;
+  @BindView(R.id.start_button) Button enterLearningButton;
   @Inject HomeContract.Presenter presenter;
 
   public static HomeFragment newInstance() {
@@ -37,18 +36,22 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter>
 
   @Override public void inject() {
     MotoqueiroApp.get(getContext())
-        .createDataComponent()
-        .with(new HomeModule(this, new HomeNavigator(getActivity()),
-            (PermissionAuthority) getActivity()))
-        .inject(this);
+                 .createDataComponent()
+                 .with(new HomeModule(this, new HomeNavigator(getActivity()),
+                     (PermissionAuthority) getActivity()))
+                 .inject(this);
   }
 
   @Nullable @Override public HomeContract.Presenter getPresenter() {
     return presenter;
   }
 
-  @Override public Observable<Void> handleStartClick() {
-    return RxView.clicks(startButton);
+  @Override public Observable<Void> handleEnterTestingClick() {
+    return RxView.clicks(enterTestingButton);
+  }
+
+  @Override public Observable<Void> handleEnterLearningClick() {
+    return RxView.clicks(enterLearningButton);
   }
 
   @Override public void sendToGpsSettings() {
@@ -57,15 +60,13 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter>
   }
 
   @Override public void showActivateGpsViewMessage() {
-    Snackbar.make(startButton, R.string.home_activate_gps, Snackbar.LENGTH_LONG).show();
+    Snackbar.make(enterTestingButton, R.string.home_activate_gps, Snackbar.LENGTH_LONG)
+            .show();
   }
 
   @Override public void showGenericError() {
-    Snackbar.make(startButton, R.string.home_generic_error, Snackbar.LENGTH_LONG).show();
-  }
-
-  @Override public String getRideName() {
-    return rideName.getText().toString();
+    Snackbar.make(enterTestingButton, R.string.home_generic_error, Snackbar.LENGTH_LONG)
+            .show();
   }
 
   @Override public void showMiBandAddress(String miBandAddress) {
@@ -73,12 +74,12 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter>
   }
 
   @Override public Observable<String> getMiBandAddressChanges() {
-    return RxTextView.textChanges(miBandAddress).map(text -> text.toString());
+    return RxTextView.textChanges(miBandAddress)
+                     .map(text -> text.toString());
   }
 
   @Override public void showMiBandAddressError() {
-    miBandAddressLayout.setError(
-        getString(R.string.home_view_heart_rate_band_address_error));
+    miBandAddressLayout.setError(getString(R.string.home_view_heart_rate_band_address_error));
   }
 
   @Override public void cleanMiBandAddressError() {
@@ -86,7 +87,7 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter>
   }
 
   @Override public void showGivePermissionsMessage() {
-    Snackbar.make(startButton, R.string.home_need_all_permissions, Snackbar.LENGTH_LONG)
-        .show();
+    Snackbar.make(enterTestingButton, R.string.home_need_all_permissions, Snackbar.LENGTH_LONG)
+            .show();
   }
 }

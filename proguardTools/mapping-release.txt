@@ -18353,9 +18353,9 @@ io.github.sithengineer.motoqueiro.cruising.CruisingModule -> io.github.sithengin
     java.lang.String provideRideId() -> c
     java.lang.String provideMiBandAddress(io.github.sithengineer.motoqueiro.app.Preferences) -> a
     io.github.sithengineer.motoqueiro.util.CompositeSubscriptionManager provideCompositeSubscriptionManager() -> d
-    io.github.sithengineer.motoqueiro.home.RideManager providesRideManager(android.location.LocationManager,io.github.sithengineer.motoqueiro.hardware.gps.GpsStateListener,io.github.sithengineer.motoqueiro.data.RideRepository) -> a
+    io.github.sithengineer.motoqueiro.data.RideManager providesRideManager(android.location.LocationManager,io.github.sithengineer.motoqueiro.hardware.gps.GpsStateListener,io.github.sithengineer.motoqueiro.data.RideRepository) -> a
     io.github.sithengineer.motoqueiro.cruising.DataManager providesDataManager(io.github.sithengineer.motoqueiro.hardware.Accelerometer,io.github.sithengineer.motoqueiro.hardware.Gyroscope,io.github.sithengineer.motoqueiro.hardware.Gravity,io.github.sithengineer.motoqueiro.hardware.gps.Gps,io.github.sithengineer.motoqueiro.hardware.MiBandService,io.github.sithengineer.motoqueiro.data.RideRepository) -> a
-    io.github.sithengineer.motoqueiro.cruising.CruisingContract$Presenter provideCruisingPresenter(io.github.sithengineer.motoqueiro.cruising.CruisingContract$View,io.github.sithengineer.motoqueiro.util.CompositeSubscriptionManager,io.github.sithengineer.motoqueiro.cruising.DataManager,io.github.sithengineer.motoqueiro.home.RideManager,java.lang.String,io.github.sithengineer.motoqueiro.cruising.CruisingNavigator) -> a
+    io.github.sithengineer.motoqueiro.cruising.CruisingContract$Presenter provideCruisingPresenter(io.github.sithengineer.motoqueiro.cruising.CruisingContract$View,io.github.sithengineer.motoqueiro.util.CompositeSubscriptionManager,io.github.sithengineer.motoqueiro.cruising.DataManager,io.github.sithengineer.motoqueiro.data.RideManager,java.lang.String,io.github.sithengineer.motoqueiro.cruising.CruisingNavigator) -> a
 io.github.sithengineer.motoqueiro.cruising.CruisingModule_ProvideCompositeSubscriptionManagerFactory -> io.github.sithengineer.motoqueiro.cruising.e:
     io.github.sithengineer.motoqueiro.cruising.CruisingModule module -> b
     boolean $assertionsDisabled -> a
@@ -18432,7 +18432,7 @@ io.github.sithengineer.motoqueiro.cruising.CruisingModule_ProvidesRideManagerFac
     javax.inject.Provider rideRepoProvider -> e
     boolean $assertionsDisabled -> a
     void <init>(io.github.sithengineer.motoqueiro.cruising.CruisingModule,javax.inject.Provider,javax.inject.Provider,javax.inject.Provider) -> <init>
-    io.github.sithengineer.motoqueiro.home.RideManager get() -> b
+    io.github.sithengineer.motoqueiro.data.RideManager get() -> b
     dagger.internal.Factory create(io.github.sithengineer.motoqueiro.cruising.CruisingModule,javax.inject.Provider,javax.inject.Provider,javax.inject.Provider) -> a
     java.lang.Object get() -> a
     void <clinit>() -> <clinit>
@@ -18445,9 +18445,9 @@ io.github.sithengineer.motoqueiro.cruising.CruisingPresenter -> io.github.sithen
     io.github.sithengineer.motoqueiro.util.CompositeSubscriptionManager subscriptionManager -> b
     io.github.sithengineer.motoqueiro.cruising.CruisingNavigator navigator -> c
     io.github.sithengineer.motoqueiro.cruising.DataManager dataManager -> d
-    io.github.sithengineer.motoqueiro.home.RideManager rideManager -> e
+    io.github.sithengineer.motoqueiro.data.RideManager rideManager -> e
     java.lang.String rideId -> f
-    void <init>(io.github.sithengineer.motoqueiro.cruising.CruisingContract$View,io.github.sithengineer.motoqueiro.util.CompositeSubscriptionManager,io.github.sithengineer.motoqueiro.cruising.DataManager,io.github.sithengineer.motoqueiro.home.RideManager,java.lang.String,io.github.sithengineer.motoqueiro.cruising.CruisingNavigator) -> <init>
+    void <init>(io.github.sithengineer.motoqueiro.cruising.CruisingContract$View,io.github.sithengineer.motoqueiro.util.CompositeSubscriptionManager,io.github.sithengineer.motoqueiro.cruising.DataManager,io.github.sithengineer.motoqueiro.data.RideManager,java.lang.String,io.github.sithengineer.motoqueiro.cruising.CruisingNavigator) -> <init>
     void start() -> a
     void stop() -> b
     void gatherDataWhileRiding() -> g
@@ -18699,7 +18699,37 @@ io.github.sithengineer.motoqueiro.data.RideDataSource -> io.github.sithengineer.
     rx.Single markCompleted(java.lang.String) -> a
     rx.Single getCompletedRides() -> a
     rx.Single markSynced(java.lang.String) -> b
-io.github.sithengineer.motoqueiro.data.RideRepository -> io.github.sithengineer.motoqueiro.data.g:
+io.github.sithengineer.motoqueiro.data.RideManager -> io.github.sithengineer.motoqueiro.data.g:
+    java.text.SimpleDateFormat DATE_FORMAT -> a
+    io.github.sithengineer.motoqueiro.hardware.gps.GpsStateListener locationListener -> b
+    android.location.LocationManager locationManager -> c
+    io.github.sithengineer.motoqueiro.data.RideRepository rideRepo -> d
+    void <init>(io.github.sithengineer.motoqueiro.hardware.gps.GpsStateListener,android.location.LocationManager,io.github.sithengineer.motoqueiro.data.RideRepository) -> <init>
+    rx.Single start(java.lang.String) -> a
+    java.lang.String generateName() -> a
+    rx.Completable stop(java.lang.String) -> b
+    rx.Single isGpsActive() -> c
+    java.lang.Boolean lambda$isGpsActive$2() -> b
+    rx.Completable lambda$stop$1(java.lang.Boolean) -> a
+    rx.Single lambda$start$0(java.lang.String,java.lang.Boolean) -> a
+    void <clinit>() -> <clinit>
+io.github.sithengineer.motoqueiro.data.RideManager$$Lambda$1 -> io.github.sithengineer.motoqueiro.data.h:
+    io.github.sithengineer.motoqueiro.data.RideManager arg$1 -> a
+    java.lang.String arg$2 -> b
+    void <init>(io.github.sithengineer.motoqueiro.data.RideManager,java.lang.String) -> <init>
+    java.lang.Object call(java.lang.Object) -> a
+    rx.functions.Func1 lambdaFactory$(io.github.sithengineer.motoqueiro.data.RideManager,java.lang.String) -> a
+io.github.sithengineer.motoqueiro.data.RideManager$$Lambda$2 -> io.github.sithengineer.motoqueiro.data.i:
+    io.github.sithengineer.motoqueiro.data.RideManager arg$1 -> a
+    void <init>(io.github.sithengineer.motoqueiro.data.RideManager) -> <init>
+    java.lang.Object call(java.lang.Object) -> a
+    rx.functions.Func1 lambdaFactory$(io.github.sithengineer.motoqueiro.data.RideManager) -> a
+io.github.sithengineer.motoqueiro.data.RideManager$$Lambda$3 -> io.github.sithengineer.motoqueiro.data.j:
+    io.github.sithengineer.motoqueiro.data.RideManager arg$1 -> a
+    void <init>(io.github.sithengineer.motoqueiro.data.RideManager) -> <init>
+    java.lang.Object call() -> call
+    java.util.concurrent.Callable lambdaFactory$(io.github.sithengineer.motoqueiro.data.RideManager) -> a
+io.github.sithengineer.motoqueiro.data.RideRepository -> io.github.sithengineer.motoqueiro.data.k:
     io.github.sithengineer.motoqueiro.data.RideDataSource localDataSource -> a
     io.github.sithengineer.motoqueiro.data.RideDataSource remoteDataSource -> b
     void <init>(io.github.sithengineer.motoqueiro.data.RideDataSource,io.github.sithengineer.motoqueiro.data.RideDataSource) -> <init>
@@ -18725,77 +18755,77 @@ io.github.sithengineer.motoqueiro.data.RideRepository -> io.github.sithengineer.
     rx.Single lambda$startRide$2(java.lang.String,java.lang.String) -> a
     rx.Single lambda$null$1(java.lang.String,io.github.sithengineer.motoqueiro.data.model.Ride) -> a
     java.lang.String lambda$null$0(java.lang.String,java.lang.Long) -> a
-io.github.sithengineer.motoqueiro.data.RideRepository$$Lambda$1 -> io.github.sithengineer.motoqueiro.data.h:
+io.github.sithengineer.motoqueiro.data.RideRepository$$Lambda$1 -> io.github.sithengineer.motoqueiro.data.l:
     io.github.sithengineer.motoqueiro.data.RideRepository arg$1 -> a
     java.lang.String arg$2 -> b
     void <init>(io.github.sithengineer.motoqueiro.data.RideRepository,java.lang.String) -> <init>
     java.lang.Object call(java.lang.Object) -> a
     rx.functions.Func1 lambdaFactory$(io.github.sithengineer.motoqueiro.data.RideRepository,java.lang.String) -> a
-io.github.sithengineer.motoqueiro.data.RideRepository$$Lambda$10 -> io.github.sithengineer.motoqueiro.data.i:
+io.github.sithengineer.motoqueiro.data.RideRepository$$Lambda$10 -> io.github.sithengineer.motoqueiro.data.m:
     io.github.sithengineer.motoqueiro.data.RideRepository arg$1 -> a
     io.github.sithengineer.motoqueiro.data.model.Ride arg$2 -> b
     void <init>(io.github.sithengineer.motoqueiro.data.RideRepository,io.github.sithengineer.motoqueiro.data.model.Ride) -> <init>
     java.lang.Object call(java.lang.Object) -> a
     rx.functions.Func1 lambdaFactory$(io.github.sithengineer.motoqueiro.data.RideRepository,io.github.sithengineer.motoqueiro.data.model.Ride) -> a
-io.github.sithengineer.motoqueiro.data.RideRepository$$Lambda$11 -> io.github.sithengineer.motoqueiro.data.j:
+io.github.sithengineer.motoqueiro.data.RideRepository$$Lambda$11 -> io.github.sithengineer.motoqueiro.data.n:
     io.github.sithengineer.motoqueiro.data.RideRepository$$Lambda$11 instance -> a
     void <init>() -> <init>
     void call(java.lang.Object) -> a
     void <clinit>() -> <clinit>
     rx.functions.Action1 lambdaFactory$() -> a
-io.github.sithengineer.motoqueiro.data.RideRepository$$Lambda$12 -> io.github.sithengineer.motoqueiro.data.k:
+io.github.sithengineer.motoqueiro.data.RideRepository$$Lambda$12 -> io.github.sithengineer.motoqueiro.data.o:
     io.github.sithengineer.motoqueiro.data.RideRepository arg$1 -> a
     java.lang.String arg$2 -> b
     void <init>(io.github.sithengineer.motoqueiro.data.RideRepository,java.lang.String) -> <init>
     java.lang.Object call(java.lang.Object) -> a
     rx.functions.Func1 lambdaFactory$(io.github.sithengineer.motoqueiro.data.RideRepository,java.lang.String) -> a
-io.github.sithengineer.motoqueiro.data.RideRepository$$Lambda$13 -> io.github.sithengineer.motoqueiro.data.l:
+io.github.sithengineer.motoqueiro.data.RideRepository$$Lambda$13 -> io.github.sithengineer.motoqueiro.data.p:
     java.lang.String arg$1 -> a
     void <init>(java.lang.String) -> <init>
     java.lang.Object call(java.lang.Object) -> a
     rx.functions.Func1 lambdaFactory$(java.lang.String) -> a
-io.github.sithengineer.motoqueiro.data.RideRepository$$Lambda$2 -> io.github.sithengineer.motoqueiro.data.m:
+io.github.sithengineer.motoqueiro.data.RideRepository$$Lambda$2 -> io.github.sithengineer.motoqueiro.data.q:
     io.github.sithengineer.motoqueiro.data.RideRepository arg$1 -> a
     java.lang.String arg$2 -> b
     void <init>(io.github.sithengineer.motoqueiro.data.RideRepository,java.lang.String) -> <init>
     java.lang.Object call(java.lang.Object) -> a
     rx.functions.Func1 lambdaFactory$(io.github.sithengineer.motoqueiro.data.RideRepository,java.lang.String) -> a
-io.github.sithengineer.motoqueiro.data.RideRepository$$Lambda$3 -> io.github.sithengineer.motoqueiro.data.n:
+io.github.sithengineer.motoqueiro.data.RideRepository$$Lambda$3 -> io.github.sithengineer.motoqueiro.data.r:
     io.github.sithengineer.motoqueiro.data.RideRepository arg$1 -> a
     java.lang.String arg$2 -> b
     void <init>(io.github.sithengineer.motoqueiro.data.RideRepository,java.lang.String) -> <init>
     java.lang.Object call(java.lang.Object) -> a
     rx.functions.Func1 lambdaFactory$(io.github.sithengineer.motoqueiro.data.RideRepository,java.lang.String) -> a
-io.github.sithengineer.motoqueiro.data.RideRepository$$Lambda$4 -> io.github.sithengineer.motoqueiro.data.o:
+io.github.sithengineer.motoqueiro.data.RideRepository$$Lambda$4 -> io.github.sithengineer.motoqueiro.data.s:
     io.github.sithengineer.motoqueiro.data.RideRepository arg$1 -> a
     java.lang.String arg$2 -> b
     void <init>(io.github.sithengineer.motoqueiro.data.RideRepository,java.lang.String) -> <init>
     java.lang.Object call(java.lang.Object) -> a
     rx.functions.Func1 lambdaFactory$(io.github.sithengineer.motoqueiro.data.RideRepository,java.lang.String) -> a
-io.github.sithengineer.motoqueiro.data.RideRepository$$Lambda$5 -> io.github.sithengineer.motoqueiro.data.p:
+io.github.sithengineer.motoqueiro.data.RideRepository$$Lambda$5 -> io.github.sithengineer.motoqueiro.data.t:
     io.github.sithengineer.motoqueiro.data.RideRepository arg$1 -> a
     java.lang.String arg$2 -> b
     void <init>(io.github.sithengineer.motoqueiro.data.RideRepository,java.lang.String) -> <init>
     java.lang.Object call(java.lang.Object) -> a
     rx.functions.Func1 lambdaFactory$(io.github.sithengineer.motoqueiro.data.RideRepository,java.lang.String) -> a
-io.github.sithengineer.motoqueiro.data.RideRepository$$Lambda$6 -> io.github.sithengineer.motoqueiro.data.q:
+io.github.sithengineer.motoqueiro.data.RideRepository$$Lambda$6 -> io.github.sithengineer.motoqueiro.data.u:
     io.github.sithengineer.motoqueiro.data.RideRepository$$Lambda$6 instance -> a
     void <init>() -> <init>
     java.lang.Object call(java.lang.Object) -> a
     void <clinit>() -> <clinit>
     rx.functions.Func1 lambdaFactory$() -> a
-io.github.sithengineer.motoqueiro.data.RideRepository$$Lambda$7 -> io.github.sithengineer.motoqueiro.data.r:
+io.github.sithengineer.motoqueiro.data.RideRepository$$Lambda$7 -> io.github.sithengineer.motoqueiro.data.v:
     io.github.sithengineer.motoqueiro.data.RideRepository$$Lambda$7 instance -> a
     void <init>() -> <init>
     java.lang.Object call(java.lang.Object) -> a
     void <clinit>() -> <clinit>
     rx.functions.Func1 lambdaFactory$() -> a
-io.github.sithengineer.motoqueiro.data.RideRepository$$Lambda$8 -> io.github.sithengineer.motoqueiro.data.s:
+io.github.sithengineer.motoqueiro.data.RideRepository$$Lambda$8 -> io.github.sithengineer.motoqueiro.data.w:
     io.github.sithengineer.motoqueiro.data.RideRepository arg$1 -> a
     void <init>(io.github.sithengineer.motoqueiro.data.RideRepository) -> <init>
     java.lang.Object call(java.lang.Object) -> a
     rx.functions.Func1 lambdaFactory$(io.github.sithengineer.motoqueiro.data.RideRepository) -> a
-io.github.sithengineer.motoqueiro.data.RideRepository$$Lambda$9 -> io.github.sithengineer.motoqueiro.data.t:
+io.github.sithengineer.motoqueiro.data.RideRepository$$Lambda$9 -> io.github.sithengineer.motoqueiro.data.x:
     io.github.sithengineer.motoqueiro.data.RideRepository arg$1 -> a
     java.lang.String arg$2 -> b
     void <init>(io.github.sithengineer.motoqueiro.data.RideRepository,java.lang.String) -> <init>
@@ -19683,8 +19713,8 @@ io.github.sithengineer.motoqueiro.home.HomeModule -> io.github.sithengineer.moto
     io.github.sithengineer.motoqueiro.home.HomeNavigator provideNavigator() -> b
     io.github.sithengineer.motoqueiro.PermissionAuthority providePermissionAuthority() -> c
     io.github.sithengineer.motoqueiro.util.CompositeSubscriptionManager provideCompositeSubscriptionManager() -> d
-    io.github.sithengineer.motoqueiro.home.RideManager providesRideManager(android.location.LocationManager,io.github.sithengineer.motoqueiro.hardware.gps.GpsStateListener,io.github.sithengineer.motoqueiro.data.RideRepository) -> a
-    io.github.sithengineer.motoqueiro.home.HomeContract$Presenter providePresenter(io.github.sithengineer.motoqueiro.home.HomeContract$View,io.github.sithengineer.motoqueiro.util.CompositeSubscriptionManager,io.github.sithengineer.motoqueiro.home.RideManager,io.github.sithengineer.motoqueiro.app.Preferences,io.github.sithengineer.motoqueiro.home.HomeNavigator,io.github.sithengineer.motoqueiro.PermissionAuthority) -> a
+    io.github.sithengineer.motoqueiro.data.RideManager providesRideManager(android.location.LocationManager,io.github.sithengineer.motoqueiro.hardware.gps.GpsStateListener,io.github.sithengineer.motoqueiro.data.RideRepository) -> a
+    io.github.sithengineer.motoqueiro.home.HomeContract$Presenter providePresenter(io.github.sithengineer.motoqueiro.home.HomeContract$View,io.github.sithengineer.motoqueiro.util.CompositeSubscriptionManager,io.github.sithengineer.motoqueiro.data.RideManager,io.github.sithengineer.motoqueiro.app.Preferences,io.github.sithengineer.motoqueiro.home.HomeNavigator,io.github.sithengineer.motoqueiro.PermissionAuthority) -> a
 io.github.sithengineer.motoqueiro.home.HomeModule_ProvideCompositeSubscriptionManagerFactory -> io.github.sithengineer.motoqueiro.home.f:
     io.github.sithengineer.motoqueiro.home.HomeModule module -> b
     boolean $assertionsDisabled -> a
@@ -19738,7 +19768,7 @@ io.github.sithengineer.motoqueiro.home.HomeModule_ProvidesRideManagerFactory -> 
     javax.inject.Provider rideRepoProvider -> e
     boolean $assertionsDisabled -> a
     void <init>(io.github.sithengineer.motoqueiro.home.HomeModule,javax.inject.Provider,javax.inject.Provider,javax.inject.Provider) -> <init>
-    io.github.sithengineer.motoqueiro.home.RideManager get() -> b
+    io.github.sithengineer.motoqueiro.data.RideManager get() -> b
     dagger.internal.Factory create(io.github.sithengineer.motoqueiro.home.HomeModule,javax.inject.Provider,javax.inject.Provider,javax.inject.Provider) -> a
     java.lang.Object get() -> a
     void <clinit>() -> <clinit>
@@ -19750,12 +19780,12 @@ io.github.sithengineer.motoqueiro.home.HomePresenter -> io.github.sithengineer.m
     java.lang.String[] PERMISSIONS -> a
     io.github.sithengineer.motoqueiro.util.CompositeSubscriptionManager subscriptionManager -> b
     io.github.sithengineer.motoqueiro.home.HomeContract$View view -> c
-    io.github.sithengineer.motoqueiro.home.RideManager rideManager -> d
+    io.github.sithengineer.motoqueiro.data.RideManager rideManager -> d
     io.github.sithengineer.motoqueiro.app.Preferences preferences -> e
     java.util.regex.Pattern macValidator -> f
     io.github.sithengineer.motoqueiro.home.HomeNavigator homeNavigator -> g
     io.github.sithengineer.motoqueiro.PermissionAuthority permissionAuthority -> h
-    void <init>(io.github.sithengineer.motoqueiro.home.HomeContract$View,io.github.sithengineer.motoqueiro.util.CompositeSubscriptionManager,io.github.sithengineer.motoqueiro.home.RideManager,io.github.sithengineer.motoqueiro.app.Preferences,io.github.sithengineer.motoqueiro.home.HomeNavigator,io.github.sithengineer.motoqueiro.PermissionAuthority) -> <init>
+    void <init>(io.github.sithengineer.motoqueiro.home.HomeContract$View,io.github.sithengineer.motoqueiro.util.CompositeSubscriptionManager,io.github.sithengineer.motoqueiro.data.RideManager,io.github.sithengineer.motoqueiro.app.Preferences,io.github.sithengineer.motoqueiro.home.HomeNavigator,io.github.sithengineer.motoqueiro.PermissionAuthority) -> <init>
     void start() -> a
     void stop() -> b
     void watchMiBandAddressChange() -> i
@@ -19954,36 +19984,6 @@ io.github.sithengineer.motoqueiro.home.HomePresenter$$Lambda$9 -> io.github.sith
     void <init>(io.github.sithengineer.motoqueiro.home.HomePresenter) -> <init>
     java.lang.Object call(java.lang.Object) -> a
     rx.functions.Func1 lambdaFactory$(io.github.sithengineer.motoqueiro.home.HomePresenter) -> a
-io.github.sithengineer.motoqueiro.home.RideManager -> io.github.sithengineer.motoqueiro.home.ap:
-    java.text.SimpleDateFormat DATE_FORMAT -> a
-    io.github.sithengineer.motoqueiro.hardware.gps.GpsStateListener locationListener -> b
-    android.location.LocationManager locationManager -> c
-    io.github.sithengineer.motoqueiro.data.RideRepository rideRepo -> d
-    void <init>(io.github.sithengineer.motoqueiro.hardware.gps.GpsStateListener,android.location.LocationManager,io.github.sithengineer.motoqueiro.data.RideRepository) -> <init>
-    rx.Single start(java.lang.String) -> a
-    java.lang.String generateName() -> a
-    rx.Completable stop(java.lang.String) -> b
-    rx.Single isGpsActive() -> c
-    java.lang.Boolean lambda$isGpsActive$2() -> b
-    rx.Completable lambda$stop$1(java.lang.Boolean) -> a
-    rx.Single lambda$start$0(java.lang.String,java.lang.Boolean) -> a
-    void <clinit>() -> <clinit>
-io.github.sithengineer.motoqueiro.home.RideManager$$Lambda$1 -> io.github.sithengineer.motoqueiro.home.aq:
-    io.github.sithengineer.motoqueiro.home.RideManager arg$1 -> a
-    java.lang.String arg$2 -> b
-    void <init>(io.github.sithengineer.motoqueiro.home.RideManager,java.lang.String) -> <init>
-    java.lang.Object call(java.lang.Object) -> a
-    rx.functions.Func1 lambdaFactory$(io.github.sithengineer.motoqueiro.home.RideManager,java.lang.String) -> a
-io.github.sithengineer.motoqueiro.home.RideManager$$Lambda$2 -> io.github.sithengineer.motoqueiro.home.ar:
-    io.github.sithengineer.motoqueiro.home.RideManager arg$1 -> a
-    void <init>(io.github.sithengineer.motoqueiro.home.RideManager) -> <init>
-    java.lang.Object call(java.lang.Object) -> a
-    rx.functions.Func1 lambdaFactory$(io.github.sithengineer.motoqueiro.home.RideManager) -> a
-io.github.sithengineer.motoqueiro.home.RideManager$$Lambda$3 -> io.github.sithengineer.motoqueiro.home.as:
-    io.github.sithengineer.motoqueiro.home.RideManager arg$1 -> a
-    void <init>(io.github.sithengineer.motoqueiro.home.RideManager) -> <init>
-    java.lang.Object call() -> call
-    java.util.concurrent.Callable lambdaFactory$(io.github.sithengineer.motoqueiro.home.RideManager) -> a
 io.github.sithengineer.motoqueiro.network.NetworkService -> io.github.sithengineer.motoqueiro.e.a:
     rx.Observable upload(io.github.sithengineer.motoqueiro.data.model.Ride) -> a
 io.github.sithengineer.motoqueiro.network.RideApiModule -> io.github.sithengineer.motoqueiro.e.b:

@@ -1,4 +1,4 @@
-package io.github.sithengineer.motoqueiro.cruising;
+package io.github.sithengineer.motoqueiro.data;
 
 import io.github.sithengineer.motoqueiro.data.RideRepository;
 import io.github.sithengineer.motoqueiro.hardware.Accelerometer;

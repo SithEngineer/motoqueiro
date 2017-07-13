@@ -1,4 +1,4 @@
-package io.github.sithengineer.motoqueiro.cruising;
+package io.github.sithengineer.motoqueiro.ui.cruising;
 
 import android.location.LocationManager;
 import dagger.Module;
@@ -6,6 +6,7 @@ import dagger.Provides;
 import io.github.sithengineer.motoqueiro.app.Preferences;
 import io.github.sithengineer.motoqueiro.data.RideRepository;
 import io.github.sithengineer.motoqueiro.hardware.Accelerometer;
+import io.github.sithengineer.motoqueiro.data.DataManager;
 import io.github.sithengineer.motoqueiro.hardware.Gravity;
 import io.github.sithengineer.motoqueiro.hardware.Gyroscope;
 import io.github.sithengineer.motoqueiro.hardware.MiBandService;

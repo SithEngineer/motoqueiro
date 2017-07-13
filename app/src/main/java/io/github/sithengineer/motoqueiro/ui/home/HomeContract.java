@@ -1,24 +1,20 @@
-package io.github.sithengineer.motoqueiro.home;
+package io.github.sithengineer.motoqueiro.ui.home;
 
-import rx.Completable;
 import rx.Observable;
 
 public interface HomeContract {
 
   interface View extends io.github.sithengineer.motoqueiro.View {
-    /**
-     * @return a {@link Completable} that should navigate after start data tracking is
-     * pressed
-     */
-    Observable<Void> handleStartClick();
+
+    Observable<Void> handleEnterTestingClick();
+
+    Observable<Void> handleEnterLearningClick();
 
     void sendToGpsSettings();
 
     void showActivateGpsViewMessage();
 
     void showGenericError();
-
-    String getRideName();
 
     void showMiBandAddress(String miBandAddress);
 

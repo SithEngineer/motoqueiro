@@ -1,4 +1,4 @@
-package io.github.sithengineer.motoqueiro.home;
+package io.github.sithengineer.motoqueiro.ui.home;
 
 import android.Manifest;
 import android.support.annotation.NonNull;
@@ -50,7 +50,7 @@ public class HomePresenter implements HomeContract.Presenter {
   }
 
   @Override public void start() {
-    handleStartClick();
+    handleEnterTestingClick();
     watchMiBandAddressChange();
     showMiBandAddress();
   }
@@ -99,7 +99,7 @@ public class HomePresenter implements HomeContract.Presenter {
         });
   }
 
-  private void handleStartClick() {
+  private void handleEnterTestingClick() {
     Observable<Void> handlePermissionsResult =
         allPermissionsAreAllowed().flatMapCompletable(allPermissionsGranted -> {
           if (allPermissionsGranted) {
@@ -110,7 +110,7 @@ public class HomePresenter implements HomeContract.Presenter {
             .onErrorResumeNext(err -> handleStartRideError(err).toObservable())
             .map(__ -> null);
 
-    Observable<Void> handleStartClickToAskPermissions = view.handleStartClick()
+    Observable<Void> handleStartClickToAskPermissions = view.handleEnterTestingClick()
         .doOnNext(__ -> permissionAuthority.askForPermissions(PERMISSIONS,
             PERMISSION_REQUEST_CODE))
         .map(__ -> null);
@@ -128,7 +128,7 @@ public class HomePresenter implements HomeContract.Presenter {
     return view.getMiBandAddressChanges().first().toSingle().flatMap(address -> {
       // fixme un-comment bluetooth address validation before continuing
       //if (isValidBluetoothAddress(address)) {
-      return rideManager.start(view.getRideName()).doOnSuccess(rideId -> {
+      return rideManager.start().doOnSuccess(rideId -> {
         homeNavigator.forward(rideId);
       });
       //}
