@@ -1,14 +1,20 @@
 package io.github.sithengineer.motoqueiro.ui.home;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import butterknife.BindView;
 import com.jakewharton.rxbinding.view.RxView;
+import com.jakewharton.rxbinding.widget.RxAdapterView;
 import com.jakewharton.rxbinding.widget.RxTextView;
 import io.github.sithengineer.motoqueiro.BaseFragment;
 import io.github.sithengineer.motoqueiro.MotoqueiroApp;
@@ -24,6 +30,7 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter>
   @BindView(R.id.miband_address_input) EditText miBandAddress;
   @BindView(R.id.start_button) Button enterTestingButton;
   @BindView(R.id.start_button) Button enterLearningButton;
+  @BindView(R.id.phone_position_spinner) Spinner phonePosition;
   @Inject HomeContract.Presenter presenter;
 
   public static HomeFragment newInstance() {
@@ -42,8 +49,22 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter>
                  .inject(this);
   }
 
+  @Nullable @Override
+  public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+      @Nullable Bundle savedInstanceState) {
+    View v = super.onCreateView(inflater, container, savedInstanceState);
+
+    return v;
+  }
+
   @Nullable @Override public HomeContract.Presenter getPresenter() {
     return presenter;
+  }
+
+  @Override public Observable<String> handlePhonePositionChoice() {
+    return RxAdapterView.itemSelections(spinnerAdapter)
+                        .map(index -> getResources().getStringArray(
+                            R.array.home_wheres_phone_array)[index]);
   }
 
   @Override public Observable<Void> handleEnterTestingClick() {

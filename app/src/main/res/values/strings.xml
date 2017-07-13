@@ -19,4 +19,14 @@
   <string name="statistics_view_start_ride">Start a new ride</string>
     <string name="home_text_enter_learning_mode">Enter Learning Mode</string>
   <string name="home_text_enter_testing_mode">Enter Testing Mode</string>
+  <string name="home_wheres_phone">Where will be your phone during the ride?</string>
+
+  <string-array name="home_wheres_phone_array">
+    <item>Bar mount</item>
+    <item>Pants pocket</item>
+    <item>Jacket pocket</item>
+    <item>Backpack pocket</item>
+    <item>Leg pouch</item>
+  </string-array>
+
 </resources>

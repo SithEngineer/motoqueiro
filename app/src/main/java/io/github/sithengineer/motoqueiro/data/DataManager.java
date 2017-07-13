@@ -1,6 +1,5 @@
 package io.github.sithengineer.motoqueiro.data;
 
-import io.github.sithengineer.motoqueiro.data.RideRepository;
 import io.github.sithengineer.motoqueiro.hardware.Accelerometer;
 import io.github.sithengineer.motoqueiro.hardware.Gravity;
 import io.github.sithengineer.motoqueiro.hardware.Gyroscope;

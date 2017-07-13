@@ -8,7 +8,7 @@ import java.util.List;
 public class Ride {
 
   @Expose @SerializedName("id") private final String id;
-  @Expose @SerializedName("tripName") private final String name;
+  @Expose @SerializedName("event") private final String event;
   @Expose @SerializedName("initialTimestamp") private final long initialTimestamp;
   @Expose @SerializedName("finalTimestamp") private long finalTimestamp;
   @Expose @SerializedName("completed") private boolean completed;
@@ -29,10 +29,10 @@ public class Ride {
 
   private boolean synced;
 
-  public Ride(String id, String name, long initialTimestamp, long finalTimestamp,
+  public Ride(String id, String event, long initialTimestamp, long finalTimestamp,
       boolean completed, boolean synced) {
     this.id = id;
-    this.name = name;
+    this.event = event;
     this.initialTimestamp = initialTimestamp;
     this.finalTimestamp = finalTimestamp;
     this.completed = completed;
@@ -68,8 +68,8 @@ public class Ride {
     this.completed = completed;
   }
 
-  public String getName() {
-    return name;
+  public String getEvent() {
+    return event;
   }
 
   public List<TriDimenPoint> getAccelerometerCaptures() {

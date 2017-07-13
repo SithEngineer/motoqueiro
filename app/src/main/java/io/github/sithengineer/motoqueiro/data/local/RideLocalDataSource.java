@@ -304,7 +304,7 @@ public class RideLocalDataSource implements RideDataSource {
         .flatMap(transaction -> Single.fromCallable(() -> {
           ContentValues values = new ContentValues();
           values.put(RidePersistenceContract.RideEntry._ID, ride.getId());
-          values.put(RidePersistenceContract.RideEntry.COLUMN_NAME, ride.getName());
+          values.put(RidePersistenceContract.RideEntry.COLUMN_NAME, ride.getEvent());
           values.put(RidePersistenceContract.RideEntry.COLUMN_COMPLETED,
               ride.isCompleted());
           values.put(RidePersistenceContract.RideEntry.COLUMN_START_TIMESTAMP,
