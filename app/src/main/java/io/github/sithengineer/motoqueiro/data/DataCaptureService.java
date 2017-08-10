@@ -1,10 +1,7 @@
 package io.github.sithengineer.motoqueiro.data;
 
 import android.app.Service;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -19,9 +16,8 @@ import java.util.Date;
 import javax.inject.Inject;
 import javax.inject.Named;
 import rx.Completable;
-import rx.Observable;
 import rx.Single;
-import rx.subjects.PublishSubject;
+import timber.log.Timber;
 
 public class DataCaptureService extends Service {
   public static final String RIDE_NAME = "ride_name";
@@ -30,28 +26,26 @@ public class DataCaptureService extends Service {
   private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
 
   @Inject DataManager dataManager;
-  @Inject StopSignalReceiver stopSignalReceiver;
   @Named(DataCaptureModule.SERVICE_SUBSCRIPTIONS) @Inject CompositeSubscriptionManager
       subscriptionManager;
   @Inject GpsStateListener locationListener;
   @Inject LocationManager locationManager;
   @Inject RideRepository rideRepo;
 
-  private Single<Boolean> isGpsActive() {
-    return Single.fromCallable(() -> locationListener.isLocationServiceActive(locationManager));
+  private boolean isGpsActive() {
+    return locationListener.isLocationServiceActive(locationManager);
   }
 
   /**
-   * This {@link Observable} chain can throw a GpsNotActiveException if GPS is off or in
+   * This method can throw a GpsNotActiveException if GPS is off or in
    * coarse location mode.
    */
-  public Single<String> start() {
-    return isGpsActive().flatMap(gpsActive -> {
-      if (!gpsActive) {
-        return Single.error(new GpsNotActiveException());
-      }
-      return rideRepo.startRide(generateName());
-    });
+  public String start(String rideName) {
+    if (!isGpsActive()) {
+      throw new GpsNotActiveException();
+    }
+    String name = TextUtils.isEmpty(rideName) ? generateName() : rideName;
+    return rideRepo.startRide(name);
   }
 
   private String generateName() {
@@ -59,7 +53,7 @@ public class DataCaptureService extends Service {
   }
 
   public Completable stop(String rideId) {
-    return rideRepo.finishRide(rideId).flatMapCompletable(success -> {
+    return Single.just(rideRepo.finishRide(rideId)).flatMapCompletable(success -> {
       if (success) {
         return rideRepo.sync();
       } else {
@@ -77,9 +71,6 @@ public class DataCaptureService extends Service {
     subscriptionManager.clearAll();
     subscriptionManager = null;
 
-    getApplicationContext().unregisterReceiver(stopSignalReceiver);
-    stopSignalReceiver = null;
-
     super.onDestroy();
   }
 
@@ -91,42 +82,14 @@ public class DataCaptureService extends Service {
     // inject dependencies
     MotoqueiroApp.get(this).createDataCaptureComponent().inject(this);
 
-    getApplicationContext().registerReceiver(stopSignalReceiver, stopSignalReceiver.getFilter());
-
     String rideName = extras.getString(RIDE_NAME);
     if (TextUtils.isEmpty(rideName)) {
       rideName = generateName();
     }
 
-    subscriptionManager.add(rideRepo.startRide(rideName)
-        .flatMapObservable(rideId -> dataManager.gatherData()
-            .flatMap(__ -> stopSignalReceiver.onStopEvent())
-            .flatMapCompletable(__ -> stop(rideId))
-            .doOnCompleted(() -> stopSelf()))
-            //.subscribeOn(Schedulers.io())
-        .subscribe());
-  }
-
-  public static final class StopSignalReceiver extends BroadcastReceiver {
-
-    private final PublishSubject<Void> stopEventPublisher;
-
-    public StopSignalReceiver() {
-      stopEventPublisher = PublishSubject.create();
-    }
-
-    public Observable<Void> onStopEvent() {
-      return stopEventPublisher;
-    }
-
-    @Override public void onReceive(Context context, Intent intent) {
-      stopEventPublisher.onNext(null);
-    }
-
-    public IntentFilter getFilter() {
-      IntentFilter filter = new IntentFilter();
-      filter.addAction(STOP_SERVICE);
-      return filter;
-    }
+    subscriptionManager.add(Single.just(start(rideName))
+        .flatMapObservable(rideId -> dataManager.gatherData().doOnUnsubscribe(() -> stop(rideId)))
+        .subscribe(__ -> {
+        }, err -> Timber.e(err)));
   }
 }

@@ -5,47 +5,45 @@ import io.github.sithengineer.motoqueiro.data.model.HeartRatePoint;
 import io.github.sithengineer.motoqueiro.data.model.Ride;
 import io.github.sithengineer.motoqueiro.data.model.TriDimenPoint;
 import java.util.List;
-import rx.Completable;
-import rx.Single;
 
 public interface RideDataSource {
-  Completable saveGpsData(String rideId, List<GpsPoint> points);
+  void saveGpsData(String rideId, List<GpsPoint> points);
 
-  Single<Long> saveGpsData(String rideId, GpsPoint coords);
+  long saveGpsData(String rideId, GpsPoint coords);
 
-  Single<List<GpsPoint>> getGpsData(String rideId);
+  List<GpsPoint> getGpsData(String rideId);
 
-  Completable saveAccelerometerData(String rideId, List<TriDimenPoint> points);
+  void saveAccelerometerData(String rideId, List<TriDimenPoint> points);
 
-  Single<Long> saveAccelerometerData(String rideId, TriDimenPoint point);
+  long saveAccelerometerData(String rideId, TriDimenPoint point);
 
-  Single<List<TriDimenPoint>> getAccelerometerData(String rideId);
+  List<TriDimenPoint> getAccelerometerData(String rideId);
 
-  Completable saveGyroscopeData(String rideId, List<TriDimenPoint> points);
+  void saveGyroscopeData(String rideId, List<TriDimenPoint> points);
 
-  Single<Long> saveGyroscopeData(String rideId, TriDimenPoint point);
+  long saveGyroscopeData(String rideId, TriDimenPoint point);
 
-  Completable saveGravityData(String rideId, List<TriDimenPoint> points);
+  void saveGravityData(String rideId, List<TriDimenPoint> points);
 
-  Single<Long> saveGravityData(String rideId, TriDimenPoint point);
+  long saveGravityData(String rideId, TriDimenPoint point);
 
-  Single<List<TriDimenPoint>> getGravityData(String rideId);
+  List<TriDimenPoint> getGravityData(String rideId);
 
-  Completable saveHeartRateData(String rideId, List<HeartRatePoint> points);
+  void saveHeartRateData(String rideId, List<HeartRatePoint> points);
 
-  Single<Long> saveHeartRateData(String rideId, HeartRatePoint point);
+  long saveHeartRateData(String rideId, HeartRatePoint point);
 
-  Single<List<HeartRatePoint>> getHeartRateData(String rideId);
+  List<HeartRatePoint> getHeartRateData(String rideId);
 
-  Single<Long> saveRide(Ride ride);
+  long saveRide(Ride ride);
 
-  Single<List<TriDimenPoint>> getGyroscopeData(String rideId);
+  List<TriDimenPoint> getGyroscopeData(String rideId);
 
-  Single<Ride> getRide(String rideId);
+  Ride getRide(String rideId);
 
-  Single<Boolean> markCompleted(String rideId);
+  boolean markCompleted(String rideId);
 
-  Single<List<Ride>> getCompletedRides();
+  List<Ride> getCompletedRides();
 
-  Single<Boolean> markSynced(String rideId);
+  boolean markSynced(String rideId);
 }

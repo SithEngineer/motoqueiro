@@ -1,6 +1,5 @@
 package io.github.sithengineer.motoqueiro.ui.statistics;
 
-import com.trello.rxlifecycle.android.FragmentEvent;
 import io.github.sithengineer.motoqueiro.util.CompositeSubscriptionManager;
 import timber.log.Timber;
 
@@ -26,12 +25,8 @@ public class StatisticsPresenter implements StatisticsContract.Presenter {
   }
 
   private void handleGoHomeClicks() {
-    subscriptionManager.add(view.lifecycle()
-        .filter(event -> event == FragmentEvent.CREATE_VIEW)
-        .flatMap(event -> view.goHomeClick().doOnNext(__ -> goHome()))
-        .compose(view.bindUntilEvent(FragmentEvent.DESTROY_VIEW))
-        .subscribe(__ -> {
-        }, err -> Timber.e(err)));
+    subscriptionManager.add(
+        view.goHomeClick().doOnNext(__ -> goHome()).doOnError(err -> Timber.e(err)).subscribe());
   }
 
   @Override public void goHome() {

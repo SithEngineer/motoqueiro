@@ -5,6 +5,7 @@ import io.github.sithengineer.motoqueiro.data.model.GpsPoint;
 import io.github.sithengineer.motoqueiro.data.model.HeartRatePoint;
 import io.github.sithengineer.motoqueiro.data.model.Ride;
 import io.github.sithengineer.motoqueiro.data.model.TriDimenPoint;
+import io.github.sithengineer.motoqueiro.network.RideWebService;
 import java.util.Calendar;
 import java.util.UUID;
 import rx.Completable;
@@ -12,58 +13,50 @@ import rx.Single;
 import timber.log.Timber;
 
 public class RideRepository {
+  private final RideWebService webService;
   private final RideDataSource localDataSource;
-  private final RideDataSource remoteDataSource;
 
-  public RideRepository(RideDataSource localDataSource, RideDataSource remoteDataSource) {
+  public RideRepository(RideWebService webService, RideDataSource localDataSource) {
+    this.webService = webService;
     this.localDataSource = localDataSource;
-    this.remoteDataSource = remoteDataSource;
   }
 
-  public Single<String> startRide(@NonNull final String name) {
-    return generateRideId().flatMap(rideId -> Single.just(
-        new Ride(rideId, name, Calendar.getInstance().getTimeInMillis(), 0, false, false))
-        .flatMap(ridePart -> localDataSource.saveRide(ridePart).map(__ -> rideId)));
+  public String startRide(@NonNull final String name) {
+    String rideId = generateRideId();
+    Ride ride = new Ride(rideId, name, Calendar.getInstance().getTimeInMillis());
+    localDataSource.saveRide(ride);
+    return rideId;
   }
 
-  public Single<Boolean> finishRide(String rideId) {
+  public boolean finishRide(String rideId) {
     return localDataSource.markCompleted(rideId);
   }
 
-  private Single<String> generateRideId() {
-    return Single.just(UUID.randomUUID().toString());
+  private String generateRideId() {
+    return UUID.randomUUID().toString();
   }
 
-  public Completable saveHeartRate(String rideId, int heartRate) {
-    return Single.just(
-        new HeartRatePoint(heartRate, Calendar.getInstance().getTimeInMillis()))
-        .flatMapCompletable(
-            heartRatePoint -> localDataSource.saveHeartRateData(rideId, heartRatePoint)
-                .toCompletable());
+  public long saveHeartRate(String rideId, int heartRate) {
+    final HeartRatePoint point =
+        new HeartRatePoint(heartRate, Calendar.getInstance().getTimeInMillis());
+    return localDataSource.saveHeartRateData(rideId, point);
   }
 
-  public Completable saveGpsCoordinate(String rideId, double lat, double lng) {
-    return Single.just(new GpsPoint(lat, lng, Calendar.getInstance().getTimeInMillis()))
-        .flatMapCompletable(
-            gpsPoint -> localDataSource.saveGpsData(rideId, gpsPoint).toCompletable());
+  public long saveGpsCoordinate(String rideId, double lat, double lng) {
+    final GpsPoint point = new GpsPoint(lat, lng, Calendar.getInstance().getTimeInMillis());
+    return localDataSource.saveGpsData(rideId, point);
   }
 
-  public Completable saveAccelerometerCapture(String rideId, float xx, float yy,
-      float zz) {
-    return Single.just(
-        new TriDimenPoint(xx, yy, zz, Calendar.getInstance().getTimeInMillis()))
-        .flatMapCompletable(
-            triDimenPoint -> localDataSource.saveAccelerometerData(rideId, triDimenPoint)
-                .toCompletable());
+  public long saveAccelerometerCapture(String rideId, float xx, float yy, float zz) {
+    final TriDimenPoint point =
+        new TriDimenPoint(xx, yy, zz, Calendar.getInstance().getTimeInMillis());
+    return localDataSource.saveAccelerometerData(rideId, point);
   }
 
-  public Completable saveGyroscopeCapture(String rideId, float xx, float yy,
-      float zz) {
-    return Single.just(
-        new TriDimenPoint(xx, yy, zz, Calendar.getInstance().getTimeInMillis()))
-        .flatMapCompletable(
-            triDimenPoint -> localDataSource.saveGyroscopeData(rideId, triDimenPoint)
-                .toCompletable());
+  public long saveGyroscopeCapture(String rideId, float xx, float yy, float zz) {
+    final TriDimenPoint point =
+        new TriDimenPoint(xx, yy, zz, Calendar.getInstance().getTimeInMillis());
+    return localDataSource.saveGyroscopeData(rideId, point);
   }
 
   /**
@@ -72,22 +65,20 @@ public class RideRepository {
    * After sync, mark all the sent ride data as sync'ed
    */
   public Completable sync() {
-    return localDataSource.getCompletedRides()
+    return Single.just(localDataSource.getCompletedRides())
         .toObservable()
         .flatMapIterable(list -> list)
         .filter(ride -> !ride.isSynced())
-        .flatMapSingle(ride -> remoteDataSource.saveRide(ride)
-            .flatMap(__ -> localDataSource.markSynced(ride.getId()))
+        .flatMapCompletable(ride -> webService.upload(ride)
+            .doOnCompleted(() -> localDataSource.markSynced(ride.getId()))
             .doOnError(err -> Timber.e(err)))
         .toList()
         .toCompletable();
   }
 
-  public Completable saveGravityCapture(String rideId, float xx, float yy, float zz) {
-    return Single.just(
-        new TriDimenPoint(xx, yy, zz, Calendar.getInstance().getTimeInMillis()))
-        .flatMapCompletable(
-            triDimenPoint -> localDataSource.saveGravityData(rideId, triDimenPoint)
-                .toCompletable());
+  public long saveGravityCapture(String rideId, float xx, float yy, float zz) {
+    final TriDimenPoint point =
+        new TriDimenPoint(xx, yy, zz, Calendar.getInstance().getTimeInMillis());
+    return localDataSource.saveGravityData(rideId, point);
   }
 }

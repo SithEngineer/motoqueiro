@@ -1,7 +1,6 @@
 package io.github.sithengineer.motoqueiro.ui.home;
 
 import android.Manifest;
-import com.trello.rxlifecycle.android.FragmentEvent;
 import io.github.sithengineer.motoqueiro.PermissionAuthority;
 import io.github.sithengineer.motoqueiro.PermissionResponse;
 import io.github.sithengineer.motoqueiro.app.Preferences;
@@ -34,8 +33,7 @@ public class HomePresenter implements HomeContract.Presenter {
   private final PermissionAuthority permissionAuthority;
 
   public HomePresenter(HomeContract.View view, CompositeSubscriptionManager subscriptionManager,
-      Preferences preferences, HomeNavigator navigator,
-      PermissionAuthority permissionAuthority) {
+      Preferences preferences, HomeNavigator navigator, PermissionAuthority permissionAuthority) {
     this.view = view;
     this.subscriptionManager = subscriptionManager;
     this.preferences = preferences;
@@ -66,12 +64,8 @@ public class HomePresenter implements HomeContract.Presenter {
       }
     }).retry().map(__ -> null);
 
-    subscriptionManager.add(view.lifecycle()
-        .filter(event -> event == FragmentEvent.CREATE_VIEW)
-        .flatMap(__ -> watchMiBandAddressChange)
-        .compose(view.bindUntilEvent(FragmentEvent.DESTROY_VIEW))
-        .subscribe(__ -> {
-        }, err -> Timber.e(err)));
+    subscriptionManager.add(watchMiBandAddressChange.subscribe(__ -> {
+    }, err -> Timber.e(err)));
   }
 
   private boolean areAllGranted(List<PermissionResponse> permissionResponses) {
@@ -96,40 +90,32 @@ public class HomePresenter implements HomeContract.Presenter {
   }
 
   private void handleStartRideClick() {
-    subscriptionManager.add(view.lifecycle()
-        .filter(event -> event == FragmentEvent.CREATE_VIEW)
-        .flatMap(__ -> view.handleStartRideClick()
-            .doOnNext(
-                __2 -> permissionAuthority.askForPermissions(PERMISSIONS, PERMISSION_REQUEST_CODE)))
+    subscriptionManager.add(view.handleStartRideClick()
+        .doOnNext(__ -> permissionAuthority.askForPermissions(PERMISSIONS, PERMISSION_REQUEST_CODE))
         .doOnError(err -> Timber.e(err))
         .retry()
-        .compose(view.bindUntilEvent(FragmentEvent.DESTROY_VIEW))
         .subscribe());
   }
 
-  private String getRideName(){
+  private String getRideName() {
     return view.getRideName();
   }
 
-  private DevicePosition getDevicePosition(){
+  private DevicePosition getDevicePosition() {
     return DevicePosition.fromValue(view.getSelectedDevicePosition());
   }
 
-  private void handlePermissionsGiven(){
-    subscriptionManager.add(view.lifecycle()
-        .filter(event -> event == FragmentEvent.CREATE_VIEW)
-        .flatMap(__ -> allPermissionsAreAllowed().flatMapCompletable(allPermissionsGranted -> {
-          if (allPermissionsGranted) {
-            return Completable.fromAction(() -> {
-              navigator.startServiceToGatherData(getRideName(), getDevicePosition());
-              navigator.forward();
-            });
-          }
-          return Completable.fromAction(() -> view.showGivePermissionsMessage());
-        }).onErrorResumeNext(err -> handleStartRideError(err).toObservable()))
-        .compose(view.bindUntilEvent(FragmentEvent.DESTROY_VIEW))
-        .subscribe(__ -> {
-        }, err -> Timber.e(err)));
+  private void handlePermissionsGiven() {
+    subscriptionManager.add(allPermissionsAreAllowed().flatMapCompletable(allPermissionsGranted -> {
+      if (allPermissionsGranted) {
+        return Completable.fromAction(() -> {
+          navigator.startServiceToGatherData(getRideName(), getDevicePosition());
+          navigator.forward();
+        });
+      }
+      return Completable.fromAction(() -> view.showGivePermissionsMessage());
+    }).onErrorResumeNext(err -> handleStartRideError(err).toObservable()).subscribe(__ -> {
+    }, err -> Timber.e(err)));
   }
 
   private boolean isValidBluetoothAddress(String address) {
@@ -144,12 +130,8 @@ public class HomePresenter implements HomeContract.Presenter {
     Completable showMiBandAddress = Completable.fromAction(
         () -> view.showMiBandAddress(preferences.getMiBandAddressOrDefault()));
 
-    subscriptionManager.add(view.lifecycle()
-        .filter(event -> event == FragmentEvent.CREATE_VIEW)
-        .flatMap(__ -> showMiBandAddress.toObservable())
-        .compose(view.bindUntilEvent(FragmentEvent.DESTROY_VIEW))
-        .subscribe(__ -> {
-        }, err -> Timber.e(err)));
+    subscriptionManager.add(showMiBandAddress.subscribe(() -> {
+    }, err -> Timber.e(err)));
   }
 
   private Completable handleStartRideError(Throwable err) {

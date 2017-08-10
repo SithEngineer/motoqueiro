@@ -5,20 +5,25 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import com.trello.rxlifecycle.android.ActivityEvent;
-import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
+import android.support.v7.app.AppCompatActivity;
 import java.util.LinkedList;
 import rx.Observable;
 import rx.subjects.PublishSubject;
 
-public abstract class BaseActivity extends RxAppCompatActivity
-    implements PermissionAuthority {
+public abstract class BaseActivity extends AppCompatActivity implements PermissionAuthority {
   private PublishSubject<PermissionResponse> permissionSubject;
 
   @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     permissionSubject = PublishSubject.create();
-    permissionSubject.compose(bindUntilEvent(ActivityEvent.DESTROY));
+  }
+
+  @Override protected void onDestroy() {
+    if(permissionSubject!=null) {
+      permissionSubject.onCompleted();
+      permissionSubject = null;
+    }
+    super.onDestroy();
   }
 
   // todo improve the permission request system to show a rationale when asking for permissions
@@ -30,8 +35,7 @@ public abstract class BaseActivity extends RxAppCompatActivity
           != PackageManager.PERMISSION_GRANTED) {
         permissionsToRequest.add(permissionRequest);
       } else {
-        permissionSubject.onNext(
-            new PermissionResponse(permissionRequest, requestCode, true));
+        permissionSubject.onNext(new PermissionResponse(permissionRequest, requestCode, true));
       }
     }
 
@@ -45,7 +49,8 @@ public abstract class BaseActivity extends RxAppCompatActivity
    * @return A continuous {@link Observable} with permission result.
    */
   @Override public Observable<PermissionResponse> getPermissionResult(int requestCode) {
-    return permissionSubject.filter(response -> response.getRequestCode() == requestCode);
+    return permissionSubject.filter(response -> response.getRequestCode() == requestCode)
+        .asObservable();
   }
 
   @Override public void onRequestPermissionsResult(int requestCode, String[] permissions,

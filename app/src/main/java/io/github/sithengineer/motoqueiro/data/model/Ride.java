@@ -12,8 +12,7 @@ public class Ride {
   @Expose @SerializedName("initialTimestamp") private final long initialTimestamp;
   @Expose @SerializedName("finalTimestamp") private long finalTimestamp;
   @Expose @SerializedName("completed") private boolean completed;
-  @Expose @SerializedName("accelerometerCapturesCount") private int
-      accelerometerCapturesCount;
+  @Expose @SerializedName("accelerometerCapturesCount") private int accelerometerCapturesCount;
   @Expose @SerializedName("accelerometerCaptures") private List<TriDimenPoint>
       accelerometerCaptures;
   @Expose @SerializedName("gravityCapturesCount") private int gravityCapturesCount;
@@ -21,13 +20,15 @@ public class Ride {
   @Expose @SerializedName("gpsCoordinatesCount") private int gpsCoordinatesCount;
   @Expose @SerializedName("gpsCoordinates") private List<GpsPoint> gpsCoordinates;
   @Expose @SerializedName("heartRateCapturesCount") private int heartRateCapturesCount;
-  @Expose @SerializedName("heartRateCaptures") private List<HeartRatePoint>
-      heartRateCaptures;
-  @Expose @SerializedName("gyroscopeCaptures") private List<TriDimenPoint>
-      gyroscopeCaptures;
+  @Expose @SerializedName("heartRateCaptures") private List<HeartRatePoint> heartRateCaptures;
+  @Expose @SerializedName("gyroscopeCaptures") private List<TriDimenPoint> gyroscopeCaptures;
   @Expose @SerializedName("gyroscopeCapturesCount") private int gyroscopeCapturesCount;
 
   private boolean synced;
+
+  public Ride(String id, String event, long initialTimestamp) {
+    this(id, event, initialTimestamp, 0, false, false);
+  }
 
   public Ride(String id, String event, long initialTimestamp, long finalTimestamp,
       boolean completed, boolean synced) {

@@ -9,7 +9,6 @@ import io.github.sithengineer.motoqueiro.hardware.capture.LatLng;
 import io.github.sithengineer.motoqueiro.hardware.capture.MiBandData;
 import io.github.sithengineer.motoqueiro.hardware.capture.RelativeCoordinates;
 import io.github.sithengineer.motoqueiro.hardware.gps.Gps;
-import rx.Completable;
 import rx.Observable;
 import timber.log.Timber;
 
@@ -37,11 +36,11 @@ public class DataManager {
   public Observable<Void> gatherData() {
     // gps data generator observable
     Observable<Void> generateGpsObservable =
-        gps.listen().flatMap(pos -> handleGpsPositionCapture(pos).toObservable()).map(__ -> null);
+        gps.listen().doOnNext(pos -> handleGpsPositionCapture(pos)).map(__ -> null);
 
     // accelerometer sensor data generator observable
     Observable<Void> generateAccelObservable = accelerometer.listen()
-        .flatMap(accelData -> handleAccelerometerCapture(accelData).toObservable())
+        .doOnNext(accelData -> handleAccelerometerCapture(accelData))
         .onErrorResumeNext(err -> {
           Timber.e(err);
           return Observable.empty();
@@ -50,7 +49,7 @@ public class DataManager {
 
     // gyroscope sensor data generator observable
     Observable<Void> generateGravityObservable = gravity.listen()
-        .flatMap(gravityData -> handleGravityCapture(gravityData).toObservable())
+        .doOnNext(gravityData -> handleGravityCapture(gravityData))
         .onErrorResumeNext(err -> {
           Timber.e(err);
           return Observable.empty();
@@ -59,7 +58,7 @@ public class DataManager {
 
     // gyroscope sensor data generator observable
     Observable<Void> generateGyroObservable = gyroscope.listen()
-        .flatMap(gyroData -> handleGyroscopeCapture(gyroData).toObservable())
+        .doOnNext(gyroData -> handleGyroscopeCapture(gyroData))
         .onErrorResumeNext(err -> {
           Timber.e(err);
           return Observable.empty();
@@ -68,7 +67,7 @@ public class DataManager {
 
     // miband heart rate sensor data generator observable
     Observable<Void> generateHeartRateObservable = miBand.listen()
-        .flatMap(heartData -> handleMiBandCapture(heartData).toObservable())
+        .doOnNext(heartData -> handleMiBandCapture(heartData))
         .onErrorResumeNext(err -> {
           Timber.e(err);
           return Observable.empty();
@@ -83,26 +82,24 @@ public class DataManager {
     return preferences.getRideId();
   }
 
-  private Completable handleMiBandCapture(MiBandData bandData) {
-    return rideRepo.saveHeartRate(getRideId(), bandData.getHeartRateBpm());
+  private void handleMiBandCapture(MiBandData bandData) {
+    rideRepo.saveHeartRate(getRideId(), bandData.getHeartRateBpm());
   }
 
-  private Completable handleGpsPositionCapture(LatLng capture) {
-    return rideRepo.saveGpsCoordinate(getRideId(), capture.getLat(), capture.getLng());
+  private void handleGpsPositionCapture(LatLng capture) {
+    rideRepo.saveGpsCoordinate(getRideId(), capture.getLat(), capture.getLng());
   }
 
-  private Completable handleAccelerometerCapture(RelativeCoordinates capture) {
-    return rideRepo.saveAccelerometerCapture(getRideId(), capture.getXx(), capture.getYy(),
+  private void handleAccelerometerCapture(RelativeCoordinates capture) {
+    rideRepo.saveAccelerometerCapture(getRideId(), capture.getXx(), capture.getYy(),
         capture.getZz());
   }
 
-  private Completable handleGravityCapture(RelativeCoordinates capture) {
-    return rideRepo.saveGravityCapture(getRideId(), capture.getXx(), capture.getYy(),
-        capture.getZz());
+  private void handleGravityCapture(RelativeCoordinates capture) {
+    rideRepo.saveGravityCapture(getRideId(), capture.getXx(), capture.getYy(), capture.getZz());
   }
 
-  private Completable handleGyroscopeCapture(RelativeCoordinates capture) {
-    return rideRepo.saveGyroscopeCapture(getRideId(), capture.getXx(), capture.getYy(),
-        capture.getZz());
+  private void handleGyroscopeCapture(RelativeCoordinates capture) {
+    rideRepo.saveGyroscopeCapture(getRideId(), capture.getXx(), capture.getYy(), capture.getZz());
   }
 }

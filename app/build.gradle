@@ -1,11 +1,5 @@
 apply plugin: 'com.android.application'
-apply plugin: 'me.tatarka.retrolambda'
 
-retrolambda {
-  javaVersion JavaVersion.VERSION_1_7
-  //defaultMethods false
-  //incremental true
-}
 
 def keystorePropertiesFile = rootProject.file("../keystore.properties")
 def keystoreProperties = new Properties()
@@ -101,8 +95,7 @@ android {
 
 dependencies {
   compile fileTree(include: ['*.jar'], dir: 'libs')
-  androidTestCompile(
-      "com.android.support.test.espresso:espresso-core:$rootProject.espressoVersion",
+  androidTestCompile("com.android.support.test.espresso:espresso-core:$rootProject.espressoVersion",
       {
         exclude group: 'com.android.support', module: 'support-annotations'
         exclude group: 'com.google.code.findbugs'
@@ -114,16 +107,12 @@ dependencies {
   compile "com.android.support:recyclerview-v7:$rootProject.supportLibraryVersion"
 
   //  compile("com.android.support:multidex:$rootProject.multiDexVersion") {
-
   //    exclude group: "com.android.support", module: "support-annotations"
-
   //  }
   compile "com.google.android.gms:play-services-location:$rootProject.playServicesVersion"
 
   //
-
   // reactive extensions
-
   //
   compile "io.reactivex:rxandroid:$rootProject.rxAndroidVersion"
 
@@ -134,41 +123,27 @@ dependencies {
   compile "nl.littlerobots.rxlint:rxlint:$rootProject.rxLintVersion"
 
   // Rx lifecycle from trello
-  compile "com.trello:rxlifecycle:$rootProject.rxLifecycleVersion"
-  compile "com.trello:rxlifecycle-android:$rootProject.rxLifecycleVersion"
-  compile "com.trello:rxlifecycle-components:$rootProject.rxLifecycleVersion"
   compile "com.jakewharton.rxbinding:rxbinding:$rootProject.rxBindingVersion"
 
-  // SQLBrite for database reactive extensions
-  compile "com.squareup.sqlbrite:sqlbrite:$rootProject.sqlBriteVersion"
-
   //
-
   // dependency injection
-
   //
   compile "com.google.dagger:dagger:$rootProject.daggerVersion"
   annotationProcessor "com.google.dagger:dagger-compiler:$rootProject.daggerVersion"
 
   //
-
   // view injection
-
   //
   compile "com.jakewharton:butterknife:$rootProject.butterknifeVersion"
   annotationProcessor "com.jakewharton:butterknife-compiler:$rootProject.butterknifeVersion"
 
   //
-
   // JSON (de)serialization
-
   //
   compile "com.google.code.gson:gson:$rootProject.gsonVersion"
 
   //
-
   // retrofit for REST API calls
-
   //
   compile "com.squareup.retrofit2:retrofit:$rootProject.retrofitVersion"
   compile "com.squareup.retrofit2:adapter-rxjava:$rootProject.retrofitVersion"
@@ -176,24 +151,12 @@ dependencies {
   compile "com.squareup.retrofit2:converter-scalars:$rootProject.retrofitVersion"
 
   //
-
-  // for image loading
-
-  //
-
-  //compile "com.github.bumptech.glide:glide:$rootProject.glideVersion"
-
-  //
-
   // java annotations (provided)
-
   //
   provided "javax.annotation:jsr250-api:$rootProject.jsr250Version"
 
   //
-
   // logging
-
   //
   compile "com.jakewharton.timber:timber:$rootProject.timberVersion"
 }

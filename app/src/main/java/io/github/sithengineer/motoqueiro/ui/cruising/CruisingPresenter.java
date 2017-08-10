@@ -1,6 +1,5 @@
 package io.github.sithengineer.motoqueiro.ui.cruising;
 
-import com.trello.rxlifecycle.android.FragmentEvent;
 import io.github.sithengineer.motoqueiro.util.CompositeSubscriptionManager;
 import timber.log.Timber;
 
@@ -29,14 +28,12 @@ public class CruisingPresenter implements CruisingContract.Presenter {
   }
 
   private void handleStopClick() {
-    subscriptionManager.add(view.lifecycle()
-        .filter(event -> event == FragmentEvent.CREATE_VIEW)
-        .flatMap(__ -> view.stopClick()
+    subscriptionManager.add(
+        view.stopClick()
             .doOnNext(__2 -> view.setStopButtonDisabled())
             .doOnNext(__2 -> navigator.stopServiceToGatherData())
             .doOnNext(__2 -> navigator.goToStatistics())
-            .retry())
-        .compose(view.bindUntilEvent(FragmentEvent.DESTROY_VIEW))
+            .retry()
         .subscribe(__ -> {
         }, err -> Timber.e(err)));
   }

@@ -6,8 +6,6 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import io.github.sithengineer.motoqueiro.exception.SensorNotAvailableException;
 import io.github.sithengineer.motoqueiro.hardware.capture.RelativeCoordinates;
-import java.util.Calendar;
-import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 import rx.Observable;
 import rx.subscriptions.Subscriptions;
@@ -19,12 +17,6 @@ public class Gyroscope implements HardwareObservable<RelativeCoordinates> {
 
   @Inject public Gyroscope(SensorManager sensorManager) {
     this.sensorManager = sensorManager;
-  }
-
-  public Observable<RelativeCoordinates> mock() {
-    return Observable.interval(0, 1, TimeUnit.SECONDS)
-        .map(count -> new RelativeCoordinates(count / 0.1f, count / 0.3f, count / 0.6f,
-            Calendar.getInstance().getTimeInMillis()));
   }
 
   @Override public Observable<RelativeCoordinates> listen() {
