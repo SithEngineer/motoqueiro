@@ -1,11 +1,7 @@
 package io.github.sithengineer.motoqueiro.ui.cruising;
 
-import android.location.LocationManager;
 import dagger.Module;
 import dagger.Provides;
-import io.github.sithengineer.motoqueiro.data.RideManager;
-import io.github.sithengineer.motoqueiro.data.RideRepository;
-import io.github.sithengineer.motoqueiro.hardware.gps.GpsStateListener;
 import io.github.sithengineer.motoqueiro.scope.ActivityScope;
 import io.github.sithengineer.motoqueiro.util.CompositeSubscriptionManager;
 

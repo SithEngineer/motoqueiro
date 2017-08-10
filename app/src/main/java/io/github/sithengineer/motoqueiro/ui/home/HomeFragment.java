@@ -9,6 +9,7 @@ import android.support.design.widget.TextInputLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -56,7 +57,13 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter>
   @Nullable @Override
   public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
       @Nullable Bundle savedInstanceState) {
-    return super.onCreateView(inflater, container, savedInstanceState);
+    final View view = super.onCreateView(inflater, container, savedInstanceState);
+    ArrayAdapter<CharSequence> adapter =
+        ArrayAdapter.createFromResource(getActivity(), R.array.home_wheres_phone_array,
+            android.R.layout.simple_spinner_item);
+    adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+    phonePosition.setAdapter(adapter);
+    return view;
   }
 
   @Override public Observable<Void> handleStartRideClick() {
