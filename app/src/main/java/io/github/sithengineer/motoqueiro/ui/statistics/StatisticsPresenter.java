@@ -19,23 +19,10 @@ public class StatisticsPresenter implements StatisticsContract.Presenter {
 
   @Override public void start() {
     handleGoHomeClicks();
-    showRideCompletedMessage();
   }
 
   @Override public void stop() {
     subscriptionManager.clearAll();
-  }
-
-  private void showRideCompletedMessage() {
-    subscriptionManager.add(view.lifecycle()
-        .filter(event -> event == FragmentEvent.CREATE_VIEW)
-        .flatMap(event -> view.isUploadCompleted().doOnSuccess(uploadCompleted -> {
-          if (uploadCompleted) {
-            view.setUploadCompletedMessageVisible();
-          }
-        }).toObservable())
-        .compose(view.bindUntilEvent(FragmentEvent.DESTROY_VIEW))
-        .subscribe());
   }
 
   private void handleGoHomeClicks() {

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -17,40 +18,46 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
         android:text="@string/home_wheres_phone"
-        android:textAppearance="@style/DefaultTextAppearance"
         />
     <Spinner
         android:id="@+id/phone_position_spinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="@style/DefaultTextAppearance"
         />
   </LinearLayout>
 
   <Button
-      android:id="@+id/learning_mode_text"
+      android:id="@+id/start_ride"
       android:layout_width="match_parent"
       android:layout_height="0dp"
       android:layout_weight="1"
-      android:text="@string/home_text_enter_learning_mode"
+      android:text="@string/home_start_button"
       android:textAppearance="@style/DefaultTextAppearance"
       />
 
-  <Button
-      android:id="@+id/testing_mode_text"
+  <android.support.design.widget.TextInputLayout
+      android:id="@+id/ride_name_input_wrapper"
       android:layout_width="match_parent"
       android:layout_height="0dp"
       android:layout_weight="1"
-      android:enabled="false"
-      android:text="@string/home_text_enter_testing_mode"
-      android:textAppearance="@style/DefaultTextAppearance"
-      />
+      android:visibility="gone"
+      tools:visibility="visible"
+      >
+    <EditText
+        android:id="@+id/ride_name_input"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:hint="@string/home_rideName_editTextHint"
+        />
+  </android.support.design.widget.TextInputLayout>
 
   <android.support.design.widget.TextInputLayout
       android:id="@+id/miband_address_input_wrapper"
       android:layout_width="match_parent"
       android:layout_height="0dp"
       android:layout_weight="1"
+      android:visibility="gone"
+      tools:visibility="visible"
       >
     <EditText
         android:id="@+id/miband_address_input"

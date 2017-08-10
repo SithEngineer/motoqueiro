@@ -7,12 +7,10 @@ import io.github.sithengineer.motoqueiro.BaseActivity;
 import io.github.sithengineer.motoqueiro.R;
 
 public class CruisingActivity extends BaseActivity {
-  static final String EXTRA_RIDE_ID = "ride_id";
 
-  public static Intent getNavigationIntent(Context context, String rideId) {
+  public static Intent getNavigationIntent(Context context) {
     Intent intent = new Intent(context, CruisingActivity.class);
     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-    intent.putExtra(EXTRA_RIDE_ID, rideId);
     return intent;
   }
 
@@ -24,10 +22,8 @@ public class CruisingActivity extends BaseActivity {
         (CruisingFragment) getSupportFragmentManager().findFragmentById(
             R.id.content_frame);
 
-    String rideId = getIntent().getStringExtra(EXTRA_RIDE_ID);
-
     if (fragment == null) {
-      fragment = CruisingFragment.newInstance(rideId);
+      fragment = CruisingFragment.newInstance();
       getSupportFragmentManager().beginTransaction()
           .add(R.id.content_frame, fragment)
           .commit();

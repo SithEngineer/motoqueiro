@@ -6,9 +6,7 @@ public interface HomeContract {
 
   interface View extends io.github.sithengineer.motoqueiro.View {
 
-    Observable<Void> handleEnterTestingClick();
-
-    Observable<Void> handleEnterLearningClick();
+    Observable<Void> handleStartRideClick();
 
     void sendToGpsSettings();
 
@@ -25,6 +23,10 @@ public interface HomeContract {
     void cleanMiBandAddressError();
 
     void showGivePermissionsMessage();
+
+    String getRideName();
+
+    int getSelectedDevicePosition();
   }
 
   interface Presenter extends io.github.sithengineer.motoqueiro.Presenter {

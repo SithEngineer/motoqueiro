@@ -8,11 +8,9 @@ import io.github.sithengineer.motoqueiro.BaseActivity;
 import io.github.sithengineer.motoqueiro.R;
 
 public class StatisticsActivity extends BaseActivity {
-  static final String EXTRA_UPLOAD_COMPLETE = "upload_complete";
 
-  public static Intent getNavigationIntent(Context context, boolean uploadComplete) {
+  public static Intent getNavigationIntent(Context context) {
     Intent intent = new Intent(context, StatisticsActivity.class);
-    intent.putExtra(StatisticsActivity.EXTRA_UPLOAD_COMPLETE, uploadComplete);
     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
     return intent;
   }
@@ -27,9 +25,7 @@ public class StatisticsActivity extends BaseActivity {
 
     Intent intent = getIntent();
     if (fragment == null) {
-      boolean dataUploadComplete =
-          intent != null && intent.getBooleanExtra(EXTRA_UPLOAD_COMPLETE, false);
-      fragment = StatisticsFragment.newInstance(dataUploadComplete);
+      fragment = StatisticsFragment.newInstance();
 
       FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
       transaction.addToBackStack("statistics_activity_fragment")

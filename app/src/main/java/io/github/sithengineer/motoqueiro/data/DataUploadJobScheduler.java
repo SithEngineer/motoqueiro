@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import java.util.List;
 
 public class DataUploadJobScheduler extends JobScheduler {
+
   @Override public int schedule(JobInfo job) {
     return 0;
   }

@@ -5,37 +5,41 @@ import android.content.Context;
 import io.github.sithengineer.motoqueiro.app.AppComponent;
 import io.github.sithengineer.motoqueiro.app.AppModule;
 import io.github.sithengineer.motoqueiro.app.DaggerAppComponent;
-import io.github.sithengineer.motoqueiro.app.RideComponent;
-import io.github.sithengineer.motoqueiro.data.DataModule;
+import io.github.sithengineer.motoqueiro.app.UiComponent;
+import io.github.sithengineer.motoqueiro.data.DataCaptureComponent;
+import io.github.sithengineer.motoqueiro.data.DataCaptureModule;
+import io.github.sithengineer.motoqueiro.data.sync.SyncComponent;
+import io.github.sithengineer.motoqueiro.data.sync.SyncModule;
 import io.github.sithengineer.motoqueiro.hardware.SensorModule;
+import io.github.sithengineer.motoqueiro.hardware.bluetooth.MiBandModule;
 import io.github.sithengineer.motoqueiro.util.ReleaseTree;
 import timber.log.Timber;
 
 public class MotoqueiroApp extends android.app.Application {
 
   private AppComponent appComponent;
-  private RideComponent rideComponent;
 
   public static MotoqueiroApp get(Context context) {
     return (MotoqueiroApp) context.getApplicationContext();
   }
 
-  public RideComponent createDataComponent() {
+  public UiComponent createUiComponent() {
     final Context context = this;
-    rideComponent = appComponent.with(new DataModule(context), new SensorModule(context));
-    return rideComponent;
+    return appComponent.with(new DataCaptureModule(context), new SensorModule(context));
   }
 
-  public RideComponent getRideComponent() {
-    return rideComponent;
+  public SyncComponent createSyncComponent() {
+    return appComponent.with(new SyncModule());
+  }
+
+  public DataCaptureComponent createDataCaptureComponent() {
+    final Context context = this;
+    return appComponent.dataWith(new DataCaptureModule(context), new SensorModule(context),
+        new MiBandModule(context));
   }
 
   public AppComponent getAppComponent() {
     return appComponent;
-  }
-
-  public void releaseRideComponent() {
-    rideComponent = null;
   }
 
   @Override public void onCreate() {

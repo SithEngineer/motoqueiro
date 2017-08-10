@@ -1,13 +1,12 @@
 package io.github.sithengineer.motoqueiro.ui.home;
 
 import android.Manifest;
-import android.support.annotation.NonNull;
 import com.trello.rxlifecycle.android.FragmentEvent;
 import io.github.sithengineer.motoqueiro.PermissionAuthority;
 import io.github.sithengineer.motoqueiro.PermissionResponse;
 import io.github.sithengineer.motoqueiro.app.Preferences;
-import io.github.sithengineer.motoqueiro.data.RideManager;
 import io.github.sithengineer.motoqueiro.exception.GpsNotActiveException;
+import io.github.sithengineer.motoqueiro.hardware.DevicePosition;
 import io.github.sithengineer.motoqueiro.util.CompositeSubscriptionManager;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -29,28 +28,26 @@ public class HomePresenter implements HomeContract.Presenter {
 
   private final CompositeSubscriptionManager subscriptionManager;
   private final HomeContract.View view;
-  private final RideManager rideManager;
   private final Preferences preferences;
   private final Pattern macValidator;
-  private final HomeNavigator homeNavigator;
+  private final HomeNavigator navigator;
   private final PermissionAuthority permissionAuthority;
 
-  public HomePresenter(HomeContract.View view,
-      CompositeSubscriptionManager subscriptionManager, RideManager rideManager,
-      Preferences preferences, HomeNavigator homeNavigator,
+  public HomePresenter(HomeContract.View view, CompositeSubscriptionManager subscriptionManager,
+      Preferences preferences, HomeNavigator navigator,
       PermissionAuthority permissionAuthority) {
     this.view = view;
     this.subscriptionManager = subscriptionManager;
-    this.rideManager = rideManager;
     this.preferences = preferences;
-    this.homeNavigator = homeNavigator;
+    this.navigator = navigator;
     this.permissionAuthority = permissionAuthority;
     macValidator = Pattern.compile(
         "(([0-9A-Fa-f]{2}[-:]){5}[0-9A-Fa-f]{2})|(([0-9A-Fa-f]{4}.){2}[0-9A-Fa-f]{4})");
   }
 
   @Override public void start() {
-    handleEnterTestingClick();
+    handleStartRideClick();
+    handlePermissionsGiven();
     watchMiBandAddressChange();
     showMiBandAddress();
   }
@@ -60,15 +57,14 @@ public class HomePresenter implements HomeContract.Presenter {
   }
 
   private void watchMiBandAddressChange() {
-    Observable<Void> watchMiBandAddressChange =
-        view.getMiBandAddressChanges().doOnNext(address -> {
-          if (isValidBluetoothAddress(address)) {
-            view.cleanMiBandAddressError();
-            saveMiBandAddress(address);
-          } else {
-            view.showMiBandAddressError();
-          }
-        }).retry().map(__ -> null);
+    Observable<Void> watchMiBandAddressChange = view.getMiBandAddressChanges().doOnNext(address -> {
+      if (isValidBluetoothAddress(address)) {
+        view.cleanMiBandAddressError();
+        saveMiBandAddress(address);
+      } else {
+        view.showMiBandAddressError();
+      }
+    }).retry().map(__ -> null);
 
     subscriptionManager.add(view.lifecycle()
         .filter(event -> event == FragmentEvent.CREATE_VIEW)
@@ -99,41 +95,41 @@ public class HomePresenter implements HomeContract.Presenter {
         });
   }
 
-  private void handleEnterTestingClick() {
-    Observable<Void> handlePermissionsResult =
-        allPermissionsAreAllowed().flatMapCompletable(allPermissionsGranted -> {
-          if (allPermissionsGranted) {
-            return startRide();
-          }
-          return Completable.fromAction(() -> view.showGivePermissionsMessage());
-        })
-            .onErrorResumeNext(err -> handleStartRideError(err).toObservable())
-            .map(__ -> null);
-
-    Observable<Void> handleStartClickToAskPermissions = view.handleEnterTestingClick()
-        .doOnNext(__ -> permissionAuthority.askForPermissions(PERMISSIONS,
-            PERMISSION_REQUEST_CODE))
-        .map(__ -> null);
-
+  private void handleStartRideClick() {
     subscriptionManager.add(view.lifecycle()
         .filter(event -> event == FragmentEvent.CREATE_VIEW)
-        .flatMap(__ -> Observable.merge(handleStartClickToAskPermissions,
-            handlePermissionsResult))
+        .flatMap(__ -> view.handleStartRideClick()
+            .doOnNext(
+                __2 -> permissionAuthority.askForPermissions(PERMISSIONS, PERMISSION_REQUEST_CODE)))
+        .doOnError(err -> Timber.e(err))
+        .retry()
+        .compose(view.bindUntilEvent(FragmentEvent.DESTROY_VIEW))
+        .subscribe());
+  }
+
+  private String getRideName(){
+    return view.getRideName();
+  }
+
+  private DevicePosition getDevicePosition(){
+    return DevicePosition.fromValue(view.getSelectedDevicePosition());
+  }
+
+  private void handlePermissionsGiven(){
+    subscriptionManager.add(view.lifecycle()
+        .filter(event -> event == FragmentEvent.CREATE_VIEW)
+        .flatMap(__ -> allPermissionsAreAllowed().flatMapCompletable(allPermissionsGranted -> {
+          if (allPermissionsGranted) {
+            return Completable.fromAction(() -> {
+              navigator.startServiceToGatherData(getRideName(), getDevicePosition());
+              navigator.forward();
+            });
+          }
+          return Completable.fromAction(() -> view.showGivePermissionsMessage());
+        }).onErrorResumeNext(err -> handleStartRideError(err).toObservable()))
         .compose(view.bindUntilEvent(FragmentEvent.DESTROY_VIEW))
         .subscribe(__ -> {
         }, err -> Timber.e(err)));
-  }
-
-  @NonNull private Completable startRide() {
-    return view.getMiBandAddressChanges().first().toSingle().flatMap(address -> {
-      // fixme un-comment bluetooth address validation before continuing
-      //if (isValidBluetoothAddress(address)) {
-      return rideManager.start().doOnSuccess(rideId -> {
-        homeNavigator.forward(rideId);
-      });
-      //}
-      //return Single.just(address);
-    }).toCompletable();
   }
 
   private boolean isValidBluetoothAddress(String address) {
@@ -171,8 +167,7 @@ public class HomePresenter implements HomeContract.Presenter {
 
   private Completable sendToActivateGpsSettings() {
     return Completable.fromAction(() -> showActivateGpsViewMessage())
-        .andThen(Completable.timer(2, TimeUnit.SECONDS)
-            .doOnCompleted(() -> showActivateGpsView()));
+        .andThen(Completable.timer(2, TimeUnit.SECONDS).doOnCompleted(() -> showActivateGpsView()));
   }
 
   @Override public void showActivateGpsViewMessage() {

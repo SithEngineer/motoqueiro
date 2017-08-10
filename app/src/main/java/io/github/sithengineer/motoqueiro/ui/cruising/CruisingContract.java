@@ -1,13 +1,9 @@
 package io.github.sithengineer.motoqueiro.ui.cruising;
 
-import rx.Completable;
 import rx.Observable;
 
 public class CruisingContract {
   interface View extends io.github.sithengineer.motoqueiro.View {
-    void showUploadView();
-
-    void hideUploadView();
 
     void setStopButtonEnabled();
 
@@ -17,6 +13,5 @@ public class CruisingContract {
   }
 
   interface Presenter extends io.github.sithengineer.motoqueiro.Presenter {
-    Completable stopCruising(String rideId);
   }
 }

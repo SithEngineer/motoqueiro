@@ -1,5 +1,6 @@
 package io.github.sithengineer.motoqueiro.data;
 
+import io.github.sithengineer.motoqueiro.app.Preferences;
 import io.github.sithengineer.motoqueiro.hardware.Accelerometer;
 import io.github.sithengineer.motoqueiro.hardware.Gravity;
 import io.github.sithengineer.motoqueiro.hardware.Gyroscope;
@@ -10,6 +11,7 @@ import io.github.sithengineer.motoqueiro.hardware.capture.RelativeCoordinates;
 import io.github.sithengineer.motoqueiro.hardware.gps.Gps;
 import rx.Completable;
 import rx.Observable;
+import timber.log.Timber;
 
 public class DataManager {
 
@@ -19,69 +21,88 @@ public class DataManager {
   private final Gps gps;
   private final MiBandService miBand;
   private final RideRepository rideRepo;
-  private final String rideId;
+  private final Preferences preferences;
 
-  public DataManager(Accelerometer accelerometer, Gyroscope gyroscope, Gravity gravity,
-      Gps gps, MiBandService miBand, RideRepository rideRepo, String rideId) {
+  public DataManager(Accelerometer accelerometer, Gyroscope gyroscope, Gravity gravity, Gps gps,
+      MiBandService miBand, RideRepository rideRepo, Preferences preferences) {
     this.accelerometer = accelerometer;
     this.gyroscope = gyroscope;
     this.gravity = gravity;
     this.gps = gps;
     this.miBand = miBand;
     this.rideRepo = rideRepo;
-    this.rideId = rideId;
+    this.preferences = preferences;
   }
 
   public Observable<Void> gatherData() {
     // gps data generator observable
-    Observable<Void> generateGpsObservable = gps.listen()
-        .flatMap(pos -> handleGpsPositionCapture(pos).toObservable())
-        .map(__ -> null);
+    Observable<Void> generateGpsObservable =
+        gps.listen().flatMap(pos -> handleGpsPositionCapture(pos).toObservable()).map(__ -> null);
 
     // accelerometer sensor data generator observable
     Observable<Void> generateAccelObservable = accelerometer.listen()
-        .flatMap(accel -> handleAccelerometerCapture(accel).toObservable())
+        .flatMap(accelData -> handleAccelerometerCapture(accelData).toObservable())
+        .onErrorResumeNext(err -> {
+          Timber.e(err);
+          return Observable.empty();
+        })
         .map(__ -> null);
 
     // gyroscope sensor data generator observable
     Observable<Void> generateGravityObservable = gravity.listen()
-        .flatMap(accel -> handleGravityCapture(accel).toObservable())
+        .flatMap(gravityData -> handleGravityCapture(gravityData).toObservable())
+        .onErrorResumeNext(err -> {
+          Timber.e(err);
+          return Observable.empty();
+        })
         .map(__ -> null);
 
     // gyroscope sensor data generator observable
     Observable<Void> generateGyroObservable = gyroscope.listen()
-        .flatMap(accel -> handleGyroscopeCapture(accel).toObservable())
+        .flatMap(gyroData -> handleGyroscopeCapture(gyroData).toObservable())
+        .onErrorResumeNext(err -> {
+          Timber.e(err);
+          return Observable.empty();
+        })
         .map(__ -> null);
 
     // miband heart rate sensor data generator observable
     Observable<Void> generateHeartRateObservable = miBand.listen()
-        .flatMap(accel -> handleMiBandCapture(accel).toObservable())
+        .flatMap(heartData -> handleMiBandCapture(heartData).toObservable())
+        .onErrorResumeNext(err -> {
+          Timber.e(err);
+          return Observable.empty();
+        })
         .map(__ -> null);
 
-    return Observable.merge(generateGpsObservable, generateAccelObservable,
-        generateGyroObservable, generateHeartRateObservable);
+    return Observable.merge(generateGpsObservable, generateAccelObservable, generateGyroObservable,
+        generateGravityObservable, generateHeartRateObservable);
+  }
+
+  private String getRideId() {
+    return preferences.getRideId();
   }
 
   private Completable handleMiBandCapture(MiBandData bandData) {
-    return rideRepo.saveHeartRate(rideId, bandData.getHeartRateBpm());
+    return rideRepo.saveHeartRate(getRideId(), bandData.getHeartRateBpm());
   }
 
   private Completable handleGpsPositionCapture(LatLng capture) {
-    return rideRepo.saveGpsCoordinate(rideId, capture.getLat(), capture.getLng());
+    return rideRepo.saveGpsCoordinate(getRideId(), capture.getLat(), capture.getLng());
   }
 
   private Completable handleAccelerometerCapture(RelativeCoordinates capture) {
-    return rideRepo.saveAccelerometerCapture(rideId, capture.getXx(), capture.getYy(),
+    return rideRepo.saveAccelerometerCapture(getRideId(), capture.getXx(), capture.getYy(),
         capture.getZz());
   }
 
   private Completable handleGravityCapture(RelativeCoordinates capture) {
-    return rideRepo.saveGravityCapture(rideId, capture.getXx(), capture.getYy(),
+    return rideRepo.saveGravityCapture(getRideId(), capture.getXx(), capture.getYy(),
         capture.getZz());
   }
 
   private Completable handleGyroscopeCapture(RelativeCoordinates capture) {
-    return rideRepo.saveGyroscopeCapture(rideId, capture.getXx(), capture.getYy(),
+    return rideRepo.saveGyroscopeCapture(getRideId(), capture.getXx(), capture.getYy(),
         capture.getZz());
   }
 }

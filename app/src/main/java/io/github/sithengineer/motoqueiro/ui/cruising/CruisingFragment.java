@@ -1,7 +1,6 @@
 package io.github.sithengineer.motoqueiro.ui.cruising;
 
 import android.content.Context;
-import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.Button;
@@ -10,7 +9,7 @@ import com.jakewharton.rxbinding.view.RxView;
 import io.github.sithengineer.motoqueiro.BaseFragment;
 import io.github.sithengineer.motoqueiro.MotoqueiroApp;
 import io.github.sithengineer.motoqueiro.R;
-import io.github.sithengineer.motoqueiro.hardware.bluetooth.BluetoothModule;
+import io.github.sithengineer.motoqueiro.hardware.bluetooth.MiBandModule;
 import javax.inject.Inject;
 import rx.Observable;
 
@@ -21,13 +20,8 @@ public class CruisingFragment extends BaseFragment<CruisingContract.Presenter>
   @BindView(R.id.upload_view_group) View uploadView;
   @Inject CruisingContract.Presenter presenter;
 
-  public static CruisingFragment newInstance(String rideId) {
-    Bundle args = new Bundle();
-    args.putString(CruisingActivity.EXTRA_RIDE_ID, rideId);
-
-    CruisingFragment fragment = new CruisingFragment();
-    fragment.setArguments(args);
-    return fragment;
+  public static CruisingFragment newInstance() {
+    return new CruisingFragment();
   }
 
   @Override protected int getViewId() {
@@ -35,31 +29,16 @@ public class CruisingFragment extends BaseFragment<CruisingContract.Presenter>
   }
 
   @Override public void inject() {
-    Bundle args = getArguments();
-    if (args != null) {
-      String rideId = args.getString(CruisingActivity.EXTRA_RIDE_ID);
-
-      final Context context = getContext();
-      MotoqueiroApp.get(context)
-          .getRideComponent()
-          .with(new CruisingModule(this, rideId, new CruisingNavigator(getActivity())),
-              new BluetoothModule(context))
-          .inject(this);
-    } else {
-      throw new IllegalStateException("Unable to start cruising without ride id");
-    }
+    final Context context = getContext();
+    MotoqueiroApp.get(context)
+        .createUiComponent()
+        .with(new CruisingModule(this, new CruisingNavigator(getActivity())),
+            new MiBandModule(context))
+        .inject(this);
   }
 
   @Nullable @Override public CruisingContract.Presenter getPresenter() {
     return presenter;
-  }
-
-  @Override public void showUploadView() {
-    uploadView.setVisibility(View.VISIBLE);
-  }
-
-  @Override public void hideUploadView() {
-    uploadView.setVisibility(View.GONE);
   }
 
   @Override public void setStopButtonEnabled() {

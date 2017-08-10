@@ -14,7 +14,6 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import butterknife.BindView;
 import com.jakewharton.rxbinding.view.RxView;
-import com.jakewharton.rxbinding.widget.RxAdapterView;
 import com.jakewharton.rxbinding.widget.RxTextView;
 import io.github.sithengineer.motoqueiro.BaseFragment;
 import io.github.sithengineer.motoqueiro.MotoqueiroApp;
@@ -28,8 +27,9 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter>
 
   @BindView(R.id.miband_address_input_wrapper) TextInputLayout miBandAddressLayout;
   @BindView(R.id.miband_address_input) EditText miBandAddress;
-  @BindView(R.id.start_button) Button enterTestingButton;
-  @BindView(R.id.start_button) Button enterLearningButton;
+  @BindView(R.id.ride_name_input_wrapper) TextInputLayout rideNameLayout;
+  @BindView(R.id.ride_name_input) EditText rideName;
+  @BindView(R.id.start_ride) Button startRideButton;
   @BindView(R.id.phone_position_spinner) Spinner phonePosition;
   @Inject HomeContract.Presenter presenter;
 
@@ -43,51 +43,36 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter>
 
   @Override public void inject() {
     MotoqueiroApp.get(getContext())
-                 .createDataComponent()
-                 .with(new HomeModule(this, new HomeNavigator(getActivity()),
-                     (PermissionAuthority) getActivity()))
-                 .inject(this);
-  }
-
-  @Nullable @Override
-  public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
-      @Nullable Bundle savedInstanceState) {
-    View v = super.onCreateView(inflater, container, savedInstanceState);
-
-    return v;
+        .createUiComponent()
+        .with(new HomeModule(this, new HomeNavigator(getActivity()),
+            (PermissionAuthority) getActivity()))
+        .inject(this);
   }
 
   @Nullable @Override public HomeContract.Presenter getPresenter() {
     return presenter;
   }
 
-  @Override public Observable<String> handlePhonePositionChoice() {
-    return RxAdapterView.itemSelections(spinnerAdapter)
-                        .map(index -> getResources().getStringArray(
-                            R.array.home_wheres_phone_array)[index]);
+  @Nullable @Override
+  public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+      @Nullable Bundle savedInstanceState) {
+    return super.onCreateView(inflater, container, savedInstanceState);
   }
 
-  @Override public Observable<Void> handleEnterTestingClick() {
-    return RxView.clicks(enterTestingButton);
-  }
-
-  @Override public Observable<Void> handleEnterLearningClick() {
-    return RxView.clicks(enterLearningButton);
+  @Override public Observable<Void> handleStartRideClick() {
+    return RxView.clicks(startRideButton);
   }
 
   @Override public void sendToGpsSettings() {
-    Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-    startActivity(intent);
+    startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
   }
 
   @Override public void showActivateGpsViewMessage() {
-    Snackbar.make(enterTestingButton, R.string.home_activate_gps, Snackbar.LENGTH_LONG)
-            .show();
+    Snackbar.make(startRideButton, R.string.home_activate_gps, Snackbar.LENGTH_LONG).show();
   }
 
   @Override public void showGenericError() {
-    Snackbar.make(enterTestingButton, R.string.home_generic_error, Snackbar.LENGTH_LONG)
-            .show();
+    Snackbar.make(startRideButton, R.string.home_generic_error, Snackbar.LENGTH_LONG).show();
   }
 
   @Override public void showMiBandAddress(String miBandAddress) {
@@ -95,8 +80,7 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter>
   }
 
   @Override public Observable<String> getMiBandAddressChanges() {
-    return RxTextView.textChanges(miBandAddress)
-                     .map(text -> text.toString());
+    return RxTextView.textChanges(miBandAddress).map(text -> text.toString());
   }
 
   @Override public void showMiBandAddressError() {
@@ -108,7 +92,14 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter>
   }
 
   @Override public void showGivePermissionsMessage() {
-    Snackbar.make(enterTestingButton, R.string.home_need_all_permissions, Snackbar.LENGTH_LONG)
-            .show();
+    Snackbar.make(startRideButton, R.string.home_need_all_permissions, Snackbar.LENGTH_LONG).show();
+  }
+
+  @Override public String getRideName() {
+    return rideName.getText().toString();
+  }
+
+  @Override public int getSelectedDevicePosition() {
+    return phonePosition.getSelectedItemPosition();
   }
 }

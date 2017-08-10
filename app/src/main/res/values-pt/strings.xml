@@ -13,4 +13,13 @@
   <string name="cruising_view_saving_ride">A gravar dados…</string>
   <string name="statistics_view_upload_completed">Dados gravados com sucesso.\n\nObrigado!</string>
   <string name="statistics_view_start_ride">Começar uma nova viagem.</string>
+  <string name="home_wheres_phone">Onde vai colocar este dispositivo durante a viagem?</string>
+
+  <string-array name="home_wheres_phone_array">
+    <item>Suporte no volante</item>
+    <item>Bolso das calças</item>
+    <item>Bolso do casaco</item>
+    <item>Mala de costas</item>
+    <item>Mala de anca</item>
+  </string-array>
 </resources>
