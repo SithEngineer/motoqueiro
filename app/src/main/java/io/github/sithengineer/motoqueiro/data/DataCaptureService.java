@@ -1,11 +1,13 @@
 package io.github.sithengineer.motoqueiro.data;
 
-import android.app.IntentService;
+import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.location.LocationManager;
+import android.os.Bundle;
+import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import io.github.sithengineer.motoqueiro.MotoqueiroApp;
@@ -21,7 +23,7 @@ import rx.Observable;
 import rx.Single;
 import rx.subjects.PublishSubject;
 
-public class DataCaptureService extends IntentService {
+public class DataCaptureService extends Service {
   public static final String RIDE_NAME = "ride_name";
   public static final String DEVICE_POSITION = "device_position";
   public static final String STOP_SERVICE = "stop_service";
@@ -34,10 +36,6 @@ public class DataCaptureService extends IntentService {
   @Inject GpsStateListener locationListener;
   @Inject LocationManager locationManager;
   @Inject RideRepository rideRepo;
-
-  public DataCaptureService() {
-    super("Data capture service");
-  }
 
   private Single<Boolean> isGpsActive() {
     return Single.fromCallable(() -> locationListener.isLocationServiceActive(locationManager));
@@ -70,6 +68,11 @@ public class DataCaptureService extends IntentService {
     });
   }
 
+  @Override public int onStartCommand(Intent intent, int flags, int startId) {
+    startDataCapture(intent.getExtras());
+    return START_STICKY;
+  }
+
   @Override public void onDestroy() {
     subscriptionManager.clearAll();
     subscriptionManager = null;
@@ -80,13 +83,17 @@ public class DataCaptureService extends IntentService {
     super.onDestroy();
   }
 
-  @Override protected void onHandleIntent(@Nullable Intent intent) {
+  @Nullable @Override public IBinder onBind(Intent intent) {
+    return null;
+  }
+
+  private void startDataCapture(Bundle extras) {
     // inject dependencies
     MotoqueiroApp.get(this).createDataCaptureComponent().inject(this);
 
     getApplicationContext().registerReceiver(stopSignalReceiver, stopSignalReceiver.getFilter());
 
-    String rideName = intent.getStringExtra(RIDE_NAME);
+    String rideName = extras.getString(RIDE_NAME);
     if (TextUtils.isEmpty(rideName)) {
       rideName = generateName();
     }
@@ -96,6 +103,7 @@ public class DataCaptureService extends IntentService {
             .flatMap(__ -> stopSignalReceiver.onStopEvent())
             .flatMapCompletable(__ -> stop(rideId))
             .doOnCompleted(() -> stopSelf()))
+            //.subscribeOn(Schedulers.io())
         .subscribe());
   }
 
