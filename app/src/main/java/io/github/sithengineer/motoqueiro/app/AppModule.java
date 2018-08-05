@@ -7,14 +7,16 @@ import dagger.Provides;
 import io.github.sithengineer.motoqueiro.authentication.AccountManager;
 import io.github.sithengineer.motoqueiro.util.VariableScrambler;
 import javax.inject.Singleton;
+import rx.Scheduler;
+import rx.schedulers.Schedulers;
 
 @Module public class AppModule {
   private final Application application;
   private final android.accounts.AccountManager androidAccountManager;
   private final String mySecretKey;
 
-  public AppModule(Application application,
-      android.accounts.AccountManager accountManager, String mySecretKey) {
+  public AppModule(Application application, android.accounts.AccountManager accountManager,
+      String mySecretKey) {
     this.application = application;
     this.androidAccountManager = accountManager;
     this.mySecretKey = mySecretKey;
@@ -22,6 +24,10 @@ import javax.inject.Singleton;
 
   @Provides @Singleton Application providesApplication() {
     return application;
+  }
+
+  @Provides @Singleton Scheduler providesIoScheduler() {
+    return Schedulers.io();
   }
 
   @Provides @Singleton Preferences providesSharedPrefs() {

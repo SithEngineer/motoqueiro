@@ -3,6 +3,7 @@ package io.github.sithengineer.motoqueiro.app;
 import dagger.Component;
 import io.github.sithengineer.motoqueiro.data.DataCaptureComponent;
 import io.github.sithengineer.motoqueiro.data.DataCaptureModule;
+import io.github.sithengineer.motoqueiro.data.DataModule;
 import io.github.sithengineer.motoqueiro.data.sync.SyncComponent;
 import io.github.sithengineer.motoqueiro.data.sync.SyncModule;
 import io.github.sithengineer.motoqueiro.hardware.SensorModule;
@@ -17,5 +18,5 @@ public interface AppComponent {
   SyncComponent with(SyncModule module);
 
   DataCaptureComponent dataWith(DataCaptureModule module, SensorModule sensorModule,
-      MiBandModule miBandModule);
+      MiBandModule miBandModule, DataModule dataModule);
 }

@@ -8,6 +8,7 @@ import io.github.sithengineer.motoqueiro.app.DaggerAppComponent;
 import io.github.sithengineer.motoqueiro.app.UiComponent;
 import io.github.sithengineer.motoqueiro.data.DataCaptureComponent;
 import io.github.sithengineer.motoqueiro.data.DataCaptureModule;
+import io.github.sithengineer.motoqueiro.data.DataModule;
 import io.github.sithengineer.motoqueiro.data.sync.SyncComponent;
 import io.github.sithengineer.motoqueiro.data.sync.SyncModule;
 import io.github.sithengineer.motoqueiro.hardware.SensorModule;
@@ -25,7 +26,7 @@ public class MotoqueiroApp extends android.app.Application {
 
   public UiComponent createUiComponent() {
     final Context context = this;
-    return appComponent.with(new DataCaptureModule(context), new SensorModule(context));
+    return appComponent.with(new DataCaptureModule(), new SensorModule(context));
   }
 
   public SyncComponent createSyncComponent() {
@@ -34,8 +35,8 @@ public class MotoqueiroApp extends android.app.Application {
 
   public DataCaptureComponent createDataCaptureComponent() {
     final Context context = this;
-    return appComponent.dataWith(new DataCaptureModule(context), new SensorModule(context),
-        new MiBandModule(context));
+    return appComponent.dataWith(new DataCaptureModule(), new SensorModule(context),
+        new MiBandModule(context), new DataModule(context));
   }
 
   public AppComponent getAppComponent() {

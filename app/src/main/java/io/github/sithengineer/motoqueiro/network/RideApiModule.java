@@ -22,6 +22,7 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
+import rx.Scheduler;
 
 @Module public class RideApiModule {
 
@@ -72,8 +73,8 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
     return retrofit.create(NetworkService.class);
   }
 
-  @Provides @Singleton RideWebService providesService(NetworkService networkService) {
-    return new RideWebService(networkService);
+  @Provides @Singleton RideWebService providesService(NetworkService networkService, Scheduler ioScheduler) {
+    return new RideWebService(networkService, ioScheduler);
   }
 
   private static class RequestMaxAgeInterceptor implements Interceptor {

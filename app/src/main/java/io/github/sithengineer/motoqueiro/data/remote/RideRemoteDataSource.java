@@ -30,13 +30,11 @@ public class RideRemoteDataSource implements RideDataSource {
     return Single.error(new NoSuchMethodException());
   }
 
-  @Override
-  public Completable saveAccelerometerData(String rideId, List<TriDimenPoint> points) {
+  @Override public Completable saveAccelerometerData(String rideId, List<TriDimenPoint> points) {
     return Completable.error(new NoSuchMethodException());
   }
 
-  @Override
-  public Single<Long> saveAccelerometerData(String rideId, TriDimenPoint point) {
+  @Override public Single<Long> saveAccelerometerData(String rideId, TriDimenPoint point) {
     return Single.error(new NoSuchMethodException());
   }
 
@@ -44,8 +42,7 @@ public class RideRemoteDataSource implements RideDataSource {
     return Single.error(new NoSuchMethodException());
   }
 
-  @Override
-  public Completable saveGyroscopeData(String rideId, List<TriDimenPoint> points) {
+  @Override public Completable saveGyroscopeData(String rideId, List<TriDimenPoint> points) {
     return Completable.error(new NoSuchMethodException());
   }
 
@@ -53,8 +50,7 @@ public class RideRemoteDataSource implements RideDataSource {
     return Single.error(new NoSuchMethodException());
   }
 
-  @Override
-  public Completable saveGravityData(String rideId, List<TriDimenPoint> points) {
+  @Override public Completable saveGravityData(String rideId, List<TriDimenPoint> points) {
     return Completable.error(new NoSuchMethodException());
   }
 
@@ -66,8 +62,7 @@ public class RideRemoteDataSource implements RideDataSource {
     return Single.error(new NoSuchMethodException());
   }
 
-  @Override
-  public Completable saveHeartRateData(String rideId, List<HeartRatePoint> points) {
+  @Override public Completable saveHeartRateData(String rideId, List<HeartRatePoint> points) {
     return Completable.error(new NoSuchMethodException());
   }
 
@@ -79,8 +74,8 @@ public class RideRemoteDataSource implements RideDataSource {
     return Single.error(new NoSuchMethodException());
   }
 
-  @Override public Single<Long> saveRide(Ride ride) {
-    return rideWebService.upload(ride).toSingleDefault(0L);
+  @Override public Single<String> saveRide(Ride ride) {
+    return rideWebService.upload(ride).toSingleDefault(ride.getId());
   }
 
   @Override public Single<List<TriDimenPoint>> getGyroscopeData(String rideId) {

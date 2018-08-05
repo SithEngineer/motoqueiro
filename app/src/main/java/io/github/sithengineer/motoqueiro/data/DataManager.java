@@ -10,6 +10,7 @@ import io.github.sithengineer.motoqueiro.hardware.capture.MiBandData;
 import io.github.sithengineer.motoqueiro.hardware.capture.RelativeCoordinates;
 import io.github.sithengineer.motoqueiro.hardware.gps.Gps;
 import rx.Observable;
+import rx.Single;
 import timber.log.Timber;
 
 public class DataManager {
@@ -36,11 +37,11 @@ public class DataManager {
   public Observable<Void> gatherData() {
     // gps data generator observable
     Observable<Void> generateGpsObservable =
-        gps.listen().doOnNext(pos -> handleGpsPositionCapture(pos)).map(__ -> null);
+        gps.listen().flatMapSingle(pos -> handleGpsPositionCapture(pos)).map(__ -> null);
 
     // accelerometer sensor data generator observable
     Observable<Void> generateAccelObservable = accelerometer.listen()
-        .doOnNext(accelData -> handleAccelerometerCapture(accelData))
+        .flatMapSingle(accelData -> handleAccelerometerCapture(accelData))
         .onErrorResumeNext(err -> {
           Timber.e(err);
           return Observable.empty();
@@ -49,7 +50,7 @@ public class DataManager {
 
     // gyroscope sensor data generator observable
     Observable<Void> generateGravityObservable = gravity.listen()
-        .doOnNext(gravityData -> handleGravityCapture(gravityData))
+        .flatMapSingle(gravityData -> handleGravityCapture(gravityData))
         .onErrorResumeNext(err -> {
           Timber.e(err);
           return Observable.empty();
@@ -58,7 +59,7 @@ public class DataManager {
 
     // gyroscope sensor data generator observable
     Observable<Void> generateGyroObservable = gyroscope.listen()
-        .doOnNext(gyroData -> handleGyroscopeCapture(gyroData))
+        .flatMapSingle(gyroData -> handleGyroscopeCapture(gyroData))
         .onErrorResumeNext(err -> {
           Timber.e(err);
           return Observable.empty();
@@ -67,7 +68,7 @@ public class DataManager {
 
     // miband heart rate sensor data generator observable
     Observable<Void> generateHeartRateObservable = miBand.listen()
-        .doOnNext(heartData -> handleMiBandCapture(heartData))
+        .flatMapSingle(heartData -> handleMiBandCapture(heartData))
         .onErrorResumeNext(err -> {
           Timber.e(err);
           return Observable.empty();
@@ -82,24 +83,26 @@ public class DataManager {
     return preferences.getRideId();
   }
 
-  private void handleMiBandCapture(MiBandData bandData) {
-    rideRepo.saveHeartRate(getRideId(), bandData.getHeartRateBpm());
+  private Single<Long> handleMiBandCapture(MiBandData bandData) {
+    return rideRepo.saveHeartRate(getRideId(), bandData.getHeartRateBpm());
   }
 
-  private void handleGpsPositionCapture(LatLng capture) {
-    rideRepo.saveGpsCoordinate(getRideId(), capture.getLat(), capture.getLng());
+  private Single<Long> handleGpsPositionCapture(LatLng capture) {
+    return rideRepo.saveGpsCoordinate(getRideId(), capture.getLat(), capture.getLng());
   }
 
-  private void handleAccelerometerCapture(RelativeCoordinates capture) {
-    rideRepo.saveAccelerometerCapture(getRideId(), capture.getXx(), capture.getYy(),
+  private Single<Long> handleAccelerometerCapture(RelativeCoordinates capture) {
+    return rideRepo.saveAccelerometerCapture(getRideId(), capture.getXx(), capture.getYy(),
         capture.getZz());
   }
 
-  private void handleGravityCapture(RelativeCoordinates capture) {
-    rideRepo.saveGravityCapture(getRideId(), capture.getXx(), capture.getYy(), capture.getZz());
+  private Single<Long> handleGravityCapture(RelativeCoordinates capture) {
+    return rideRepo.saveGravityCapture(getRideId(), capture.getXx(), capture.getYy(),
+        capture.getZz());
   }
 
-  private void handleGyroscopeCapture(RelativeCoordinates capture) {
-    rideRepo.saveGyroscopeCapture(getRideId(), capture.getXx(), capture.getYy(), capture.getZz());
+  private Single<Long> handleGyroscopeCapture(RelativeCoordinates capture) {
+    return rideRepo.saveGyroscopeCapture(getRideId(), capture.getXx(), capture.getYy(),
+        capture.getZz());
   }
 }

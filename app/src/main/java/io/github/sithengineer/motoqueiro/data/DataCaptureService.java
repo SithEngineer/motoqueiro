@@ -20,9 +20,11 @@ import rx.Single;
 import timber.log.Timber;
 
 public class DataCaptureService extends Service {
+
   public static final String RIDE_NAME = "ride_name";
   public static final String DEVICE_POSITION = "device_position";
   public static final String STOP_SERVICE = "stop_service";
+
   private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
 
   @Inject DataManager dataManager;
@@ -53,7 +55,7 @@ public class DataCaptureService extends Service {
   }
 
   public Completable stop(String rideId) {
-    return Single.just(rideRepo.finishRide(rideId)).flatMapCompletable(success -> {
+    return rideRepo.finishRide(rideId).flatMapCompletable(success -> {
       if (success) {
         return rideRepo.sync();
       } else {
@@ -63,7 +65,8 @@ public class DataCaptureService extends Service {
   }
 
   @Override public int onStartCommand(Intent intent, int flags, int startId) {
-    startDataCapture(intent.getExtras());
+    final Bundle extras = intent.getExtras();
+    startDataCapture(extras);
     return START_STICKY;
   }
 
