@@ -13,12 +13,12 @@ import rx.Single;
 import timber.log.Timber;
 
 public class RideRepository {
-  private final RideWebService webService;
   private final RideDataSource localDataSource;
+  private final RideDataSource remoteDataSource;
 
-  public RideRepository(RideWebService webService, RideDataSource localDataSource) {
-    this.webService = webService;
+  public RideRepository(RideDataSource localDataSource, RideDataSource remoteDataSource) {
     this.localDataSource = localDataSource;
+    this.remoteDataSource = remoteDataSource;
   }
 
   public String startRide(@NonNull final String name) {
@@ -69,7 +69,7 @@ public class RideRepository {
         .toObservable()
         .flatMapIterable(list -> list)
         .filter(ride -> !ride.isSynced())
-        .flatMapCompletable(ride -> webService.upload(ride)
+        .flatMapCompletable(ride -> remoteDataSource.upload(ride)
             .doOnCompleted(() -> localDataSource.markSynced(ride.getId()))
             .doOnError(err -> Timber.e(err)))
         .toList()

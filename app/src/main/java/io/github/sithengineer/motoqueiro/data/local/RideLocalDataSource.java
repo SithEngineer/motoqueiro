@@ -14,6 +14,7 @@ import io.github.sithengineer.motoqueiro.data.model.TriDimenPoint;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import rx.Scheduler;
 import timber.log.Timber;
 
 import static dagger.internal.Preconditions.checkNotNull;
@@ -24,8 +25,10 @@ public class RideLocalDataSource implements RideDataSource {
   private static final int SQL_FALSE = 0;
 
   @NonNull private final RidesDbHelper databaseHelper;
+  private Scheduler scheduler;
 
-  public RideLocalDataSource(@NonNull Context context) {
+  public RideLocalDataSource(@NonNull Context context, Scheduler scheduler) {
+    this.scheduler = scheduler;
     checkNotNull(context, "context cannot be null");
     databaseHelper = new RidesDbHelper(context);
   }
