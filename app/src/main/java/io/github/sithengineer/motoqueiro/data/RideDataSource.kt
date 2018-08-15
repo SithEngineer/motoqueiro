@@ -11,42 +11,43 @@ import io.reactivex.Single
 
 interface RideDataSource {
 
-  val completedRides: Single<List<Ride>>
-  fun saveGpsData(rideId: Long, points: List<GpsPoint>): Completable
+  fun saveGpsData(points: List<GpsPoint>): Completable
 
-  fun saveGpsData(rideId: Long, coordinates: GpsPoint): Single<Long>
+  fun saveGpsData(coordinates: GpsPoint): Completable
 
   fun getGpsData(rideId: Long): Single<List<GpsPoint>>
 
-  fun saveAccelerometerData(rideId: Long, points: List<AccelerometerPoint>): Completable
+  fun saveAccelerometerData(points: List<AccelerometerPoint>): Completable
 
-  fun saveAccelerometerData(rideId: Long, point: AccelerometerPoint): Single<Long>
+  fun saveAccelerometerData(point: AccelerometerPoint): Completable
 
   fun getAccelerometerData(rideId: Long): Single<List<AccelerometerPoint>>
 
-  fun saveGyroscopeData(rideId: Long, points: List<GyroscopePoint>): Completable
+  fun saveGyroscopeData(points: List<GyroscopePoint>): Completable
 
-  fun saveGyroscopeData(rideId: Long, point: GyroscopePoint): Single<Long>
+  fun saveGyroscopeData(point: GyroscopePoint): Completable
 
   fun getGyroscopeData(rideId: Long): Single<List<GyroscopePoint>>
 
-  fun saveGravityData(rideId: Long, points: List<GravityPoint>): Completable
+  fun saveGravityData(points: List<GravityPoint>): Completable
 
-  fun saveGravityData(rideId: Long, point: GravityPoint): Single<Long>
+  fun saveGravityData(point: GravityPoint): Completable
 
   fun getGravityData(rideId: Long): Single<List<GravityPoint>>
 
-  fun saveHeartRateData(rideId: Long, points: List<HeartRatePoint>): Completable
+  fun saveHeartRateData(points: List<HeartRatePoint>): Completable
 
-  fun saveHeartRateData(rideId: Long, point: HeartRatePoint): Single<Long>
+  fun saveHeartRateData(point: HeartRatePoint): Completable
 
   fun getHeartRateData(rideId: Long): Single<List<HeartRatePoint>>
 
-  fun saveRide(ride: Ride): Single<Long>
+  fun saveRide(ride: Ride): Completable
 
   fun getRide(rideId: Long): Single<Ride>
 
-  fun markCompleted(rideId: Long): Single<Boolean>
+  fun getCompletedRides(): Single<List<Ride>>
 
-  fun markSynced(rideId: Long): Single<Boolean>
+  fun markCompleted(rideId: Long): Completable
+
+  fun markSynced(rideId: Long): Completable
 }

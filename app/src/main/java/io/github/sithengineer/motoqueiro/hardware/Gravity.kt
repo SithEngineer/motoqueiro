@@ -7,8 +7,8 @@ import android.hardware.SensorManager
 import io.github.sithengineer.motoqueiro.exception.SensorNotAvailableException
 import io.github.sithengineer.motoqueiro.hardware.capture.RelativeCoordinates
 import io.reactivex.Observable
+import org.threeten.bp.Instant
 import timber.log.Timber
-import java.util.Calendar
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -19,7 +19,7 @@ class Gravity @Inject constructor(private val sensorManager: SensorManager) :
     return Observable.interval(0, 1, TimeUnit.SECONDS)
         .map { count ->
           RelativeCoordinates(count / 0.1f, count / 0.3f, count / 0.6f,
-              Calendar.getInstance().timeInMillis)
+              Instant.now().toEpochMilli())
         }
   }
 

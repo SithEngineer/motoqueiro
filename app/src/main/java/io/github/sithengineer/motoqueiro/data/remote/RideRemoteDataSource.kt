@@ -13,82 +13,81 @@ import io.reactivex.Single
 
 class RideRemoteDataSource(private val rideWebService: RideWebService) : RideDataSource {
 
-  override val completedRides: Single<List<Ride>>
-    get() = Single.error(NoSuchMethodException())
+  override fun getCompletedRides(): Single<List<Ride>> = Single.error(NoSuchMethodException())
 
-  override fun saveGpsData(rideId: Long, points: List<GpsPoint>): Completable {
+  override fun saveGpsData(points: List<GpsPoint>): Completable {
     return Completable.error(NoSuchMethodException())
   }
 
-  override fun saveGpsData(rideId: Long, coordinates: GpsPoint): Single<Long> {
-    return Single.error(NoSuchMethodException())
+  override fun saveGpsData(coordinates: GpsPoint): Completable {
+    return Completable.error(NoSuchMethodException())
   }
 
   override fun getGpsData(rideId: Long): Single<List<GpsPoint>> {
     return Single.error(NoSuchMethodException())
   }
 
-  override fun saveAccelerometerData(rideId: Long, points: List<AccelerometerPoint>): Completable {
+  override fun saveAccelerometerData(points: List<AccelerometerPoint>): Completable {
     return Completable.error(NoSuchMethodException())
   }
 
-  override fun saveAccelerometerData(rideId: Long, point: AccelerometerPoint): Single<Long> {
-    return Single.error(NoSuchMethodException())
+  override fun saveAccelerometerData(point: AccelerometerPoint): Completable {
+    return Completable.error(NoSuchMethodException())
   }
 
   override fun getAccelerometerData(rideId: Long): Single<List<AccelerometerPoint>> {
     return Single.error(NoSuchMethodException())
   }
 
-  override fun saveGyroscopeData(rideId: Long, points: List<GyroscopePoint>): Completable {
+  override fun saveGyroscopeData(points: List<GyroscopePoint>): Completable {
     return Completable.error(NoSuchMethodException())
   }
 
-  override fun saveGyroscopeData(rideId: Long, point: GyroscopePoint): Single<Long> {
-    return Single.error(NoSuchMethodException())
+  override fun saveGyroscopeData(point: GyroscopePoint): Completable {
+    return Completable.error(NoSuchMethodException())
   }
 
   override fun getGyroscopeData(rideId: Long): Single<List<GyroscopePoint>> {
     return Single.error(NoSuchMethodException())
   }
 
-  override fun saveGravityData(rideId: Long, points: List<GravityPoint>): Completable {
+  override fun saveGravityData(points: List<GravityPoint>): Completable {
     return Completable.error(NoSuchMethodException())
   }
 
-  override fun saveGravityData(rideId: Long, point: GravityPoint): Single<Long> {
-    return Single.error(NoSuchMethodException())
+  override fun saveGravityData(point: GravityPoint): Completable {
+    return Completable.error(NoSuchMethodException())
   }
 
   override fun getGravityData(rideId: Long): Single<List<GravityPoint>> {
     return Single.error(NoSuchMethodException())
   }
 
-  override fun saveHeartRateData(rideId: Long, points: List<HeartRatePoint>): Completable {
+  override fun saveHeartRateData(points: List<HeartRatePoint>): Completable {
     return Completable.error(NoSuchMethodException())
   }
 
-  override fun saveHeartRateData(rideId: Long, point: HeartRatePoint): Single<Long> {
-    return Single.error(NoSuchMethodException())
+  override fun saveHeartRateData(point: HeartRatePoint): Completable {
+    return Completable.error(NoSuchMethodException())
   }
 
   override fun getHeartRateData(rideId: Long): Single<List<HeartRatePoint>> {
     return Single.error(NoSuchMethodException())
   }
 
-  override fun saveRide(ride: Ride): Single<Long> {
-    return rideWebService.upload(ride).toSingleDefault(ride.id)
+  override fun saveRide(ride: Ride): Completable {
+    return rideWebService.upload(ride)
   }
 
   override fun getRide(rideId: Long): Single<Ride> {
     return Single.error(NoSuchMethodException())
   }
 
-  override fun markCompleted(rideId: Long): Single<Boolean> {
-    return Single.error(NoSuchMethodException())
+  override fun markCompleted(rideId: Long): Completable {
+    return Completable.error(NoSuchMethodException())
   }
 
-  override fun markSynced(rideId: Long): Single<Boolean> {
-    return Single.error(NoSuchMethodException())
+  override fun markSynced(rideId: Long): Completable {
+    return Completable.error(NoSuchMethodException())
   }
 }

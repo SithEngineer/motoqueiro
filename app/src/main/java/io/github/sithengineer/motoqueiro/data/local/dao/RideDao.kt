@@ -21,6 +21,9 @@ interface RideDao {
   @Query("SELECT * FROM ride WHERE is_synced LIKE :isSynced")
   fun getAllBySyncState(isSynced: Boolean): Flowable<List<Ride>>
 
+  @Query("SELECT * FROM ride WHERE is_completed LIKE :isCompleted")
+  fun getAllInCompletedState(isCompleted: Boolean): Flowable<List<Ride>>
+
   @Insert(onConflict = OnConflictStrategy.REPLACE)
   fun insertAll(vararg rides: Ride)
 

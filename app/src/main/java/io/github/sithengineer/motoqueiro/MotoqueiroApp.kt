@@ -2,6 +2,7 @@ package io.github.sithengineer.motoqueiro
 
 import android.accounts.AccountManager
 import android.content.Context
+import com.jakewharton.threetenabp.AndroidThreeTen
 import io.github.sithengineer.motoqueiro.app.AppComponent
 import io.github.sithengineer.motoqueiro.app.AppModule
 import io.github.sithengineer.motoqueiro.app.DaggerAppComponent
@@ -15,6 +16,7 @@ import io.github.sithengineer.motoqueiro.hardware.SensorModule
 import io.github.sithengineer.motoqueiro.hardware.bluetooth.MiBandModule
 import io.github.sithengineer.motoqueiro.util.ReleaseTree
 import timber.log.Timber
+import timber.log.Timber.DebugTree
 
 class MotoqueiroApp : android.app.Application() {
 
@@ -38,10 +40,10 @@ class MotoqueiroApp : android.app.Application() {
 
   override fun onCreate() {
     super.onCreate()
-    initComponents()
+    setupProperBackportDateClasses()
   }
 
-  private fun initComponents() {
+  private fun setupDagger() {
     val androidAccountManager = getSystemService(Context.ACCOUNT_SERVICE) as AccountManager
 
     appComponent = DaggerAppComponent.builder()
@@ -49,11 +51,18 @@ class MotoqueiroApp : android.app.Application() {
         .build()
   }
 
+  private fun setupProperBackportDateClasses() {
+    AndroidThreeTen.init(this)
+  }
+
   override fun attachBaseContext(base: Context) {
     super.attachBaseContext(base)
+    setupTimber()
+  }
 
+  private fun setupTimber() {
     if (BuildConfig.DEBUG) {
-      Timber.plant(object : Timber.DebugTree() {
+      Timber.plant(object : DebugTree() {
         override fun createStackElementTag(element: StackTraceElement): String? {
           return "${super.createStackElementTag(element)}:$element.lineNumber"
         }

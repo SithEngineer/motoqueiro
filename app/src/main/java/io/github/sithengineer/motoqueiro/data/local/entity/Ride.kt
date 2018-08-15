@@ -3,10 +3,11 @@ package io.github.sithengineer.motoqueiro.data.local.entity
 import android.arch.persistence.room.ColumnInfo
 import android.arch.persistence.room.Entity
 import android.arch.persistence.room.PrimaryKey
+import org.threeten.bp.Instant
 
 @Entity(tableName = "ride")
 data class Ride constructor(
-    @ColumnInfo(name = "id") @PrimaryKey(autoGenerate = true) var id: Long = 0,
+    @ColumnInfo(name = "id") @PrimaryKey var id: Long = Instant.now().toEpochMilli(),
 
     @ColumnInfo(name = "event")
     val event: String,

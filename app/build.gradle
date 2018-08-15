@@ -155,6 +155,11 @@ dependencies {
   implementation "com.jakewharton.timber:timber:$rootProject.timberVersion"
 
   //
+  // backported proper date classes
+  //
+  implementation "com.jakewharton.threetenabp:threetenabp:$rootProject.threeTenAbpVersion"
+
+  //
   // room database
   //
   implementation "android.arch.persistence.room:runtime:$rootProject.roomVersion"

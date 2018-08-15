@@ -6,8 +6,8 @@ import android.location.LocationManager
 import io.github.sithengineer.motoqueiro.hardware.HardwareObservable
 import io.github.sithengineer.motoqueiro.hardware.capture.LatLng
 import io.reactivex.Observable
+import org.threeten.bp.Instant
 import timber.log.Timber
-import java.util.Calendar
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -18,7 +18,7 @@ class Gps @Inject constructor(private val locationManager: LocationManager) :
     return Observable.interval(0, MIN_TIME, TimeUnit.MILLISECONDS)
         .map { count ->
           LatLng(count / 0.3, count / 0.7,
-              Calendar.getInstance().timeInMillis)
+              Instant.now().toEpochMilli())
         }
   }
 

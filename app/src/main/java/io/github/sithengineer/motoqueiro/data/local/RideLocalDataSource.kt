@@ -15,104 +15,94 @@ class RideLocalDataSource(
     private val appDatabase: AppDatabase,
     private val ioScheduler: Scheduler
 ) : RideDataSource {
-  override val completedRides: Single<List<Ride>>
-    get() = TODO(
-        "not implemented") //To change initializer of created properties use File | Settings | File Templates.
 
-  override fun saveGpsData(rideId: Long, points: List<GpsPoint>): Completable {
-    TODO(
-        "not implemented") //To change body of created functions use File | Settings | File Templates.
-  }
+  override fun saveGpsData(points: List<GpsPoint>): Completable =
+      Completable.fromAction { appDatabase.gpsPointDao().insertAll(points) }
+          .subscribeOn(ioScheduler)
 
-  override fun saveGpsData(rideId: Long, coordinates: GpsPoint): Single<Long> {
-    TODO(
-        "not implemented") //To change body of created functions use File | Settings | File Templates.
-  }
+  override fun saveGpsData(coordinates: GpsPoint): Completable =
+      Completable.fromAction { appDatabase.gpsPointDao().insert(coordinates) }
+          .subscribeOn(ioScheduler)
 
-  override fun getGpsData(rideId: Long): Single<List<GpsPoint>> {
-    TODO(
-        "not implemented") //To change body of created functions use File | Settings | File Templates.
-  }
+  override fun getGpsData(rideId: Long): Single<List<GpsPoint>> =
+      appDatabase.gpsPointDao().getAll(rideId = rideId).firstOrError()
+          .subscribeOn(ioScheduler)
 
-  override fun saveAccelerometerData(rideId: Long,
-      points: List<AccelerometerPoint>): Completable {
-    TODO(
-        "not implemented") //To change body of created functions use File | Settings | File Templates.
-  }
+  override fun saveAccelerometerData(points: List<AccelerometerPoint>): Completable =
+      Completable.fromAction { appDatabase.accelerometerPointDao().insertAll(points) }
+          .subscribeOn(ioScheduler)
 
-  override fun saveAccelerometerData(rideId: Long, point: AccelerometerPoint): Single<Long> {
-    TODO(
-        "not implemented") //To change body of created functions use File | Settings | File Templates.
-  }
+  override fun saveAccelerometerData(point: AccelerometerPoint): Completable =
+      Completable.fromAction { appDatabase.accelerometerPointDao().insert(point) }
+          .subscribeOn(ioScheduler)
 
-  override fun getAccelerometerData(rideId: Long): Single<List<AccelerometerPoint>> {
-    TODO(
-        "not implemented") //To change body of created functions use File | Settings | File Templates.
-  }
+  override fun getAccelerometerData(rideId: Long): Single<List<AccelerometerPoint>> =
+      appDatabase.accelerometerPointDao().getAll(rideId = rideId).firstOrError()
+          .subscribeOn(ioScheduler)
 
-  override fun saveGyroscopeData(rideId: Long, points: List<GyroscopePoint>): Completable {
-    TODO(
-        "not implemented") //To change body of created functions use File | Settings | File Templates.
-  }
+  override fun saveGyroscopeData(points: List<GyroscopePoint>): Completable =
+      Completable.fromAction { appDatabase.gyroscopePointDao().insertAll(points) }
+          .subscribeOn(ioScheduler)
 
-  override fun saveGyroscopeData(rideId: Long, point: GyroscopePoint): Single<Long> {
-    TODO(
-        "not implemented") //To change body of created functions use File | Settings | File Templates.
-  }
+  override fun saveGyroscopeData(point: GyroscopePoint): Completable =
+      Completable.fromAction { appDatabase.gyroscopePointDao().insert(point) }
+          .subscribeOn(ioScheduler)
 
-  override fun getGyroscopeData(rideId: Long): Single<List<GyroscopePoint>> {
-    TODO(
-        "not implemented") //To change body of created functions use File | Settings | File Templates.
-  }
+  override fun getGyroscopeData(rideId: Long): Single<List<GyroscopePoint>> =
+      appDatabase.gyroscopePointDao().getAll(rideId = rideId).firstOrError()
+          .subscribeOn(ioScheduler)
 
-  override fun saveGravityData(rideId: Long, points: List<GravityPoint>): Completable {
-    TODO(
-        "not implemented") //To change body of created functions use File | Settings | File Templates.
-  }
+  override fun saveGravityData(points: List<GravityPoint>): Completable =
+      Completable.fromAction { appDatabase.gravityPointDao().insertAll(points) }
+          .subscribeOn(ioScheduler)
 
-  override fun saveGravityData(rideId: Long, point: GravityPoint): Single<Long> {
-    TODO(
-        "not implemented") //To change body of created functions use File | Settings | File Templates.
-  }
+  override fun saveGravityData(point: GravityPoint): Completable =
+      Completable.fromAction { appDatabase.gravityPointDao().insert(point) }
+          .subscribeOn(ioScheduler)
 
-  override fun getGravityData(rideId: Long): Single<List<GravityPoint>> {
-    TODO(
-        "not implemented") //To change body of created functions use File | Settings | File Templates.
-  }
+  override fun getGravityData(rideId: Long): Single<List<GravityPoint>> =
+      appDatabase.gravityPointDao().getAll(rideId = rideId).firstOrError()
+          .subscribeOn(ioScheduler)
 
-  override fun saveHeartRateData(rideId: Long, points: List<HeartRatePoint>): Completable {
-    TODO(
-        "not implemented") //To change body of created functions use File | Settings | File Templates.
-  }
+  override fun saveHeartRateData(points: List<HeartRatePoint>): Completable =
+      Completable.fromAction { appDatabase.heartRatePointDao().insertAll(points) }
+          .subscribeOn(ioScheduler)
 
-  override fun saveHeartRateData(rideId: Long, point: HeartRatePoint): Single<Long> {
-    TODO(
-        "not implemented") //To change body of created functions use File | Settings | File Templates.
-  }
+  override fun saveHeartRateData(point: HeartRatePoint): Completable =
+      Completable.fromAction { appDatabase.heartRatePointDao().insert(point) }
+          .subscribeOn(ioScheduler)
 
-  override fun getHeartRateData(rideId: Long): Single<List<HeartRatePoint>> {
-    TODO(
-        "not implemented") //To change body of created functions use File | Settings | File Templates.
-  }
+  override fun getHeartRateData(rideId: Long): Single<List<HeartRatePoint>> =
+      appDatabase.heartRatePointDao().getAll(rideId).firstOrError()
+          .subscribeOn(ioScheduler)
 
-  override fun saveRide(ride: Ride): Single<Long> {
-    TODO(
-        "not implemented") //To change body of created functions use File | Settings | File Templates.
-  }
+  override fun getCompletedRides(): Single<List<Ride>> = appDatabase.rideDao()
+      .getAllInCompletedState(true)
+      .firstOrError()
+      .subscribeOn(ioScheduler)
 
-  override fun getRide(rideId: Long): Single<Ride> {
-    TODO(
-        "not implemented") //To change body of created functions use File | Settings | File Templates.
-  }
+  override fun getRide(rideId: Long): Single<Ride> =
+      appDatabase.rideDao().getById(id = rideId)
+          .subscribeOn(ioScheduler)
 
-  override fun markCompleted(rideId: Long): Single<Boolean> {
-    TODO(
-        "not implemented") //To change body of created functions use File | Settings | File Templates.
-  }
+  override fun saveRide(ride: Ride): Completable =
+      Completable.fromAction { appDatabase.rideDao().insert(ride) }
+          .subscribeOn(ioScheduler)
 
-  override fun markSynced(rideId: Long): Single<Boolean> {
-    TODO(
-        "not implemented") //To change body of created functions use File | Settings | File Templates.
-  }
+  override fun markCompleted(rideId: Long): Completable =
+      appDatabase.rideDao().getById(id = rideId).flatMapCompletable { ride ->
+        return@flatMapCompletable Completable.fromAction {
+          ride.isCompleted = true
+          appDatabase.rideDao().update(ride)
+        }
+      }.subscribeOn(ioScheduler)
+
+  override fun markSynced(rideId: Long): Completable =
+      appDatabase.rideDao().getById(id = rideId).flatMapCompletable { ride ->
+        return@flatMapCompletable Completable.fromAction {
+          ride.isSynced = true
+          appDatabase.rideDao().update(ride)
+        }
+      }.subscribeOn(ioScheduler)
 
 }

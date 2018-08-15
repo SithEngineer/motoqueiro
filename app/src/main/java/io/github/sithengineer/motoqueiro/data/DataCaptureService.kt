@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.os.IBinder
 import android.text.TextUtils
 import io.github.sithengineer.motoqueiro.MotoqueiroApp
+import io.github.sithengineer.motoqueiro.data.local.entity.Ride
 import io.github.sithengineer.motoqueiro.exception.GpsNotActiveException
 import io.github.sithengineer.motoqueiro.hardware.gps.GpsStateListener
 import io.github.sithengineer.motoqueiro.util.CompositeSubscriptionManager
@@ -42,7 +43,7 @@ class DataCaptureService : Service() {
    * This method can throw a GpsNotActiveException if GPS is off or in
    * coarse location mode.
    */
-  fun start(rideName: String): Single<Long> {
+  fun start(rideName: String): Single<Ride> {
     if (!isGpsActive) {
       throw GpsNotActiveException()
     }
@@ -55,13 +56,7 @@ class DataCaptureService : Service() {
   }
 
   fun stop(rideId: Long): Completable {
-    return rideRepo.finishRide(rideId).flatMapCompletable { success ->
-      return@flatMapCompletable if (success) {
-        rideRepo.sync()
-      } else {
-        Completable.complete()
-      }
-    }
+    return rideRepo.finishRide(rideId).andThen(rideRepo.sync())
   }
 
   override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
@@ -90,7 +85,11 @@ class DataCaptureService : Service() {
 
     subscriptionManager.add(
         start(rideName)
-            .flatMapObservable { rideId -> dataManager.gatherData().doOnTerminate { stop(rideId) } }
+            .flatMapCompletable { ride ->
+              dataManager.gatherData().doOnTerminate {
+                stop(ride.id)
+              }
+            }
             .subscribeBy(
                 onComplete = { },
                 onError = { err -> Timber.e(err) }

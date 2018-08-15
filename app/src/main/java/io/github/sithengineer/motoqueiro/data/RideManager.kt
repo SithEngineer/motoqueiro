@@ -1,6 +1,7 @@
 package io.github.sithengineer.motoqueiro.data
 
 import android.location.LocationManager
+import io.github.sithengineer.motoqueiro.data.local.entity.Ride
 import io.github.sithengineer.motoqueiro.exception.GpsNotActiveException
 import io.github.sithengineer.motoqueiro.hardware.gps.GpsStateListener
 import io.reactivex.Completable
@@ -24,29 +25,21 @@ class RideManager(private val locationListener: GpsStateListener,
    * This [Observable] chain can throw a GpsNotActiveException if GPS is off or in
    * coarse location mode.
    */
-  fun start(): Single<Long> {
+  fun start(): Single<Ride> {
     return isGpsActive.flatMap { gpsActive ->
       return@flatMap if (!gpsActive) {
-        Single.error<Long>(GpsNotActiveException())
+        Single.error<Ride>(GpsNotActiveException())
       } else {
         rideRepo.startRide(generateName())
       }
     }
   }
 
-  private fun generateName(): String {
-    return DATE_FORMAT.format(Date())
-  }
+  private fun generateName(): String =
+      DATE_FORMAT.format(Date())
 
-  fun stop(rideId: Long): Completable {
-    return rideRepo.finishRide(rideId).flatMapCompletable { success ->
-      return@flatMapCompletable if (success) {
-        rideRepo.sync()
-      } else {
-        Completable.complete()
-      }
-    }
-  }
+  fun stop(rideId: Long): Completable =
+      rideRepo.finishRide(rideId).andThen(rideRepo.sync())
 
   companion object {
     private val DATE_FORMAT = SimpleDateFormat("yyyy-MM-dd_HH:mm:ss", Locale.getDefault())

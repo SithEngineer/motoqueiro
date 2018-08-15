@@ -11,11 +11,11 @@ import io.reactivex.Flowable
 
 @Dao
 interface AccelerometerPointDao {
-  @Query("SELECT * FROM accelerometer_point")
-  fun getAll(): Flowable<List<AccelerometerPoint>>
+  @Query("SELECT * FROM accelerometer_point WHERE ride_id = :rideId")
+  fun getAll(rideId: Long): Flowable<List<AccelerometerPoint>>
 
   @Insert(onConflict = OnConflictStrategy.REPLACE)
-  fun insertAll(vararg points: AccelerometerPoint)
+  fun insertAll(points: List<AccelerometerPoint>)
 
   @Insert(onConflict = OnConflictStrategy.REPLACE)
   fun insert(gpsPoint: AccelerometerPoint)
