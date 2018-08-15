@@ -10,45 +10,34 @@ buildscript {
     compileSdkVersion = 27
     buildToolsVersion = '27.0.3'
 
-    // App dependencies
-    /*
-    constraintLayoutVersion = '1.1.2'
-    espressoVersion = '3.0.1'
-    glideVersion = '4.4.0'
-    gradleVersion = '3.2.0-beta05'
-    gsonVersion = '2.8.2'
-    junitVersion = '4.12'
-    lifecycleVersion = '1.1.1'
-    navigationVersion = '1.0.0-alpha04'
-    kotlinVersion = '1.2.51'
-    ktlintVersion = '0.24.0'
-    ktxVersion = '0.3'
-    roomVersion = '1.1.1'
-    runnerVersion = '1.0.1'
-    workVersion = '1.0.0-alpha05'
-    */
     gradleVersion = '3.2.0-beta05'
     navigationVersion = '1.0.0-alpha04'
     kotlinVersion = '1.2.60'
     supportLibraryVersion = '27.1.1'
 
-    junitVersion = '4.12'
-    espressoVersion = '2.2.2'
+    kotlinVersion = '1.2.60'
+    roomVersion = '1.1.1'
     playServicesVersion = '15.0.1'
-    rxJavaVersion = '1.3.0'
-    rxAndroidVersion = '1.2.1'
-    rxLifecycleVersion = '1.0'
-    rxBindingVersion = '1.0.1'
-    rxLintVersion = '1.2'
-    sqlBriteVersion = '1.1.1'
-    butterknifeVersion = '8.8.1'
-    multiDexVersion = '1.0.1'
-    retrofitVersion = '2.2.0'
-    jsr250Version = '1.0'
-    glideVersion = '3.7.0'
-    daggerVersion = '2.9'
-    gsonVersion = '2.8.0'
-    timberVersion = '4.7.0'
+    rxJavaVersion = '2.2.0'
+    rxAndroidVersion = '2.0.2'
+    rxBindingVersion = '2.1.1'
+    retrofitVersion = '2.4.0'
+    multiDexVersion = '1.0.3'
+    timberVersion = '4.7.1'
+    junitVersion = '4.12'
+    espressoVersion = '3.0.1'
+    glideVersion = '4.4.0'
+    daggerVersion = '2.17'
+    gsonVersion = '2.8.5'
+
+    // App dependencies
+    /*
+    lifecycleVersion = '1.1.1'
+    ktlintVersion = '0.24.0'
+    ktxVersion = '0.3'
+    runnerVersion = '1.0.1'
+    workVersion = '1.0.0-alpha05'
+    */
   }
 
   repositories {
@@ -60,6 +49,7 @@ buildscript {
     classpath "com.android.tools.build:gradle:$gradleVersion"
     classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
     classpath "android.arch.navigation:navigation-safe-args-gradle-plugin:$navigationVersion"
+    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
   }
 }
 

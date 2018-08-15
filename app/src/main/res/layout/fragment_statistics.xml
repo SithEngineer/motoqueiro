@@ -7,7 +7,7 @@
     android:orientation="vertical"
     >
   <TextView
-      android:id="@+id/upload_completed_message"
+      android:id="@+id/uploadCompletedMessage"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:text="@string/statistics_view_upload_completed"
@@ -16,7 +16,7 @@
       style="@style/DefaultTextAppearance"
       />
   <Button
-      android:id="@+id/go_home_button"
+      android:id="@+id/goHomeButton"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_alignParentBottom="true"
