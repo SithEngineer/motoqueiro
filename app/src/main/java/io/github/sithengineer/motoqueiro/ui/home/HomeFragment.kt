@@ -45,19 +45,15 @@ class HomeFragment : BaseFragment<Presenter>(), HomeContract.View {
         .inject(this)
   }
 
-  override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-      savedInstanceState: Bundle?): View? {
-    val view = super.onCreateView(inflater, container, savedInstanceState)
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
     val adapter = ArrayAdapter.createFromResource(activity!!, R.array.home_wheres_phone_array,
         android.R.layout.simple_spinner_item)
     adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item)
     phone_position_spinner.adapter = adapter
-    return view
   }
 
-  override fun handleStartRideClick(): Observable<Any> {
-    return RxView.clicks(start_ride)
-  }
+  override fun handleStartRideClick(): Observable<Any> = RxView.clicks(start_ride)
 
   override fun sendToGpsSettings() {
     startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))

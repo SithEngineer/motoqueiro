@@ -36,21 +36,21 @@ class RxBluetoothGattCallback : BluetoothGattCallback() {
   override fun onCharacteristicRead(gatt: BluetoothGatt,
       characteristic: BluetoothGattCharacteristic, status: Int) {
     gattEventBehaviorSubject.onNext(
-        GattEvent(GattEvent.Type.READ, gatt, characteristic, status))
+        GattEvent(GattEvent.Type.READ, gatt, status, characteristic))
     super.onCharacteristicRead(gatt, characteristic, status)
   }
 
   override fun onCharacteristicWrite(gatt: BluetoothGatt,
       characteristic: BluetoothGattCharacteristic, status: Int) {
     gattEventBehaviorSubject.onNext(
-        GattEvent(GattEvent.Type.WRITE, gatt, characteristic, status))
+        GattEvent(GattEvent.Type.WRITE, gatt, status, characteristic))
     super.onCharacteristicWrite(gatt, characteristic, status)
   }
 
   override fun onCharacteristicChanged(gatt: BluetoothGatt,
       characteristic: BluetoothGattCharacteristic) {
     gattEventBehaviorSubject.onNext(
-        GattEvent(GattEvent.Type.NOTIFICATION, gatt, characteristic))
+        GattEvent(GattEvent.Type.NOTIFICATION, gatt, characteristic = characteristic))
     super.onCharacteristicChanged(gatt, characteristic)
   }
 }

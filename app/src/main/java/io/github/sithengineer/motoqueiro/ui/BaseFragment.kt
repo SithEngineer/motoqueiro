@@ -23,9 +23,13 @@ abstract class BaseFragment<P : Presenter> : Fragment() {
     val view = inflater.inflate(viewId, container, false)
     loadArguments(arguments)
     inject()
+    return view
+  }
+
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
     val presenter = getPresenter()
     presenter?.start()
-    return view
   }
 
   open fun loadArguments(args: Bundle?) {

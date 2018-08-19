@@ -40,6 +40,7 @@ class MotoqueiroApp : android.app.Application() {
 
   override fun onCreate() {
     super.onCreate()
+    setupDagger()
     setupProperBackportDateClasses()
   }
 

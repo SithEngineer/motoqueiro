@@ -20,7 +20,8 @@ class CruisingActivity : BaseActivity() {
   }
 
   override fun onBackPressed() {
-    // does nothing
+    // does nothing for now...
+
     // super.onBackPressed();
     // new CruisingNavigator(this).goToStatistics(false);
   }
