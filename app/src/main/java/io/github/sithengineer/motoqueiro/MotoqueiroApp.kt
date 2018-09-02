@@ -14,14 +14,13 @@ import io.github.sithengineer.motoqueiro.data.sync.SyncComponent
 import io.github.sithengineer.motoqueiro.data.sync.SyncModule
 import io.github.sithengineer.motoqueiro.hardware.SensorModule
 import io.github.sithengineer.motoqueiro.hardware.bluetooth.MiBandModule
+import io.github.sithengineer.motoqueiro.util.DebugTree
 import io.github.sithengineer.motoqueiro.util.ReleaseTree
 import timber.log.Timber
-import timber.log.Timber.DebugTree
 
 class MotoqueiroApp : android.app.Application() {
 
-  var appComponent: AppComponent? = null
-    private set
+  private var appComponent: AppComponent? = null
 
   fun createUiComponent(): UiComponent {
     val context = this
@@ -63,11 +62,7 @@ class MotoqueiroApp : android.app.Application() {
 
   private fun setupTimber() {
     if (BuildConfig.DEBUG) {
-      Timber.plant(object : DebugTree() {
-        override fun createStackElementTag(element: StackTraceElement): String? {
-          return "${super.createStackElementTag(element)}:$element.lineNumber"
-        }
-      })
+      Timber.plant(DebugTree())
     } else {
       Timber.plant(ReleaseTree())
     }
