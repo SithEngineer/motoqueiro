@@ -1,3 +1,6 @@
+# Project private properties
+private.properties
+
 *.iml
 .gradle
 /local.properties
