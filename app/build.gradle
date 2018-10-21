@@ -24,8 +24,8 @@ android {
     applicationId "io.github.sithengineer.motoqueiro"
     minSdkVersion rootProject.ext.minSdkVersion
     targetSdkVersion rootProject.ext.compileSdkVersion
-    versionCode 2
-    versionName "0.2"
+    versionCode rootProject.ext.versionCode
+    versionName rootProject.ext.versionName
     testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
     //multiDexEnabled true
